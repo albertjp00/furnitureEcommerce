@@ -1173,7 +1173,8 @@ const payOnline = async(req,res)=>{
                         msg:'Order Created',
                         order_id:order.id,
                         amount:amount,
-                        key_id:RAZORPAY_ID_KEY, 
+                        key_id:process.env.RAZORPAY_ID_KEY,
+                        key_secret: process.env.RAZORPAY_KEY_SECRET, 
                         
                         contact:"9746007325",
                         name: "Albert",
