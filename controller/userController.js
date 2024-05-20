@@ -48,6 +48,7 @@ const { find, findById } = require('../model/adminModel');
 require("dotenv").config()
 const RAZORPAY_ID_KEY= process.env.RAZORPAY_ID_KEY;
 const RAZORPAY_SECRET_KEY = process.env.RAZORPAY_SECRET_KEY
+
 const razorpayInstance = new razorpay({
     key_id: RAZORPAY_ID_KEY, // Pass your Razorpay key ID
     key_secret: RAZORPAY_SECRET_KEY // Pass your Razorpay key secret
@@ -1156,6 +1157,7 @@ const payOnline = async(req,res)=>{
         const decodedToken = jwt.verify(token, 'your_secret_key');
         const userId = decodedToken.userId; 
         const amount = req.body.amount*100
+        const RAZORPAY_ID_KEY = process.env.RAZORPAY_ID_KEY
         console.log("amount-"+amount);
         const options = {
             amount: amount,
