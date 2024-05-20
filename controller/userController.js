@@ -46,7 +46,8 @@ const { find, findById } = require('../model/adminModel');
 
 
 require("dotenv").config()
-const { RAZORPAY_ID_KEY, RAZORPAY_SECRET_KEY } = process.env;
+const RAZORPAY_ID_KEY= process.env.RAZORPAY_ID_KEY;
+const RAZORPAY_SECRET_KEY = process.env.RAZORPAY_SECRET_KEY
 const razorpayInstance = new razorpay({
     key_id: RAZORPAY_ID_KEY, // Pass your Razorpay key ID
     key_secret: RAZORPAY_SECRET_KEY // Pass your Razorpay key secret
