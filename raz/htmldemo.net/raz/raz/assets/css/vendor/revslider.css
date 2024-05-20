@@ -1,0 +1,154 @@
+
+/*========================
+ Home 01 Slider CSS 
+ =========================*/
+.new-1 .tp-bullet{width:110px !important;  height:40px;  background:none}.new-1 .tp-bullet .tp-bullet-title{display:block;  text-align:left;  font-size:24px;  font-weight:regular; transition:all .3s; position:relative; color:transparent}.new-1 .tp-bullet .tp-bullet-title:before{position:absolute;  transition:all .3s;  z-index:1;  width:30px;  height:5px;  background:#1A1A1A;  top:1em;  right:0;  content:"";  opacity:1}.new-1 .tp-bullet:hover,.new-1 .tp-bullet.selected{background-color:tranparent}.new-1 .tp-bullet:hover .tp-bullet-title,.new-1 .tp-bullet.selected .tp-bullet-title{color:#2f2f2f;  transition:all .3s}.new-1 .tp-bullet:hover .tp-bullet-title:before,.new-1 .tp-bullet.selected .tp-bullet-title:before{opacity:1;  width:60px}@media (max-width:1366px){.new-1 .tp-bullet{width:60px !important}.new-1 .tp-bullet .tp-bullet-title{font-size:16px; font-weight:400}.new-1 .tp-bullet .tp-bullet-title:before{width:20px}.new-1 .tp-bullet:hover .tp-bullet-title:before,.new-1 .tp-bullet.selected .tp-bullet-title:before{width:40px}}@media (max-width:991px){.tp-bullets.new-1.vertical{top:auto !important; left:auto !important; right:20px !important; bottom:20px !important; transform:none !important}.new-1 .tp-bullet:hover,.new-1 .tp-bullet.selected{background:#fc4f4f !important}.new-1 .tp-bullet{height:15px!important; width:15px!important; background:rgba(252,79,79,.2); border-radius:50%}.new-1 .tp-bullet .tp-bullet-title{display:none}}
+.tp-bullet:after{display: none;}
+
+
+
+
+/*========================
+ Home 02 Slider CSS 
+ =========================*/
+
+.tparrows{width:65px !important;  height:65px !important;  background:#1a1a1a !important;  line-height:65px !important;}.tparrows:before{line-height:65px; font:normal normal normal 24px/2.75 dliconoutline !important;}.tp-leftarrow.tparrows{left:calc(50% - 600px) !important}.tp-rightarrow.tparrows{left:calc(50% + 600px) !important}.tparrows.tp-leftarrow:before{content:'\eacf' !important;}.tparrows.tp-rightarrow:before{content:'\ead0' !important;}li.tp-revslider-slidesli.active-revslide{opacity:1 !important}li.tp-revslider-slidesli{opacity:0.4 !important}.ares.tp-bullets .tp-bullet-title{display:none}
+
+
+ .ares.tp-bullets{}.ares.tp-bullets:before{content:" ";position:absolute;width:100%;height:100%;background:transparent;padding:10px;margin-left:-10px;margin-top:-10px;box-sizing:content-box}.ares .tp-bullet{width:13px;height:13px;position:absolute;background:rgba(229,229,229,1);border-radius:50%;cursor:pointer;box-sizing:content-box}.ares .tp-bullet:hover,.ares .tp-bullet.selected{background:rgba(26,26,26,1)}.ares .tp-bullet-title{position:absolute; color:136,136,136; font-size:12px; padding:0px 10px; font-weight:600; right:27px; top:-4px;  background:rgba(0,0,0,0.5); visibility:hidden; transform:translatex(-20px); -webkit-transform:translatex(-20px); transition:transform 0.3s; -webkit-transition:transform 0.3s; line-height:20px; white-space:nowrap}.ares .tp-bullet-title:after{width:0px;height:0px;border-style:solid;border-width:10px 0 10px 10px;border-color:transparent transparent transparent rgba(0,0,0,0.5);content:" ";  position:absolute;  right:-10px;top:0px}.ares .tp-bullet:hover .tp-bullet-title{visibility:visible;  transform:translatex(0px); -webkit-transform:translatex(0px)}.ares .tp-bullet.selected:hover .tp-bullet-title{background:rgba(26,26,26,1)}.ares .tp-bullet.selected:hover .tp-bullet-title:after{border-color:transparent transparent transparent rgba(26,26,26,1)}.ares.tp-bullets:hover .tp-bullet-title{visibility:hidden}.ares.tp-bullets:hover .tp-bullet:hover .tp-bullet-title{visibility:visible;  transform:translateX(0px) translatey(0px); -webkit-transform:translateX(0px) translatey(0px)}.ares.nav-dir-vertical.nav-pos-hor-left .tp-bullet-title{right:auto; left:27px; transform:translatex(20px); -webkit-transform:translatex(20px)}.ares.nav-dir-vertical.nav-pos-hor-left .tp-bullet-title:after{border-width:10px 10px 10px 0 !important; border-color:transparent rgba(0,0,0,0.5) transparent transparent; right:auto !important; left:-10px !important}.ares.nav-dir-vertical.nav-pos-hor-left .tp-bullet.selected:hover .tp-bullet-title:after{border-color:transparent rgba(26,26,26,1) transparent transparent !important}.ares.nav-dir-horizontal.nav-pos-ver-center .tp-bullet-title,.ares.nav-dir-horizontal.nav-pos-ver-bottom .tp-bullet-title{top:-35px; left:50%; right:auto; transform:translateX(-50%) translateY(-10px);-webkit-transform:translateX(-50%) translateY(-10px)}.ares.nav-dir-horizontal.nav-pos-ver-center .tp-bullet-title:after,.ares.nav-dir-horizontal.nav-pos-ver-bottom .tp-bullet-title:after{border-width:10px 10px 0px 10px; border-color:rgba(0,0,0,0.5) transparent transparent transparent; right:auto; left:50%; margin-left:-10px; top:auto; bottom:-10px}.ares.nav-dir-horizontal.nav-pos-ver-center .tp-bullet.selected:hover .tp-bullet-title:after,.ares.nav-dir-horizontal.nav-pos-ver-bottom .tp-bullet.selected:hover .tp-bullet-title:after{border-color:rgba(26,26,26,1) transparent transparent transparent}.ares.nav-dir-horizontal.nav-pos-ver-center .tp-bullet:hover .tp-bullet-title,.ares.nav-dir-horizontal.nav-pos-ver-bottom .tp-bullet:hover .tp-bullet-title{transform:translateX(-50%) translatey(0px); -webkit-transform:translateX(-50%) translatey(0px)}.ares.nav-dir-horizontal.nav-pos-ver-top .tp-bullet-title{top:25px; left:50%; right:auto; transform:translateX(-50%) translateY(10px);-webkit-transform:translateX(-50%) translateY(10px)}.ares.nav-dir-horizontal.nav-pos-ver-top .tp-bullet-title:after{border-width:0 10px 10px 10px; border-color:transparent transparent rgba(0,0,0,0.5) transparent; right:auto; left:50%; margin-left:-10px; bottom:auto; top:-10px}.ares.nav-dir-horizontal.nav-pos-ver-top .tp-bullet.selected:hover .tp-bullet-title:after{border-color:transparent transparent rgba(26,26,26,1) transparent}.ares.nav-dir-horizontal.nav-pos-ver-top .tp-bullet:hover .tp-bullet-title{transform:translateX(-50%) translatey(0px); -webkit-transform:translateX(-50%) translatey(0px)}
+
+
+ /*========================
+ Home 03 Intro Slider CSS 
+ =========================*/
+
+ .tp-bullet{box-shadow:none !important}@media (max-width:767px){.hephaistos .tp-bullet{width:12px !important; height:12px !important}}
+ .hephaistos .tp-bullet{width:18px;height:18px;position:absolute;background:rgba(153,153,153,0);border:2px solid rgba(180,180,180,1);border-radius:50%;cursor:pointer;box-sizing:content-box;  box-shadow:0px 0px 2px 1px rgba(130,130,130,0.3)}.hephaistos .tp-bullet:hover,.hephaistos .tp-bullet.selected{background:rgba(26,26,26,1);  border-color:rgba(26,26,26,1)}
+
+
+
+/*========================
+ Home 05 Slider CSS 
+ =========================*/
+ .coustom-nav
+ .hesperiden.tp-bullets{}.hesperiden.tp-bullets:before{content:" ";position:absolute;width:100%;height:100%;background:transparent;padding:10px;margin-left:-10px;margin-top:-10px;box-sizing:content-box;  border-radius:8px}.hesperiden .tp-bullet{width:16px;height:16px;position:absolute;background:rgb(153,153,153,0);   background:-moz-linear-gradient(top,rgb(153,153,153,0) 0%,rgb(225,225,225) 100%);   background:-webkit-linear-gradient(top,rgb(153,153,153,0) 0%,rgb(225,225,225) 100%);   background:-o-linear-gradient(top,rgb(153,153,153,0) 0%,rgb(225,225,225) 100%);   background:-ms-linear-gradient(top,rgb(153,153,153,0) 0%,rgb(225,225,225) 100%);   background:linear-gradient(to bottom,rgb(153,153,153,0) 0%,rgb(225,225,225) 100%);   filter:progid:dximagetransform.microsoft.gradient(   startcolorstr="rgb(153,153,153,0)",endcolorstr="rgb(225,225,225)",gradienttype=0 ); border:2px solid rgb(26,26,26);border-radius:50%;cursor:pointer;box-sizing:content-box}.hesperiden .tp-bullet:hover,.hesperiden .tp-bullet.selected{background:rgb(26,26,26)}.hesperiden .tp-bullet-image{}.hesperiden 
+ .tp-bullet:after{content:"/" !important;  padding-left:2px !important;  right:0 !important;  color:#B4B4B4 !important; display: block !important;}
+ .tp-bullet-title{}
+
+
+ /*========================
+ Home 10 Slider CSS 
+ =========================*/
+ @media (min-width: 1366px) and (max-width: 1500px){.slider-dots .tp-bullets{top:84% !important;}}
+ @media (min-width: 1200px) and (max-width: 1365px){.slider-dots .tp-bullets{top:82% !important;  bottom:20px !important;  transform:none !important;  left:0 !important;  right:0 !important;  margin:auto}}
+ .coustom-nav .tparrows{width:90px !important;  height:90px !important;  background-color:rgba(225,225,225,0.1) !important;}.coustom-nav .tparrows.tp-leftarrow:before{content:"\eac3" !important;  font:normal normal normal 45px/2 dliconoutline !important;}.coustom-nav .tparrows.tp-rightarrow:before{content:"\eac4" !important;  font:normal normal normal 45px/2 dliconoutline !important;}@media (max-width:1500px){.tparrows{display:none}.tp-bullets{top:auto !important;  bottom:20px !important;  transform:none !important;  left:0 !important;  right:0 !important;  margin:auto}}
+ .tp-bullets .tp-bullet:last-child:after{display:none;}.tp-bullet{background:none;  font-size:18px;  width:25px;  height:30px;  line-height:30px;  color:#B4B4B4}.tp-bullet:after{content:"/";  padding-left:2px;  right:0;  color:#B4B4B4}.tp-bullet.selected,.tp-bullet:hover{background:none;  color:#fff}
+ .hesperiden .tp-bullet::after{
+   display: none !important;;
+ }
+
+ .btn-style-01.rev-btn{
+    position: relative;
+    padding: 0 0 0 140px !important;
+ }
+ @media (min-width: 768px) and (max-width: 991px) {
+    .btn-style-01.rev-btn{
+        padding: 12px 35px 12px 0px !important;
+    }
+}
+@media (max-width: 767px) {
+    .btn-style-01.rev-btn{
+        padding: 8px 23px !important;
+    }
+}
+ .btn-style-02.rev-btn::before, .btn-style-01.rev-btn::before {
+	background-color: #1a1a1a;
+	width: 120px;
+	height: 2px;
+	content: "";
+	position: absolute;
+	top: .8em;
+	left: 0;
+}
+@media (min-width: 768px) and (max-width: 991px) {
+    .btn-style-02.rev-btn::before, .btn-style-01.rev-btn::before{
+        display: none;
+    }
+}
+@media (max-width: 767px) {
+    .btn-style-02.rev-btn::before, .btn-style-01.rev-btn::before{
+        display: none;
+    }
+}
+
+
+ /*========================
+ Home 11 Slider CSS 
+ =========================*/
+ @media (max-width:767px){
+  .home-11 .tp-bullets.new-11.vertical {
+    left: auto !important;
+    transform: translateX(-40%) !important;
+    width: auto !important;
+  }
+ }
+ .new-11 .tp-bullet{width:110px !important;  height:40px;  background:none}.new-11 .tp-bullet .tp-bullet-title{display:block;  text-align:left;  font-size:24px;  font-weight:regular; transition:all .3s; position:relative; color:transparent}.new-11 .tp-bullet .tp-bullet-title:before{position:absolute;  transition:all .3s;  z-index:1;  width:30px;  height:5px;  background:#1A1A1A;  top:1em;  right:0;  content:"";  opacity:1}.new-11 .tp-bullet:hover,.new-11 .tp-bullet.selected{background-color:tranparent}.new-11 .tp-bullet:hover .tp-bullet-title,.new-11 .tp-bullet.selected .tp-bullet-title{color:#2f2f2f;  transition:all .3s}.new-1 .tp-bullet:hover .tp-bullet-title:before,.new-11 .tp-bullet.selected .tp-bullet-title:before{opacity:1;  width:60px}@media (max-width:1366px){.new-11 .tp-bullet{width:60px !important}.new-11 .tp-bullet .tp-bullet-title{font-size:16px; font-weight:400}.new-11 .tp-bullet .tp-bullet-title:before{width:20px}.new-11 .tp-bullet:hover .tp-bullet-title:before,.new-11 .tp-bullet.selected .tp-bullet-title:before{width:40px}}@media (max-width:991px){.tp-bullets.new-11.vertical{top:auto !important; left:auto !important; right:20px !important; bottom:20px !important; transform:none !important}.new-11 .tp-bullet:hover,.new-11 .tp-bullet.selected{background:#fc4f4f !important}.new-11 .tp-bullet{height:15px!important; width:15px!important; background:rgba(252,79,79,.2); border-radius:50%}.new-11 .tp-bullet .tp-bullet-title{display:none}}
+ .tp-bullets.new-11.vertical{left:30% !important;  transform:translateX(-30%) !important;  bottom:0 !important;  top:auto !important; margin: 0 !important;}@media (max-width:1024px){.tp-bullets.new-11.vertical{left:40% !important; transform:translateX(-40%) !important}}
+
+
+ @media (min-width: 1025px) {
+    .home_01_slide_bg {
+      top: 0 !important;
+      left: 28vw !important;
+    }
+  }
+ .rev_slider .home_01_slide_bg .tp-mask-wrap .tp-caption,
+.rev_slider .home_01_slide_bg .tp-mask-wrap *:last-child {
+  min-width: 50vw !important;
+  transform: none !important;
+}
+
+@media (min-width: 991px) {
+  .slider-01-group {
+    top: 0 !important;
+  }
+  .rev_slider .slider-01-group > .tp-loop-wrap > .tp-mask-wrap > .tp-caption,
+  .rev_slider .slider-01-group > .tp-loop-wrap > .tp-mask-wrap > *:last-child {
+    height: 100vh !important;
+  }
+}
+
+@media (max-width: 1365px) {
+  .rev_slider .group-slider-12 > .tp-loop-wrap > .tp-mask-wrap > .tp-caption,
+  .rev_slider .group-slider-12 > .tp-loop-wrap > .tp-mask-wrap > *:last-child {
+    border: none !important;
+  }
+}
+
+@media (max-width: 991px) {
+  .home_01_slide_bg {
+    top: auto !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .home_01_slide_bg {
+    left: 0vw !important;
+    bottom: 50% !important;
+  }
+  .rev_slider .home_01_slide_bg .tp-mask-wrap .tp-caption,
+  .rev_slider .home_01_slide_bg .tp-mask-wrap *:last-child {
+    width: 100vw !important;
+  }
+}
+ 
+
+
+ /*========================
+ Home 12 Slider CSS 
+ =========================*/
+ .hesperiden.tp-bullets{}.hesperiden.tp-bullets:before{content:" ";position:absolute;width:100%;height:100%;background:transparent;padding:10px;margin-left:-10px;margin-top:-10px;box-sizing:content-box;  border-radius:8px}.hesperiden .tp-bullet{width:16px;height:16px;position:absolute;background:rgb(153,153,153,0);   background:-moz-linear-gradient(top,rgb(153,153,153,0) 0%,rgb(225,225,225,0) 100%);   background:-webkit-linear-gradient(top,rgb(153,153,153,0) 0%,rgb(225,225,225,0) 100%);   background:-o-linear-gradient(top,rgb(153,153,153,0) 0%,rgb(225,225,225,0) 100%);   background:-ms-linear-gradient(top,rgb(153,153,153,0) 0%,rgb(225,225,225,0) 100%);   background:linear-gradient(to bottom,rgb(153,153,153,0) 0%,rgb(225,225,225,0) 100%);   filter:progid:dximagetransform.microsoft.gradient(   startcolorstr="rgb(153,153,153,0)",endcolorstr="rgb(225,225,225,0)",gradienttype=0 ); border:2px solid rgb(255,255,255);border-radius:50%;cursor:pointer;box-sizing:content-box}.hesperiden .tp-bullet:hover,.hesperiden .tp-bullet.selected{background:rgb(255,255,255)}.hesperiden .tp-bullet-image{}.hesperiden .tp-bullet-title{}
+
+
+
+

@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Evara Dashboard - Add New Product</title>
+        <link rel="stylesheet" href="/admin/admin-assets/css/main.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.css" integrity="sha512-bs9fAcCAeaDfA4A+NiShWR886eClUcBtqhipoY5DM60Y1V3BbVQlabthUBal5bq8Z8nnxxiyb1wfGX2n76N1Mw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f9f9f9;
+                padding: 20px;
+            }
+            h1 {
+                text-align: center;
+                margin-bottom: 20px;
+            }
+            form {
+                max-width: 400px;
+                margin: 0 auto;
+                background-color: #ffffff;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+            input[type="text"],
+            input[type="date"],
+            input[type="file"],
+            select {
+                width: 100%;
+                padding: 10px;
+                margin-bottom: 15px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+            }
+            input[type="submit"] {
+                background-color: #007bff;
+                color: #ffffff;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+            input[type="submit"]:hover {
+                background-color: #0056b3;
+            }
+            .preview-image {
+    max-width: 200px; /* Set the maximum width */
+    max-height: 200px; /* Set the maximum height */
+    margin: 5px; /* Add some margin between images */
+}
+.error {
+        color: red; /* Set text color to red */
+        font-size: 14px; /* Set font size */
+        margin-top: 5px; /* Add some top margin */
+    }
+        </style>
+    </head>
+    <body>
+        <h1>Add New Product</h1>
+        <form id="form" action="/admin/productAdd" method="post" enctype="multipart/form-data">
+          <label for="">Enter Name</label>
+            <div  class="spin error" id="name-error"></div>
+            <input type="text" name="name" placeholder="Type here.." id="name" >
+            <br>
+            <label for="">Enter Price</label>
+            <div  class="spin error" id="price-error"></div>
+            <input type="text" name="price" placeholder="Type here.." id="price" >
+            
+            
+            
+            <br>
+            <label for="">Enter Color</label>
+            <div  class="spin error" id="color-error"></div>
+            <input type="text" name="color" placeholder="Type here.." id="color" >
+            <br>
+            <label for="">Enter Stock</label>
+            <div  class="spin error" id="stock-error"></div>
+            <input type="text" name="stock" placeholder="Type here.." id="stock" >
+            
+            <br>
+            <select
+                        class="form-select"
+                        id="choices-category-input"
+                        name="category"
+                     >
+                        <% categories.forEach(category => { %>
+                        <option value="<%=category.name%>" name="category">
+                          <%=category.name%>
+                        </option>
+                        
+                        <% }); %>
+                     </select>
+            <div  class="spin error" id="image-error"></div>
+            <input type="file" id="image-upload" accept="image/*" multiple>
+            <br>
+            <div id="cropper-container"></div>
+            
+            <!-- Buttons for controlling cropping -->
+            <!-- <button type="button" id="crop-button">Crop Image</button>
+            <button type="button" id="cancel-crop-button">Cancel</button> -->
+            <!-- <input type="submit" name="cropped-image" id="cropped-image"> -->
+            
+            <!-- <a  class="btn btn-sm btn-primary rounded font-sm mt-15" href="/admin/dashboard" >BACK</a> -->
+            <button type="submit" id="submit-btn" class="btn btn-sm btn-primary rounded font-sm mt-15">Submit</button>
+        </form>
+        <!-- <% if (typeof message !== 'undefined') { %>
+            <p><%= message %></p>
+        <% } %> -->
+    
+        <!-- Include necessary scripts -->
+       
+        
+       
+       
+       <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+       <script>
+  const form = document.getElementById("form")
+  let totalimages = 0;
+
+  function imageupload(event) {
+
+    const files = event.target.files;
+    const imagecontainer = document.getElementById("cropper-container");
+    const maximum = 5;
+
+    const totalupload = totalimages + files.length;
+    if (totalupload > maximum) {
+     //   Swal.fire(Oops! Upload only ${maximum} files., "Sorry");
+        event.target.value = "";
+        return;
+    }
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const reader = new FileReader();
+      if (!file.type.startsWith("image/")) {
+        console.log("File is not an image.", file.type);
+        continue;
+      }
+
+      const imgdiv = document.createElement("div");
+      imgdiv.classList.add("image-div");
+
+      const img = document.createElement("img");
+      img.style.height = "300px";
+      img.style.width = "300px";
+      img.setAttribute("name", "image");
+      img.classList.add("uploaded-image");
+
+      const deletebutton = document.createElement("button");
+      deletebutton.textContent = "Delete";
+      deletebutton.classList.add("btn", "btn-danger", "m-2");
+
+      deletebutton.addEventListener("click", function () {
+        totalimages--;
+        imgdiv.remove();
+      });
+
+      reader.onload = function (event) {
+        img.src = event.target.result;
+
+        const cropperdiv = document.createElement("div");
+        cropperdiv.classList.add("cropper-container");
+        cropperdiv.appendChild(img);
+
+        imgdiv.appendChild(cropperdiv);
+        const cropper = new Cropper(img, {
+          dragMode: "move",
+          aspectRatio: 1,
+          autoCropArea: 0.8,
+          restore: false,
+          guides: false,
+          center: false,
+          responsive:true,
+          highlight: false,
+          cropBoxMovable: false,
+          cropBoxResizable: false,
+          toggleDragModeOnDblclick: false,
+        });
+
+        const cropbtn = document.createElement("button");
+        cropbtn.classList.add("btn", "btn-primary", "m-2");
+        cropbtn.textContent = "Crop";
+        cropbtn.addEventListener("click", function (event) {
+          event.preventDefault();
+          const croppedCanvas = cropper.getCroppedCanvas();
+
+          img.src = croppedCanvas.toDataURL()
+
+          croppedCanvas.toBlob((blob) => {
+            const fileName = Date.now();
+            const file = new File([blob],` ${fileName}.jpg`, { type: 'image/jpeg' });
+
+            if (window.FileList && window.DataTransfer) {
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(file);
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.name =`image${i}`;
+                input.files = dataTransfer.files;
+               form.appendChild(input)
+               input.style.display = 'none'
+               
+            } else {
+                console.error('FileList and DataTransfer are not supported in this browser.');
+            }
+        })
+          cropper.destroy();
+          cropbtn.remove();
+    
+
+        });
+      
+        imgdiv.appendChild(cropbtn);
+        imgdiv.appendChild(deletebutton);
+      };
+
+      reader.readAsDataURL(file);
+
+      imagecontainer.appendChild(imgdiv);
+    }
+    totalimages = totalupload;
+  }
+
+  const imageInput = document.getElementById("image-upload");
+
+     imageInput.addEventListener("change", imageupload);
+
+        document.getElementById('submit-btn').addEventListener("click",function(event){
+            event.preventDefault()
+            const name = document.getElementById("name").value.trim()
+            const price = document.getElementById("price").value
+            const color = document.getElementById("color").value.trim()
+            const stock = document.getElementById("stock").value 
+            
+     
+           
+            const nameError = document.getElementById("name-error")
+            const priceError = document.getElementById("price-error")
+            const colorError = document.getElementById("color-error")
+            const stockError = document.getElementById("stock-error") 
+            
+            
+
+            nameError.textContent = "";
+            priceError.textContent = "";
+            colorError.textContent = "";
+            stockError.textContent = "";
+            
+      
+            console.log(name);
+            console.log(price);
+            console.log(color);
+            let isValid = true
+            
+            if (name === '') {
+            nameError.textContent = 'Name is required';
+            isValid = false;
+            
+              }
+              else if (/\d|-/.test(name)) {
+              nameError.textContent = 'Name cannot contain digits or hyphens';
+             isValid = false;
+            
+              }
+              if (!/^\d+$/.test(price) || parseInt(price) <= 0) {
+                priceError.textContent = 'Please enter a valid positive integer for price';
+                isValid = false;
+              } 
+
+              if (color === '') {
+            colorError.textContent = 'color is required';
+            isValid = false;
+              }
+
+               
+                
+                if (!/^\d+$/.test(stock) || parseInt(stock) <= 0) {
+                    stockError.textContent = 'Please enter a valid positive integer for stock';
+                    isValid = false;
+                }
+
+            //     if (color === '') {
+            // nameError.textContent = 'color is required';
+            // isValid = false;
+              
+              if (/\d/.test(color)) {
+              colorError.textContent = 'Color cannot contain numbers';
+              isValid = false;
+              
+              }
+              
+              
+              const files = document.getElementById("image-upload").files;
+              const imageError = document.getElementById("image-error");
+              imageError.textContent = "";
+
+               if (files.length === 0) {
+              imageError.textContent = "Please select at least one image";
+              isValid = false;
+             
+              } else {
+                const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
+const maxSizeInBytes = 5 * 1024 * 1024; // 5MB max size
+
+for (let i = 0; i < files.length; i++) {
+    if (!allowedTypes.includes(files[i].type)) {
+        imageError.textContent = "Please select only image files (JPEG, PNG, or GIF).";
+        isValid = false;
+        break;
+    } else if (files[i].size > maxSizeInBytes) {
+        imageError.textContent = "Please select an image file smaller than 5MB.";
+        isValid = false;
+        break;
+    }
+}
+
+             
+          
+    }
+    console.log(isValid);
+          //  console.log("nijas");
+          if(isValid){
+            // console.log("helloo");
+            document.getElementById("form").submit()
+          }
+        })
+
+
+
+       </script>
+      
+            
+    </body>
+    </html>
+

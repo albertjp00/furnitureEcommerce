@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<!-- Coding By CodingNepal - codingnepalweb.com -->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OTP Verification Form</title>
+    <link rel="stylesheet" href="style.css" />
+    <!-- Boxicons CSS -->
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+    <script src="script.js" defer></script>
+    <style>
+      /* Import Google font - Poppins */
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+      }
+      body {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background  :white;
+      }
+      :where(.container, form, .input-field, header) {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+      .container {
+        background: #fff;
+        padding: 30px 65px;
+        border-radius: 12px;
+        row-gap: 20px;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+      }
+      .container header {
+        height: 65px;
+        width: 65px;
+        background: #4070f4;
+        color: #fff;
+        font-size: 2.5rem;
+        border-radius: 50%;
+      }
+      .container h4 {
+        font-size: 1.25rem;
+        color: #333;
+        font-weight: 500;
+      }
+      form .input-field {
+        flex-direction: row;
+        column-gap: 10px;
+      }
+      .input-field input {
+        height: 45px;
+        width: 42px;
+        border-radius: 6px;
+        outline: none;
+        font-size: 1.125rem;
+        text-align: center;
+        border: 1px solid #ddd;
+      }
+      .input-field input:focus {
+        box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+      }
+      .input-field input::-webkit-inner-spin-button,
+      .input-field input::-webkit-outer-spin-button {
+        display: none;
+      }
+      form button {
+        margin-top: 25px;
+        width: 100%;
+        color: #fff;
+        font-size: 1rem;
+        border: none;
+        padding: 9px 0;
+        cursor: pointer;
+        border-radius: 6px;
+        /* pointer-events: none; */
+        background:black;
+        transition: all 0.2s ease;
+      }
+      form button.active {
+        background: #4070f4;
+        pointer-events: auto;
+      }
+      form button:hover {
+        background: #0e4bf1;
+      }
+      
+    /*disabled  button hover after timer */
+    #verifyButton:disabled {
+        /* Add the styles you want when the button is disabled */
+        cursor: not-allowed; /* Optional: Change cursor to indicate the button is disabled */
+        background-color: initial; /* Optional: Remove background color */
+        color: initial; /* Optional: Remove text color */
+    }
+
+    </style>
+  </head>
+  <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTP Verification</title>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <i class="bx bxs-check-shield"></i>
+        </header>
+        <h4>Verify Your Email Address</h4>
+        <p>An OTP has sent to your email.</p>
+        <form action="/user/otpverify" method="post">
+            <div class="input-field">
+                <input type="number" style="width: 100px;" name="otp"/>
+                
+            </div>
+            <% if( typeof message !== 'undefined') { %>
+                  <h3><%= message %></h3>
+            <% } %>
+            <button id="verifyButton">Verify OTP</button>
+            <br>
+            <p> Resend OTP in <span id="countdowntimer">30 </span> Seconds</p>
+        </form>
+        <form action = "/user/get">
+          <button style="width:90px">Resend</button>
+        </form>
+    </div>
+    <script>
+      var timeleft = 30;
+var downloadTimer = setInterval(function () {
+    timeleft--;
+    document.getElementById("countdowntimer").textContent = timeleft;
+    if (timeleft <= 0) {
+        clearInterval(downloadTimer);
+        //  disabling the  button
+        document.getElementById("verifyButton").disabled = true;
+    }
+}, 1000);
+
+    </script>
+   
+    
+</body>
+
+</html>
+
+</html>

@@ -1,0 +1,1363 @@
+<!doctype html>
+<html class="no-js" lang="zxx">
+
+
+<!-- Mirrored from htmldemo.net/raz/raz/checkout.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 11 Feb 2024 10:19:42 GMT -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Checkout || Raz</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Place favicon.ico in the root directory -->
+    <link href="assets/images/favicon.ico" type="img/x-icon" rel="shortcut icon">
+    <!-- All css files are included here. -->
+    <link rel="stylesheet" href="assets/css/vendor/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/vendor/iconfont.min.css">
+    <link rel="stylesheet" href="assets/css/vendor/helper.css">
+    <link rel="stylesheet" href="assets/css/plugins/plugins.css">
+    <link rel="stylesheet" href="assets/css/vendor/revslider.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    
+    <!-- Modernizr JS -->
+    <script src="assets/js/vendor/modernizr-2.8.3.min.js"></script>
+    <!-- Include SweetAlert CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    
+    <style>
+        /* Custom CSS for available_coupons.ejs */
+
+.container-coup{
+    margin-top: 20px;
+}
+ 
+.coupon-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* Adjust the gap between coupon boxes */
+    margin-top:20px;
+    margin-bottom: 15px;
+}
+
+.coupon-box {
+    border: 1px solid #ccc; /* Border style for the coupon box */
+    padding: 20px;
+    width: calc(50% - 10px); /* Adjust the width of each coupon box */
+    box-sizing: border-box;
+   
+    
+}
+
+/* address  */
+
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+
+    </style>
+</head>
+
+
+<body class="">
+
+    <div id="main-wrapper" class=" ">
+
+        <!--Header section start-->
+        <header class="header  ">
+            <div class="header-deafult menu-right height-150 d-flex align-items-center">
+                <div class="container-fluid pl-80 pr-80 pl-lg-15 pl-md-15 pl-sm-15 pl-xs-15 pr-lg-15 pr-md-15 pr-sm-15 pr-xs-15">
+                    <div class="row align-items-center">
+                        <div class="col-xl-3 col-lg-6 col-md-6 col-4">
+                            <div class="logo">
+                                <a href="index.html"><img src="assets/images/logo.png" alt=""></a>
+                            </div>
+                        </div>
+                        <!--Menu start-->
+                        <div class="col-xl-6  d-none d-xl-block">
+                            <div class="menu-center d-flex justify-content-center">
+                                
+                            </div>
+                        </div>
+                        <!--Menu end-->
+                        <div class="col-xl-3 col-lg-6 col-md-6 col-8 d-flex justify-content-end">
+                            <!-- <div class="header-icon search ">
+                                <a class="search-trigger" href="#">
+                                    <i class="dlicon ui-1_zoom"></i>
+                                </a>
+                            </div> -->
+                            <!-- <div class="header-icon cart ">
+                                <a href="wishlist.html">
+                                    <span class="cart-count">3</span>
+                                    <i class="dlicon ui-3_heart"></i>
+                                </a>
+                            </div> -->
+                            <div class="header-icon cart ">
+                                <a class="cart-trigger" href="#">
+                                    <!-- <span class="cart-count">3</span> -->
+                                    <i class="dlicon shopping_cart-modern"></i>
+                                </a>
+                            </div>
+                            <div class="header-icon hamburger-menu ">
+                                <a class="hamburger-trigger d-none d-xl-block" href="#">
+                                    <i class="dlicon ui-3_menu"></i>
+                                </a>
+
+                                <a class="hamburger-trigger d-block d-xl-none" href="#">
+                                    <i class="dlicon ui-3_menu"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!--Header section end-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <!-- Start Loader Area -->
+        <div class="la-image-loading">
+            <div class="content">
+                <div class="la-loader spinner3">
+                    <div class="dot1"></div>
+                    <div class="dot2"></div>
+                    <div class="bounce1"></div>
+                    <div class="bounce2"></div>
+                    <div class="bounce3"></div>
+                    <div class="cube1"></div>
+                    <div class="cube2"></div>
+                    <div class="cube3"></div>
+                    <div class="cube4"></div>
+                </div>
+            </div>
+            <button class="submit-btn shop-btn">Cancel Preloader</button>
+        </div>
+        <!-- End Loader Area -->
+        <!-- Start Search Flyover -->
+        <div class="search-flyoveray"></div>
+        <div class="cart-flyout">
+            <div class="cart-flyout-inner">
+                <a class="btn-close-cart" href="#">
+                    <i class="dlicon ui-1_simple-remove"></i>
+                </a>
+                <div class="cart-flyout__content">
+                    <div class="cart-flyout__heading">Shopping Cart</div>
+                    <div class="widget_shopping_cart_content">
+                        <ul class="product_list_widget">
+                            <li>
+                                <div class="thumb">
+                                    <img src="assets/images/cart/cart-1.jpg" alt="product">
+                                </div>
+                                <div class="content">
+                                    <h6><a href="single-product.html">Boys light blue jacket</a></h6>
+                                    <div class="quntity">1 × $35.99</div>
+                                    <button class="remove-btn">×</button>
+                                </div>
+                            </li>
+
+                            <li>
+                                <div class="thumb">
+                                    <img src="assets/images/cart/cart-2.jpg" alt="product">
+                                </div>
+                                <div class="content">
+                                    <h6><a href="single-product.html">Boys light blue jacket</a></h6>
+                                    <div class="quntity">1 × $35.99</div>
+                                    <button class="remove-btn">×</button>
+                                </div>
+                            </li>
+
+                            <li>
+                                <div class="thumb">
+                                    <img src="assets/images/cart/cart-3.jpg" alt="product">
+                                </div>
+                                <div class="content">
+                                    <h6><a href="single-product.html">Boys light blue jacket</a></h6>
+                                    <div class="quntity">1 × $35.99</div>
+                                    <button class="remove-btn">×</button>
+                                </div>
+                            </li>
+
+                        </ul>
+                    </div>
+                    <p class="minicart__total">Subtotal: <span class="price">164.97</span></p>
+                    <div class="cart__btn">
+                        <a href="cart.html">View cart</a>
+                        <a href="checkout.html">Checkout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Search Flyover -->
+        <!-- Start Search FlyOver Area -->
+        <div class="search-flyoverlay-area">
+            <div class="btn-close-search">
+                <i class="dlicon ui-1_simple-remove"></i>
+            </div>
+            <div class="searchform-fly">
+                <p class="searchform-fly-text">Start typing and press Enter to search !</p>
+                <form class="search-form" action="#">
+                    <input type="text" placeholder="Search">
+                    <button class="search-button" type="submit">
+                        <i class="dlicon ui-1_zoom"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+        <!-- End Search FlyOver Area -->
+
+        <!-- Start Hamburger -->
+        <div class="hamburger-area">
+            <div class="btn-close-search">
+                <button>
+                    <i class="dlicon ui-1_simple-remove"></i>
+                </button>
+            </div>
+            <div class="hamburger-menu-main d-none d-xl-block">
+                <div class="humberger-top">
+                    <div class="hum-mainmenu">
+                        <ul>
+                            <li><a href="#">About Us</a></li>
+                            <li><a href="#">Help Center</a></li>
+                            <li><a href="#">Licenses</a></li>
+                            <li><a href="#">Market API</a></li>
+                            <li><a href="#">Site Map</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="humberger-banner">
+                    <a href="#"><img src="assets/images/banner/img-hamburger-banner.jpg" alt=""></a>
+                </div>
+
+                <div class="humberger-bottom">
+                    <div class="humberger-bottom__inner">
+                        <div class="content">
+                            <ul class="hm-address">
+                                <li><a href="#"><span>(+612) 2531 5600 </span></a></li>
+                                <li><a href="#"><span>info@la-studioweb.com </span></a></li>
+                                <li><a href="#"><span>PO Box 1622 Colins Street West <br> Victoria 8077 Australia</span></a></li>
+                            </ul>
+                            <a class="gmap" href="#">Google map</a>
+                            <div class="hamburger-social bg-owncolor">
+                                <a class="facebook" href="#"><i class="fa fa-facebook"></i></a>
+                                <a class="twitter" href="#"><i class="fa fa-twitter"></i></a>
+                                <a class="google" href="#"><i class="fa fa-google-plus"></i></a>
+                                <a class="youtube" href="#"><i class="fa fa-youtube"></i></a>
+                            </div>
+                        </div>
+                        <div class="thumb">
+                            <img src="assets/images/payment_info.png" alt="RAZ">
+                        </div>
+                        <div class="hm-copyright">
+                            <p>© 2019 Raz All rights reserved</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Start Main Menu -->
+
+
+
+            <ul class="menu-primary-menu-1 responsive-manu d-block d-xl-none" id="responsive-manu">
+                <li class="has-dropdown-menu"><a href="#">Home</a>
+                    <ul class="sub-menu-two">
+                        <li class="has-label--3 has-dropdown-menu">
+                            <a href="#">Demo Group 1</a>
+                            <ul class="lavel--3">
+                                <li><a href="index.html">Home 01</a></li>
+                                <li><a href="index-2.html">Home 02</a></li>
+                                <li><a href="index-3.html">Home 03</a></li>
+                                <li><a href="index-4.html">Home 04</a></li>
+                                <li><a href="index-5.html">Home 05</a></li>
+                            </ul>
+                        </li>
+                        <li class="has-label--3 has-dropdown-menu">
+                            <a href="#">Demo Group 2</a>
+                            <ul class="lavel--3">
+                                <li><a href="index-6.html">Home 06</a></li>
+                                <li><a href="index-7.html">Home 07</a></li>
+                                <li><a href="index-8.html">Home 08</a></li>
+                                <li><a href="index-9.html">Home 09</a></li>
+                                <li><a href="index-10.html">Home 10</a></li>
+                            </ul>
+                        </li>
+                        <li class="has-label--3 has-dropdown-menu">
+                            <a href="#">Demo Group 3</a>
+                            <ul class="lavel--3">
+                                <li><a href="index-11.html">Home 11</a></li>
+                                <li><a href="index-12.html">Home 12</a></li>
+                                <li><a href="index-13.html">Home 13</a></li>
+                                <li><a href="index-14.html">Home 14</a></li>
+                            </ul>
+                        </li>
+
+                    </ul>
+                </li>
+                <li class="has-dropdown-menu"><a href="#">Pages</a>
+                    <ul class="sub-menu-two">
+                        <li><a href="coming-soon.html">Comming Soon 01</a></li>
+                        <li><a href="coming-soon-two.html">Comming Soon 02</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="404.html">404 Page</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="faq.html">FAQ Page</a></li>
+                    </ul>
+                </li>
+                <li class="has-dropdown-menu"><a href="#">Portfolio</a>
+                    <ul class="sub-menu-two">
+                        <li><a href="portfolio-classic.html">Portfolio Classic</a></li>
+                        <li><a href="portfolio-fullwidth.html">Portfolio Fullwidth</a></li>
+                        <li><a href="portfolio-single.html">Portfolio Single</a></li>
+                    </ul>
+                </li>
+                <li class="has-dropdown-menu"><a href="#">Shop</a>
+                    <ul class="sub-menu-two">
+                        <li class="has-label--3 has-dropdown-menu">
+                            <a href="#">Shop Layout</a>
+                            <ul class="lavel--3">
+                                <li><a href="shop-fullwidth.html">Shop Fullwidth</a></li>
+                                <li><a href="shop-left-sidebar.html">Shop Left Sidebar</a></li>
+                                <li><a href="shop-right-sidebar.html">Shop Right Sidebar</a></li>
+                                <li><a href="shop-masonry.html">Shop Mansory</a></li>
+                                <li><a href="shop-collections.html">Shop Collections</a></li>
+                                <li><a href="shop-instagram.html">Shop Instagram</a></li>
+                                <li><a href="shop-metro.html">Shop Metro</a></li>
+                            </ul>
+                        </li>
+                        <li class="has-label--3 has-dropdown-menu">
+                            <a href="#">Product Page</a>
+                            <ul class="lavel--3">
+                                <li><a href="single-product.html">Simple Product 01</a></li>
+                                <li><a href="single-product-2.html">Simple Product 02</a></li>
+                                <li><a href="single-product-3.html">Simple Product 03</a></li>
+                                <li><a href="single-product-4.html">Simple Product 04</a></li>
+                                <li><a href="single-product-5.html">Simple Product 05</a></li>
+                                <li><a href="single-product-configurable.html">Product Configurable</a></li>
+                                <li><a href="single-product-affiliate.html">Product Affiliate</a></li>
+                                <li><a href="single-product-group.html">Product Grouped</a></li>
+                            </ul>
+                        </li>
+                        <li class="has-label--3 has-dropdown-menu">
+                            <a href="#">Other Page</a>
+                            <ul class="lavel--3">
+                                <li><a href="cart.html">Shopping Cart</a></li>
+                                <li><a href="wishlist.html">Wishlist</a></li>
+                                <li><a href="compare.html">Compare</a></li>
+                                <li><a href="checkout.html">Checkout</a></li>
+                                <li><a href="my-account.html">My account</a></li>
+                                <li><a href="order-tracking.html">Order Tracking</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="has-dropdown-menu"><a href="#">Blog</a>
+                    <ul class="sub-menu-two">
+                        <li><a href="blog.html">Blog Left Sidebar</a></li>
+                        <li><a href="blog-nosidebar.html">Blog No Sidebar</a></li>
+                        <li><a href="blog-two-column.html">Blog 02 Columns</a></li>
+                        <li><a href="blog-mansory.html">Blog Mansory</a></li>
+                        <li><a href="blog-list.html">Blog Classic Layout</a></li>
+                        <li><a href="blog-details.html">Single Post 01</a></li>
+                        <li><a href="blog-details-2.html">Single Post 02</a></li>
+                        <li><a href="blog-details-3.html">Single Post 03</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+            <!-- End Main Menu -->
+        </div>
+        <!-- End Hamburger -->
+
+
+
+
+
+
+
+
+
+
+
+
+        <!-- Breadcrumb Section Start -->
+        <div class="breadcrumb-section section bg-image" data-bg="./assets/images/bg/bg-title-shop.jpg">
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+
+                        <div class="breadcrumb-title text-center">
+                            <h1>Checkout</h1>
+                            <ul class="page-breadcrumb">
+                                <li><a href="/user/home">Home</a></li>
+                                <li>Checkout</li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Breadcrumb Section End -->
+
+
+
+        <!-- Checkout Section Start -->
+
+        <div class="checkout-section section pt-100 pt-lg-80 pt-md-70 pt-sm-60 pt-xs-50 pb-95 pb-lg-75 pb-md-65 pb-sm-60 pb-xs-50">
+            <div class="container">
+                <div class="customer-zone mb-20">
+                    <p class="cart-page-title">Have a coupon? <a class="checkout-click3" href="#">Click here to enter your code</a></p>
+                    <% if (!cartItems.coupon) { %>
+                    <div class="checkout-login-info3">
+                        <form id="couponForm">
+                            <input type="text" placeholder="Coupon code" name="value">
+                            <input type="submit" value="Apply Coupon">
+                        </form>
+                        
+                        <% if (typeof message !== 'undefined') { %>
+                            <h6><%= message %></h6> 
+                        <% } %>
+                        
+                            
+                        <div class="container-coup">
+                            <h6>Available Coupons</h6>
+                            <div class="coupon-container">
+                                <% coupons.forEach(function(coupon) { %>
+                                    <div class="coupon-box">
+                                        <h6><%= coupon.name %></h6>
+                                        <!-- <p><strong>Amount:</strong> <%= coupon.amount %></p> -->
+                                        <p><strong>Code:</strong> <%= coupon.code %></p>
+                                    </div>
+                                <% }) %>
+                            </div>
+                        </div>
+                        
+                            
+                    </div>
+                    <% } else { %>
+                        <h6>No Coupons Available</h6>
+                        <%}%>
+                </div>
+                <div class="checkout-wrap">
+                    <div class="row">
+                        <!-- available_coupons.ejs -->
+                        
+
+                        <!-- products herer -->
+
+
+                        <!-- here -->
+                        
+                            <div class="col-xl-5 col-lg-6">
+                                <div class="your-order-area">
+                                    <h3>Your order</h3>
+                                    <div class="your-order-wrap gray-bg-4">
+                                        <form action="/user/orderPlaced?total=<%= cartItems.totalAmount%>" method="post">
+                                            <div class="your-order-info-wrap">
+                                                <div class="your-order-info">
+                                                    <ul>
+                                                        <li>Product <span>Total</span></li>
+                                                        <!-- Product items -->
+                                                        <% for(let i=0;i < cart.length ; i++) { %>
+                                                        <li><%= cart[i].product.name%> X <%=cart[i].quantity %><span>$<%= cart[i].product.price * cart[i].quantity%> </span></li>
+                                                        <% } %>
+                                                    </ul>
+                                                </div>
+                                                <div class="your-order-info order-subtotal">
+                                                    <ul>
+                                                        <li>Subtotal <span>$<%= cartItems.totalAmount%></span></li>
+                                                    </ul>
+                                                </div>
+                                                <br>
+                                                <%if(address.length == 0) { %>
+                                                    
+                                                    <a href="/user/profile"><p style="color: red;">Add Address</p></a>
+                                                    
+                                                      
+                                                      
+                                                    <%}%>
+                                                
+                                                <div class="address-section">
+                                                    <!-- Address options -->
+                                                    <% if(address.length > 0) { %>
+                                                        <% for(let i=0; i < address.length; i++) { %>
+                                                            <div class="address-item">
+                                                                <input id="address<%= i %>" class="input-radio" type="radio" value="<%= address[i]._id %>" name="id" <% if(i === 0) { %>checked<% } %>>
+                                                                <label for="address<%= i %>">Address <%= i+1 %></label>
+                                                                <!-- Address details -->
+                                                                <br>
+                                                                <input type="text" name="houseAddress" placeholder="House Address" style="border: 0;" value="<%=address[i].houseAddress%>">
+                                                                <input type="text" name="place" placeholder="Place" value="<%=address[i].place%>" style="border: 0;">
+                                                                <input type="text" name="pincode" placeholder="Pincode" value="<%=address[i].pincode%>" style="border: 0;">
+                                                                <input type="text" name="country" placeholder="Country" value="<%=address[i].country%>" style="border: 0;">
+                                                                <br>
+                                                            </div>
+                                                        <% } %>
+                                                    <% } %>
+                                                </div>
+                                                
+                                                
+                                                
+                                                
+                                                      
+                                                    
+    
+                                                    <!-- More payment methods -->
+                                                </div>
+
+                                                <div class="your-order-info order-total">
+                                                    <% if(cartItems.coupon) { %>
+                                                        <div class="breadcrumb">
+                                                            
+                                                            <ul class="page-breadcrumb">
+                                                                <li><a href="/user/removeCoupon" id="removeCouponBtn">Remove Coupon</a></li>
+                                                                
+                                                            </ul>
+                                                        </div>
+                                                        <%}%>
+                                                    <ul>
+                                                        <li>Total <span>$<%= cartItems.totalAmount%> </span></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="payment-method">
+                                                <!-- Payment methods -->
+                                                <% if(cartItems.totalAmount <= 1000) { %>
+                                                <div class="pay-top sin-payment">
+                                                    <input id="payment-method-3" class="input-radio" type="radio" value="Cash On Delivery" checked="checked" name="paymentMethod">
+                                                    <label for="payment-method-3">Cash on delivery </label>
+                                                    <div class="payment-box payment_method_bacs">
+                                                        
+                                                    </div>
+                                                </div>
+                                                <% } %>
+                                                <!-- <div class="pay-top sin-payment">
+                                                    <input id="payment_method_1" class="input-radio" type="radio" value="Direct Bank Transfer"  name="paymentMethod">
+                                                    <label for="payment_method_1"> Direct Bank Transfer </label>
+                                                    <div class="payment-box payment_method_bacs">
+                                                    </div>
+                                                </div>
+                                                <div class="pay-top sin-payment">
+                                                    <input id="payment-method-2" class="input-radio" type="radio" value="Chec payments" name="paymentMethod">
+                                                    <label for="payment-method-2">Check payments</label>
+                                                    <div class="payment-box payment_method_bacs">
+                                                    </div>
+                                                </div> -->
+                                                <% if(cartItems.totalAmount > 1000){ %>
+                                                <div class="pay-top sin-payment sin-payment-3">
+                                                    <input id="payment-method-4" class="input-radio" type="radio" value="PayPal" checked = "checked" name="paymentMethod">
+                                                    <label for="payment-method-4">PayPal <img alt="" src="assets/images/payment_info.png"><a href="#">What is PayPal?</a></label>
+                                                    <div class="payment-box payment_method_bacs">
+                                                    </div>
+                                                </div>
+                                                <% } else { %>
+                                                    <div class="pay-top sin-payment sin-payment-3">
+                                                        <input id="payment-method-4" class="input-radio" type="radio" value="PayPal" name="paymentMethod">
+                                                        <label for="payment-method-4">PayPal <img alt="" src="assets/images/payment_info.png"><a href="#">What is PayPal?</a></label>
+                                                        <div class="payment-box payment_method_bacs">
+                                                        </div>
+                                                    </div>
+                                                    <% } %>  
+
+                                                <!-- More payment methods -->
+                                            </div>
+                                            <div class="Place-order mt-25">
+                                                <button type="submit">Place Order</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                                            
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Checkout Section End -->
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="dlicon ui-1_simple-remove"></i></button>
+            </div>
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-lg-6 col-sm-12 col-xs-12">
+                                <div class="product-details-tab">
+                                    <div class="product-tabs pro-dec-big-img-slider">
+                                        <div class="easyzoom-style">
+                                            <div class="easyzoom easyzoom--overlay">
+                                                <div class="product-label">
+                                                    <span class="sale">-20%</span>
+                                                    <span class="new">New</span>
+                                                </div>
+                                                <a href="assets/images/product/product-big/product01.jpg">
+                                                    <img src="assets/images/product/product-big/product01.jpg" alt="">
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="easyzoom-style">
+                                            <div class="easyzoom-popup">
+                                                <a href="assets/images/product/product-big/product02.jpg">
+                                                    <img src="assets/images/product/product-big/product02.jpg" alt="">
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="easyzoom-style">
+                                            <div class="easyzoom easyzoom--overlay">
+                                                <a href="assets/images/product/product-big/product03.jpg">
+                                                    <img src="assets/images/product/product-big/product03.jpg" alt="">
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="easyzoom-style">
+                                            <div class="easyzoom easyzoom--overlay">
+                                                <a href="assets/images/product/product-big/product04.jpg">
+                                                    <img src="assets/images/product/product-big/product04.jpg" alt="">
+                                                </a>
+                                            </div>
+                                            <a class="easyzoom-pop-up img-popup" href="assets/images/product/product-big/product04.jpg"><i class="dlicon ui-1_zoom-in"></i></a>
+                                        </div>
+                                        <div class="easyzoom-style">
+                                            <div class="easyzoom easyzoom--overlay">
+                                                <a href="assets/images/product/product-big/product05.jpg">
+                                                    <img src="assets/images/product/product-big/product05.jpg" alt="">
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="product-dec-slider">
+                                        <div class="product-dec-small active">
+                                            <img src="assets/images/product/product-small/product01.jpg" alt="">
+                                        </div>
+                                        <div class="product-dec-small">
+                                            <img src="assets/images/product/product-small/product02.jpg" alt="">
+                                        </div>
+                                        <div class="product-dec-small">
+                                            <img src="assets/images/product/product-small/product03.jpg" alt="">
+                                        </div>
+                                        <div class="product-dec-small">
+                                            <img src="assets/images/product/product-small/product04.jpg" alt="">
+                                        </div>
+                                        <div class="product-dec-small">
+                                            <img src="assets/images/product/product-small/product05.jpg" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-sm-12 col-xs-12">
+                                <div class="product-details-content quickview-content">
+                                    <h2>Knox Chaise Sofa Gray</h2>
+                                    <div class="product-rating-stock">
+                                        <div class="product-dec-rating-reviews">
+                                            <div class="product-dec-rating">
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star-o"></i>
+                                            </div>
+                                            <div class="product-dec-reviews">
+                                                <a> (3 customer reviews)</a>
+                                            </div>
+                                        </div>
+                                        <div class="pro-stock">
+                                            <span><i class="dlicon ui-1_check-circle-08"></i>in stock</span>
+                                        </div>
+                                    </div>
+                                    <p class="product-price product-details-price"><span class="main-price discounted"><del>£723.00</del></span> <span class="discounted-price">£672.00</span></p>
+                                    <p class="fz-16">Donec nunc nunc, gravida vitae diam vel, varius interdum erat. Quisque a nunc vel diam auctor commodo. Curabitur blandit ultrices exurabitur ut magna dignissim, dignissi, Nullam vitae venenatis elit. Proin dui lacus, viverra at imperdiet non, facilisis eget orci. Vivamus ac elit tellus. Vestibulum nulla dui, consequat vitae diam eu, pretium finibus libero. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Aliquam vitae neque tellus.</p>
+                                    <div class="pro-details-quality">
+                                        <div class="quantity quantity--2">
+                                            <input type="text" class="quantity-input" name="qty" id="qty-4" value="1">
+                                            <div class="dec qtybutton">-</div>
+                                            <div class="inc qtybutton">+</div>
+                                        </div>
+                                        <div class="pro-details-cart btn-hover">
+                                            <a href="#">Add To Cart</a>
+                                        </div>
+                                        <div class="pro-details-wishlist">
+                                            <a href="#"><i class="fa fa-heart-o"></i></a>
+                                        </div>
+                                        <div class="pro-details-compare">
+                                            <a href="#"><i class="fa fa-files-o"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="pro-details-sku">
+                                        <span>SKU: D-12525</span>
+                                    </div>
+                                    <div class="pro-details-meta">
+                                        <span>Categories : </span>
+                                        <ul>
+                                            <li><a href="#">Fruniture,</a></li>
+                                            <li><a href="#">Demo 03 - New Arrival,</a></li>
+                                            <li><a href="#">Demo 14 - Top Sale,</a></li>
+                                            <li><a href="#">Home Fruniture</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="pro-details-meta">
+                                        <span>Tag : </span>
+                                        <ul>
+                                            <li><a href="#">Furniture,</a></li>
+                                            <li><a href="#">Fashion</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="product-html-custom">
+                                        <a href="#"><i class="dlicon shopping_delivery-fast"></i>Store availability</a>
+                                        <a href="#"><i class="dlicon location_pin"></i>Delivery and return</a>
+                                        <a href="#"><i class="dlicon design_measure-17"></i>Size Guide</a>
+                                    </div>
+                                    <div class="pro-details-social">
+                                        <ul>
+                                            <li><a class="facebook" href="#"><i class="fa fa-facebook"></i></a></li>
+                                            <li><a class="twitter" href="#"><i class="fa fa-twitter"></i></a></li>
+                                            <li><a class="google" href="#"><i class="fa fa-google-plus"></i></a></li>
+                                            <li><a class="pinterest" href="#"><i class="fa fa-pinterest-p"></i></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal end -->
+
+        <!-- Start Footer Area -->
+        <footer class="footer-default section bg-black pl-100 pr-100 pl-lg-15 pl-md-15 pl-sm-15 pl-xs-15 pr-lg-15 pr-md-15 pr-sm-15 pr-xs-15">
+            <!-- Start Footer Top -->
+            <div class="footer-top-area pt-100 pt-lg-80 pt-md-70 pt-sm-60 pt-xs-50 pb-10 pb-xs-0">
+                <div class="row justify-content-between">
+                    <!-- Start Single Widget -->
+                    <div class="footer-widget footer-column footer-column__a col-xl-5 col-lg-12 col-md-12 col-sm-6 col-12 text-xl-left mb-40">
+                        <div class="inner">
+                            <div class="logo">
+                                <a href="index.html">
+                                    <img src="assets/images/logo-white.png" alt="logo white">
+                                </a>
+                            </div>
+                            <div class="footer-content">
+                                <p class="pra"> Donec nunc nunc, gravida vitae diam vel, varius interdum erat. Quisque a nunc vel diam auctor commodo.</p>
+                                <div class="footer-social-icon">
+                                    <a class="facebook" href="#"><i class="fa fa-facebook"></i></a>
+                                    <a class="twitter" href="#"><i class="fa fa-twitter"></i></a>
+                                    <a class="google" href="#"><i class="fa fa-google-plus"></i></a>
+                                    <a class="dribbble" href="#"><i class="fa fa-dribbble"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Single Widget -->
+
+                    <!-- Start Single Widget -->
+                    <div class="footer-widget footer-column footer-column__b col-xl-2 col-lg-4 col-md-4 col-sm-6 col-12 mb-40">
+                        <div class="inner">
+                            <h4 class="fontWeight400 text-white ft-title">Company</h4>
+                            <div class="footer-content">
+                                <ul class="quick-link">
+                                    <li><a href="#"><span>About Us</span></a></li>
+                                    <li><a href="#"><span>Help Center</span></a></li>
+                                    <li><a href="#"><span>Licenses</span></a></li>
+                                    <li><a href="#"><span>Market API</span></a></li>
+                                    <li><a href="#"><span>Site Map</span></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Single Widget -->
+
+                    <!-- Start Single Widget -->
+                    <div class="footer-widget footer-column footer-column__b col-xl-2 col-lg-4 col-md-4 col-sm-6 col-12 mb-40">
+                        <div class="inner">
+                            <h4 class="fontWeight400 text-white ft-title">Userful</h4>
+                            <div class="footer-content">
+                                <ul class="quick-link">
+                                    <li><a href="#"><span>The Collections</span></a></li>
+                                    <li><a href="#"><span>Size Guide</span></a></li>
+                                    <li><a href="#"><span>Lookbook</span></a></li>
+                                    <li><a href="#"><span>Instagram Shop</span></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Single Widget -->
+
+                    <!-- Start Single Widget -->
+                    <div class="footer-widget footer-column footer-column__b col-xl-3 col-lg-4 col-md-4 col-sm-6 col-12 mb-40">
+                        <div class="inner">
+                            <h4 class="fontWeight400 text-white ft-title">Contact Us</h4>
+                            <div class="footer-content">
+                                <div class="address">
+                                    <p><span class="list-icon"><i class="dlicon ui-1_email-85"></i></span> <span class="list-content">info@la-studioweb.com</span></p>
+                                    <p><span class="list-icon"><i class="dlicon ui-3_phone-call"></i></span> <span class="list-content">+44.954.954.86</span></p>
+                                    <p><span class="list-icon"><i class="dlicon ui-2_time-clock"></i></span> <span class="list-content">9:00am - 19:00pm  <br> Monday - Sunday</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Single Widget -->
+
+                </div>
+            </div>
+            <!-- End Footer Top -->
+
+            <!-- Start Copyright Area -->
+            <div class="copyright-area">
+                <div class="row align-items-center">
+                    <div class="col-lg-12">
+                        <div class="content text-center">
+                            <p>© 2022 RAZ Store All rights reserved</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Copyright Area -->
+        </footer>
+        <!-- End Footer Area -->
+
+
+
+
+
+
+    </div>
+
+    <!-- Placed js at the end of the document so the pages load faster -->
+
+    <!-- All jquery file included here -->
+    <script src="assets/js/vendor/jquery-1.12.4.min.js"></script>
+    <script src="assets/js/vendor/bootstrap.min.js"></script>
+    <script src="assets/js/plugins/plugins.js"></script>
+
+
+    <script src="assets/js/rev/jquery.themepunch.revolution.min.js"></script>
+    <script src="assets/js/rev/jquery.themepunch.tools.min.js"></script>
+
+
+    <!-- SLIDER REVOLUTION 5.0 EXTENSIONS  (Load Extensions only on Local File Systems !  The following part can be removed on Server for On Demand Loading) -->
+    <script src="assets/js/rev/revolution.extension.actions.min.js"></script>
+    <script src="assets/js/rev/revolution.extension.carousel.min.js"></script>
+    <script src="assets/js/rev/revolution.extension.kenburn.min.js"></script>
+    <script src="assets/js/rev/revolution.extension.layeranimation.min.js"></script>
+    <script src="assets/js/rev/revolution.extension.migration.min.js"></script>
+    <script src="assets/js/rev/revolution.extension.navigation.min.js"></script>
+    <script src="assets/js/rev/revolution.extension.parallax.min.js"></script>
+    <script src="assets/js/rev/revolution.extension.slideanims.min.js"></script>
+    <script src="assets/js/rev/revolution.extension.video.min.js"></script>
+
+    <script src="assets/js/rev/revoulation.js"></script>
+
+    <script src="assets/js/main.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCGM-62ap9R-huo50hJDn05j3x-mU9151Y"></script>
+    <!-- Include SweetAlert JS -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <Script>
+        if ($('#htmap2').length) {
+            // When the window has finished loading create our google map below
+            google.maps.event.addDomListener(window, 'load', init);
+
+            function init() {
+                // Basic options for a simple Google Map
+                // For more options see: https://developers.google.com/maps/documentation/javascript/reference#MapOptions
+                var mapOptions = {
+                    // How zoomed in you want the map to start at (always required)
+                    zoom: 12,
+
+                    scrollwheel: false,
+
+                    // The latitude and longitude to center the map (always required)
+                    center: new google.maps.LatLng(23.7286, 90.3854), // New York
+
+                    // How you would like to style the map. 
+                    // This is where you would paste any style found on Snazzy Maps.
+                    styles: [
+
+
+                        {
+                            "featureType": "administrative",
+                            "elementType": "all",
+                            "stylers": [{
+                                "hue": "#ff0000"
+                            }]
+                        },
+                        {
+                            "featureType": "administrative",
+                            "elementType": "geometry",
+                            "stylers": [{
+                                "color": "#888888"
+                            }]
+                        },
+                        {
+                            "featureType": "administrative",
+                            "elementType": "geometry.fill",
+                            "stylers": [{
+                                "hue": "#ff0000"
+                            }]
+                        },
+                        {
+                            "featureType": "administrative",
+                            "elementType": "labels.text",
+                            "stylers": [{
+                                    "color": "#6e6e6e"
+                                },
+                                {
+                                    "visibility": "simplified"
+                                }
+                            ]
+                        },
+                        {
+                            "featureType": "administrative.country",
+                            "elementType": "geometry",
+                            "stylers": [{
+                                "color": "#6f6b6b"
+                            }]
+                        },
+                        {
+                            "featureType": "landscape",
+                            "elementType": "labels.text",
+                            "stylers": [{
+                                "color": "#c5c5c5"
+                            }]
+                        },
+                        {
+                            "featureType": "landscape.natural",
+                            "elementType": "geometry",
+                            "stylers": [{
+                                "color": "#cfcfcf"
+                            }]
+                        },
+                        {
+                            "featureType": "landscape.natural.landcover",
+                            "elementType": "all",
+                            "stylers": [{
+                                "hue": "#ff0000"
+                            }]
+                        },
+                        {
+                            "featureType": "landscape.natural.landcover",
+                            "elementType": "geometry",
+                            "stylers": [{
+                                "hue": "#ff0000"
+                            }]
+                        },
+                        {
+                            "featureType": "poi",
+                            "elementType": "all",
+                            "stylers": [{
+                                "visibility": "off"
+                            }]
+                        },
+                        {
+                            "featureType": "poi",
+                            "elementType": "labels.text",
+                            "stylers": [{
+                                    "visibility": "off"
+                                },
+                                {
+                                    "color": "#909090"
+                                }
+                            ]
+                        },
+                        {
+                            "featureType": "poi",
+                            "elementType": "labels.icon",
+                            "stylers": [{
+                                "visibility": "off"
+                            }]
+                        },
+                        {
+                            "featureType": "poi.medical",
+                            "elementType": "geometry",
+                            "stylers": [{
+                                "color": "#e5e5e5"
+                            }]
+                        },
+                        {
+                            "featureType": "poi.park",
+                            "elementType": "geometry",
+                            "stylers": [{
+                                "color": "#e5e5e5"
+                            }]
+                        },
+                        {
+                            "featureType": "poi.place_of_worship",
+                            "elementType": "geometry",
+                            "stylers": [{
+                                "color": "#ff0000"
+                            }]
+                        },
+                        {
+                            "featureType": "poi.sports_complex",
+                            "elementType": "geometry",
+                            "stylers": [{
+                                "color": "#f7f7f7"
+                            }]
+                        },
+                        {
+                            "featureType": "road",
+                            "elementType": "geometry.fill",
+                            "stylers": [{
+                                "color": "#ffffff"
+                            }]
+                        },
+                        {
+                            "featureType": "road",
+                            "elementType": "geometry.stroke",
+                            "stylers": [{
+                                "gamma": 7.18
+                            }]
+                        },
+                        {
+                            "featureType": "road",
+                            "elementType": "labels.icon",
+                            "stylers": [{
+                                "visibility": "off"
+                            }]
+                        },
+                        {
+                            "featureType": "road.local",
+                            "elementType": "labels.text",
+                            "stylers": [{
+                                "visibility": "simplified"
+                            }]
+                        },
+                        {
+                            "featureType": "transit.line",
+                            "elementType": "geometry",
+                            "stylers": [{
+                                "gamma": 0.48
+                            }]
+                        },
+                        {
+                            "featureType": "transit.station",
+                            "elementType": "labels.icon",
+                            "stylers": [{
+                                "visibility": "off"
+                            }]
+                        },
+                        {
+                            "featureType": "water",
+                            "elementType": "all",
+                            "stylers": [{
+                                    "color": "#bcbcbc"
+                                },
+                                {
+                                    "visibility": "on"
+                                }
+                            ]
+                        },
+                        {
+                            "featureType": "water",
+                            "elementType": "labels.text.fill",
+                            "stylers": [{
+                                "color": "#ffffff"
+                            }]
+                        }
+                    ]
+                };
+
+                // Get the HTML DOM element that will contain your map 
+                // We are using a div with id="map" seen below in the <body>
+                var mapElement = document.getElementById('htmap2');
+
+                // Create the Google Map using our element and options defined above
+                var map = new google.maps.Map(mapElement, mapOptions);
+
+                // Let's also add a marker while we're at it
+                var contentString = '<div id="content">' +
+                    '<div id="siteNotice">' +
+                    '</div>' +
+                    '<div id="bodyContent">' +
+                    '<p>Barisal Polytechnic Institute, </br>Street Name, </br>Barisal, Bangladesh</p>' +
+                    '</div>' +
+                    '</div>';
+                var marker = new google.maps.Marker({
+                    position: new google.maps.LatLng(23.7286, 90.3854),
+                    map: map,
+                    title: 'RAZ',
+                    icon: 'assets/images/logo-contact.png',
+                    animation: google.maps.Animation.BOUNCE
+
+                });
+            }
+        }
+       //   online payment razorpay
+
+        $(document).ready(function(){
+	$('.pay-form').submit(function(e){
+		e.preventDefault();
+
+		var formData = $(this).serialize();
+
+		$.ajax({
+			url:"/createOrder",
+			type:"POST",
+			data: formData,
+			success:function(res){
+				if(res.success){
+					var options = {
+						"key": ""+res.key_id+"",
+						"amount": ""+res.amount+"",
+						"currency": "INR",
+						"name": ""+res.product_name+"",
+						"description": ""+res.description+"",
+						"image": "https://dummyimage.com/600x400/000/fff",
+						"order_id": ""+res.order_id+"",
+						"handler": function (response){
+							alert("Payment Succeeded");
+							// window.open("/","_self")
+						},
+						"prefill": {
+							"contact":""+res.contact+"",
+							"name": ""+res.name+"",
+							"email": ""+res.email+""
+						},
+						"notes" : {
+							"description":""+res.description+""
+						},
+						"theme": {
+							"color": "#2300a3"
+						}
+					};
+					var razorpayObject = new Razorpay(options);
+					razorpayObject.on('payment.failed', function (response){
+							alert("Payment Failed");
+					});
+					razorpayObject.open();
+				}
+				else{
+					alert(res.msg);
+				}
+			}
+		})
+
+	});
+});
+
+
+
+
+// to show sweet alert  
+document.getElementById('couponForm').addEventListener('submit', async function(event) {
+    event.preventDefault(); // Prevent default form submission behavior
+
+    const formData = new FormData(this); // Capture form data
+    const couponValue = formData.get('value'); // Get the value entered by the user
+
+    try {
+        const response = await fetch('/user/couponApply', {
+            method: 'POST',
+            body: JSON.stringify({ value: couponValue }), // Pass the coupon value in the request body
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        
+        const data = await response.json();
+
+        if (data.success) {
+            // Coupon applied successfully
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: 'Coupon Applied Successfully'
+            }).then(() => {
+                window.location.href = '/user/checkout'; // Redirect to checkout page
+            });
+        } else {
+            // Coupon not available
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: data.message
+            });
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        // Handle error
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Something went wrong!'
+        });
+    }
+});
+
+
+
+//to remove coupon
+document.getElementById('removeCouponBtn').addEventListener('click', async () => {
+    try {
+        const response = await fetch('/user/removeCoupon', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        const data = await response.json();
+        if (data.success) {
+            // Show success message using SweetAlert
+            Swal.fire({
+                icon: 'success',
+                title: 'Coupon Removed',
+                text: data.message // Display the message received from the server
+            }).then(() => {
+                // Redirect to another page or do any other action if needed
+                window.location.href = '/user/checkout';
+            });
+        } else {
+            // Show error message using SweetAlert
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: data.message // Display the message received from the server
+            });
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        // Show error message using SweetAlert
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'An error occurred. Please try again later.'
+        });
+    }
+});
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('checkoutForm');
+
+    form.addEventListener('submit', function(event) {
+        // Prevent the default form submission behavior
+        event.preventDefault();
+
+        // Find the selected address radio button
+        const selectedAddressRadio = document.querySelector('input[name="address"]:checked');
+
+        if (selectedAddressRadio) {
+            // Get the index of the selected address
+            const addressIndex = parseInt(selectedAddressRadio.value);
+            // Retrieve the address details based on the index
+            const selectedAddressDetails = address[addressIndex];
+            // Convert the address details to JSON string and set it as the value of the hidden input
+            document.getElementById('selectedAddress').value = JSON.stringify(selectedAddressDetails);
+
+            // Submit the form
+            form.submit();
+        } else {
+            // Handle case where no address is selected
+            console.log('Please select an address.');
+        }
+    });
+});
+
+//to enter address 
+
+
+document.getElementById('addAddressBtn').addEventListener('click', function(event) {
+    // Prevent the default form submission behavior
+    event.preventDefault();
+
+    // Show the modal for entering address details
+    var modal = document.getElementById("myModal");
+    modal.style.display = "block";
+});
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks on <span> (x), close the modal
+span.addEventListener('click', function() {
+    var modal = document.getElementById("myModal");
+    modal.style.display = "none";
+});
+
+// When the user clicks anywhere outside of the modal, close it
+window.addEventListener('click', function(event) {
+    var modal = document.getElementById("myModal");
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+});
+
+// Optional: If you want to close the modal when the 'Esc' key is pressed
+document.addEventListener('keydown', function(event) {
+    var modal = document.getElementById("myModal");
+    if (event.key === "Escape") {
+        modal.style.display = "none";
+    }
+});
+
+
+// to alert if no address
+
+    document.getElementById('orderForm').addEventListener('submit', function(event) {
+        var address = JSON.stringify(address); // Assuming address is a JavaScript array
+
+        if (address.length === 0) {
+            alert('Please add an address before placing the order.');
+            event.preventDefault(); // Prevent the form from being submitted
+        }
+    });
+
+
+
+
+    </Script>
+
+
+
+</body>
+
+
+<!-- Mirrored from htmldemo.net/raz/raz/checkout.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 11 Feb 2024 10:19:42 GMT -->
+</html>
