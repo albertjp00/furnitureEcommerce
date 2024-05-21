@@ -57,20 +57,38 @@
             <div><label for="Name">Enter Name</label></div>
             <div  class="spin error" id="name-error"></div>
              
-            <input type="text" name="name" placeholder="Type here.." id="name" value="<%=product.name%>">
+            <input type="text" name="name" placeholder="Type here.." id="name" value="<%=products.name%>">
             <br>
             <div><label for="Name">Enter Price</label></div>
             <div  class="spin error" id="price-error"></div>
-            <input type="text" name="price" placeholder="Type here.." id="price" value="<%=product.price%>" required>
+            <input type="text" name="price" placeholder="Type here.." id="price" value="<%=products.price%>" required>
             <br>
             
             <div><label for="Name">Enter Color</label></div>    
             <div  class="spin error" id="color-error"></div>
-            <input type="text" name="color" placeholder="Type here.." id="color" value="<%=product.color%>" required>
+            <input type="text" name="color" placeholder="Type here.." id="color" value="<%=products.color%>" required>
             <br>
             <div><label for="Name">Enter Stock</label></div>
             <div  class="spin error" id="stock-error"></div>
-            <input type="text" name="stock" placeholder="Type here.." id="stock" value="<%=product.stock%>" required>
+            <input type="text" name="stock" placeholder="Type here.." id="stock" value="<%=products.stock%>" required>
+            <br>
+            
+          
+            
+            <% products.image.forEach((image, index) => { %>
+              <div>
+                  <img src="productImages/<%=image %>" alt="Product Image">
+                  <!-- Add checkbox with image index -->
+                  <input type="checkbox" name="imagesToRemove[]" value="<%= index %>"> Remove Image
+                  <br>
+              </div>
+          <% }); %>
+            <div  class="spin error" id="error"></div>
+            <input type="file" id="image-upload" accept="image/*" multiple>
+            <div id="cropper-container"></div>
+
+            <!-- <button type="button" id="crop-button">Crop Image</button>
+            <button type="button" id="cancel-crop-button">Cancel</button> -->
             <br>
             <select
                         class="form-select"
@@ -80,35 +98,16 @@
                    
                             <% categories.forEach(category => { %>
                             
-                            <option value="<%=category.name%>" <%= category.name === product.category.name ? 'selected' : '' %>  name="category">
+                            <option value="<%=category.name%>" <%= category.name === products.category.name ? 'selected' : '' %>  name="category">
                             <%=category.name%>
                             </option>
 
                             <% }); %>
                      </select>
-          
-            
-            <h6>Images</h6>
-                    <% product.image.forEach((image, index) => { %>
-                        <div>
-                            <img src="productImages/<%= image %>" alt="Product Image">
-                            <!-- Add checkbox with image index -->
-                            <input type="checkbox" name="imagesToRemove[]" value="<%= index %>"> Remove Image
-                            <br>
-                        </div>
-                    <% }); %>
-            <div  class="spin error" id="image-error"></div>
-            <input type="file" id="image-upload" accept="image/*" multiple >
-            <div id="cropper-container"></div>
-
-            <!-- <button type="button" id="crop-button">Crop Image</button>
-            <button type="button" id="cancel-crop-button">Cancel</button> -->
-            <br>
-            
             
             <br>
             <!-- <button type="button" id="crop-button">Crop Image</button> -->
-           
+            <div class="spin error" id="image-error"></div>
             <button type="submit" id="submit-btn" class="btn btn-sm btn-primary rounded font-sm mt-15">Submit</button>
         </form>
        
@@ -241,7 +240,7 @@
             const stock = document.getElementById("stock").value
             
             var checkboxes = document.querySelectorAll(".imageCheckbox");
-            
+            var files = document.getElementById("image-upload").files;
             
             var errorDiv = document.getElementById("error");
             console.log("check",checkboxes);
@@ -249,43 +248,48 @@
 
             const nameError = document.getElementById("name-error")
             const priceError = document.getElementById("price-error")
-            
             const colorError = document.getElementById("color-error")
             const stockError = document.getElementById("stock-error")
+            const  imageError = document.getElementById("image-error");
             
 
             nameError.textContent = "";
             priceError.textContent = "";
-            
             colorError.textContent = "";
             stockError.textContent = "";
+            
             
       
            console.log(name);
             let isValid = true
             var allSelected = false;
 
-            let totalCheckbox = checkboxes.length;
+            let totalCheckbox = 1;
             let selected=0;
               checkboxes.forEach(function(checkbox) {
                 if (checkbox.checked ) {
                   selected++;               
-                }                
+                }
+                
               });
-
-
-              
+              console.log("selected"+selected,"total"+totalCheckbox)
 
               if (totalCheckbox === selected) {
                 allSelected=true
               }
 
-              
+              if (allSelected && files.length == 0 ) {
+                errorDiv.textContent = "Please select an image file.";
+                // console.log("helloo");
+                isValid = false
+                event.preventDefault(); // Prevent form submission
+              }
               else{
                 const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
               for (let i = 0; i < files.length; i++) {
               if (!allowedTypes.includes(files[i].type)) {
-              imageError.textContent = "Please select only image files (JPEG, PNG, or GIF).";
+              imageError.textContent = "Please select only image files (JPEG, PNG, or GIF)."
+              console.log("here")
               isValid = false;
               break;
               }
@@ -294,7 +298,6 @@
             if (name === '') {
             nameError.textContent = 'Name is required';
             isValid = false;
-            
               }
               else if (/\d|-/.test(name)) {
               nameError.textContent = 'Name cannot contain digits or hyphens';
@@ -306,6 +309,7 @@
                 isValid = false;
               }
 
+                
                 
                 if (!/^\d+$/.test(stock) || parseInt(stock) <= 0) {
                     stockError.textContent = 'Please enter a valid positive integer for stock';
@@ -322,7 +326,7 @@
                
     
           if(isValid){
-            console.log("ahai");
+            // console.log("ahai");
             document.getElementById("form").submit()
           }
         })
@@ -335,21 +339,3 @@
             
     </body>
     </html>
-
-
-<!-- <select name="category">
-                    <% categories.forEach(category => { %>
-                      <option value="<%= category.name %>" <%= product.category.name  === category.name ? 'selected' : '' %>><%= category.name %></option>
-                    <% }) %>
-                </select> 
-
-
-<h6>Images</h6>
-                    <% product.image.forEach((image, index) => { %>
-                        <div>
-                            <img src="productImages/<%= image %>" alt="Product Image">
-                            
-                            <input type="checkbox" name="imagesToRemove[]" value="<%= index %>"> Remove Image
-                            <br>
-                        </div>
-                    <% }); %> -->

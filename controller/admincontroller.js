@@ -232,7 +232,7 @@ const productEdit = async (req, res) => {
         const categoryData = await Category.find({status:"Active"});
 
         if (productData) {
-            res.render("productEdit", { product: productData, categories: categoryData });
+            res.render("productEdit", { products: productData, categories: categoryData });
         } else {
         }
     } catch (error) {
