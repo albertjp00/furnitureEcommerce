@@ -301,6 +301,10 @@ const unlistProduct= async (req,res)=>{
     try{
         const id=req.query.id
         // console.log(id);
+        const product = await Product.findById(id)
+        const order = await Order.find()
+        
+        
         const productData = await Product.findByIdAndUpdate(id, { status: "Unlisted" }, { new: true });
         console.log(productData);
         
