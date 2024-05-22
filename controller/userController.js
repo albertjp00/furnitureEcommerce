@@ -1382,7 +1382,7 @@ const loadDetails = async (req, res) => {
         
         console.log("dfgsdfg",orderProduct);
         
-        res.render('ordersDetails', { product, order, user ,orderProduct});
+        res.render('ordersdetails', { product, order, user ,orderProduct});
     } catch (error) {
         console.error("Error loading order and product details:", error);
         res.status(500).send("Internal Server Error");
