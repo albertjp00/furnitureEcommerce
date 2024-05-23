@@ -234,7 +234,7 @@
                                 <br>
                                 <div class="mb-4">
                                     <% if (typeof message !== 'undefined') { %>
-                                        <p style="color: black;"><%= message %></p>
+                                        <p style="color:red;"><%= message %></p>
                                     <% } %>
                                 </div>
                             </form>
@@ -490,6 +490,24 @@
                 codeInput.focus();
                 return;
             }
+
+            const amountValue = parseFloat(amountInput.value);
+            if (isNaN(amountValue)  || amountValue >= 50 ) {
+                alert('The amount must be less than 50.');
+                amountInput.focus();
+                return;
+            }
+            
+            const amountValue2 = parseFloat(amountInput.value);
+            if (amountValue2 < 5 ) {
+                alert('The amount must be greater than 5.');
+                amountInput.focus();
+                return;
+            }
+
+            
+
+
     
             // If all validations pass, submit the form
             document.getElementById('coupon-form').submit();

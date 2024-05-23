@@ -1184,7 +1184,7 @@
 
 
 
-// to show sweet alert  
+// to apply coupon  
 document.getElementById('couponForm').addEventListener('submit', async function(event) {
     event.preventDefault(); // Prevent default form submission behavior
 
@@ -1215,7 +1215,7 @@ document.getElementById('couponForm').addEventListener('submit', async function(
             // Coupon not available
             Swal.fire({
                 icon: 'error',
-                title: 'Oops...',
+                title: 'Coupon Cannot be Applied',
                 text: data.message
             });
         }

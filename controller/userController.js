@@ -784,8 +784,17 @@ const applyCoupon = async (req, res) => {
         }
 
         cart.couponCode = req.body.value
+
+        
         cart.totalAmount -= coupon.amount;
+
+        if(cart.totalAmount <10)
+            {
+                return res.json({ success: false });
+            }
         cart.coupon = true;
+
+        
         await cart.save();
 
         user.coupons.push({ code: coupon.code, applied: true });

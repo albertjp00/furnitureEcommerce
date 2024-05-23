@@ -905,6 +905,37 @@ const loadCoupon = async(req,res)=>{
 
 const addCoupon = async (req, res) => {
     try {
+
+        const existingCoupon = await Coupon.findOne({
+            $or:[
+                {name:req.body.name},
+                {code:req.body.code}
+            ]
+        });
+
+        if (existingCoupon) {
+            const page = parseInt(req.query.page) || 1; // Get page number from query parameters, default to 1
+        const limit = 8; // Number of products per page
+
+        const skip = (page - 1) * limit;
+
+        // Fetch products for the current page
+        const couponData = await Coupon.find().skip(skip).limit(limit);
+        
+
+        // Calculate total number of pages
+        const Count = await Product.countDocuments();
+        const totalPages = Math.ceil(Count / limit);
+        // const couponData =await Coupon.find()
+        const user = await User.find()
+            return res.render('page-coupon', {
+                message: "Error: Coupon with the same name or code already exists.",
+                coupon: couponData,totalPages,currentPage:page
+            });
+        }
+
+
+
         console.log(req.body);
         const coupon = new Coupon({
             name: req.body.name,
