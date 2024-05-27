@@ -745,7 +745,9 @@ const checkout = async(req,res)=>{
             {
                 res.redirect('/user/home')
             }
+            else{
         let totalAmount =  cartItems2.totalAmount
+            }
         
         
 
