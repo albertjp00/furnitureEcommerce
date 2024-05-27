@@ -604,15 +604,27 @@
                                                 </div>
                                             </div> -->
                                         </div>
-                                        <a href="/user/checkout" class="checkout-btn">Proceed to checkout</a>
+                                        <%if(product.length>0) { %>
+                                            <a href="/user/checkout" class="checkout-btn">Proceed to checkout</a>
+                                        <% } %>
+                                        
+                                        
                                     </div>
+                                    
                                 </div>
                             </div>
                         </form>
+                        
                     </div>
                 </div>
             </div>
+            <%if(!product.length>0) { %>
+            <a class="shop-btn" href="/user/home" style="margin: 100px 0px 0px 50%;">shop now</a>
+            <% } %>
+
         </div>
+        
+        
         <!-- Cart Section End -->
         <!-- Modal -->
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog">

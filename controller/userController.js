@@ -704,6 +704,11 @@ const checkout = async(req,res)=>{
         const token = req.cookies.token;
         const decodedToken = jwt.verify(token, 'your_secret_key');
         const userId = decodedToken.userId;
+        const carts = await Cart.find()
+        if(!carts)
+            {
+                res.redirect('/user/home')
+            }
 
         const cartItems = await Cart.aggregate([
             {
@@ -736,6 +741,10 @@ const checkout = async(req,res)=>{
         console.log("userdataaaaaaa"+userdata);
         // res.render('Address',{user : userdata})  
         const cartItems2 = await Cart.findOne({userId:userId})
+        if(!cartItems2)
+            {
+                res.redirect('/user/home')
+            }
         let totalAmount =  cartItems2.totalAmount
         
         
@@ -748,7 +757,7 @@ const notUsedCoupons = coupons.filter(coupon => !user.coupons.some(userCoupon =>
         //  console.log("cartitems",cartItems);
          
         const address = await Address.find({userId:userId})
-        console.log("addres",address);
+        console.log("addresssss",address);
         
         res.render('checkout',{cart : cartItems,user : userdata , address:address , cartItems:cartItems2,coupons:notUsedCoupons})
     }catch(error)
