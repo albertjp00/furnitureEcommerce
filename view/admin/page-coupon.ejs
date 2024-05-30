@@ -492,7 +492,7 @@
             }
 
             const amountValue = parseFloat(amountInput.value);
-            if (isNaN(amountValue)  || amountValue >= 50 ) {
+            if (isNaN(amountValue)  || amountValue > 50 ) {
                 alert('The amount must be less than 50.');
                 amountInput.focus();
                 return;

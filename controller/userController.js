@@ -359,6 +359,14 @@ const newUser = async (req, res) => {
                 return;
             }
         }
+        // Check if a user with the same email and verified status exists
+        const existingVerifiedUser = await User.findOne({ email: req.body.email, verified: '1' });
+        
+        if (existingVerifiedUser) {
+            // If an existing verified user with the same email is found, send an error message
+            res.render('signup', { message: 'Email is already Exists.' });
+            return;
+        }
 
         // If no existing unverified user is found, create a new user
         const user = new User({
@@ -601,8 +609,18 @@ const cartLoad = async(req,res)=>{
             }
         ]);
         
-        // console.log("Product Details:", cartItems);
-        
+        console.log("Product Details:", cartItems[0].product.price);
+
+        const cart = await Cart.findOne({ userId: userId });
+
+        let newTotalAmount = 0;
+        for (const item of cartItems) {
+            newTotalAmount += item.product.price * item.quantity;
+        }
+
+        // Update the cart with the new total amount
+        cart.totalAmount = newTotalAmount;
+        await cart.save();
         
 
         res.render('cart', { product: cartItems });
@@ -681,9 +699,22 @@ const cartDelete = async(req,res)=>{
             { new: true }
           );
         console.log("updated"+deletedCart);
+
+        
     
         if (deletedCart) {
-            // Cart updated successfully
+            let newTotalAmount = 0;
+            for (const product of deletedCart.products) {
+                // Assuming you have a Product model to fetch product prices
+                const productData = await Product.findById(product.productId);
+                if (productData) {
+                    newTotalAmount += productData.price * product.quantity;
+                }
+            }
+
+            // Update the cart with the new total amount
+            deletedCart.totalAmount = newTotalAmount;
+            await deletedCart.save();
             res.redirect('/user/loadCart');
         } else {
            
@@ -878,7 +909,13 @@ await user.save();// Mark the coupon as applied for the user
 const ordered = async(req, res) => {
     try {
         if(req.body.paymentMethod == "Cash On Delivery"){ 
-            console.log("b0dy",req.body);
+            // console.log("b0dy",req.body.houseAddress,);
+            // console.log("b0dy",req.body.place);
+            // console.log("b0dy",req.body.pincode);
+            // console.log("b0dy",req.body.country);
+
+
+            // console.log(asdf);
 
             
     
@@ -888,6 +925,7 @@ const ordered = async(req, res) => {
 
 
             const address = await Address.find({ userId: userId });
+            
             if (!address || address.length === 0) {
                 return res.send('<script>alert("Please add an address before placing the order."); window.location.href = "/user/checkout";</script>');
             }

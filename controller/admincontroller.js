@@ -639,9 +639,12 @@ const loadOrderDetails= async (req,res)=>{
             const product = await Product.findById(p.productId)
             products.push(product)
         }
+
+        console.log(order.addressId);
+
         console.log("grouped"+products);
         const address =await  Address.findById(order.addressId)
-        console.log(address);
+        console.log("address"+address);
        
         res.render("page-orders-details",{order:order,product:products,address:address})
     }catch(error)
@@ -1044,7 +1047,7 @@ const loadOffers = async (req,res)=>{
         const skip = (page - 1) * limit;
 
         // Fetch products for the current page
-        const offers = await Coupon.find().skip(skip).limit(limit);
+        const offers = await Offer.find().skip(skip).limit(limit);
         
 
         // Calculate total number of pages

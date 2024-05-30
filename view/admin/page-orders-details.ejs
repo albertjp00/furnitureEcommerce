@@ -276,20 +276,25 @@
                         </div> <!-- col// -->
                         <div class="col-md-4">
                             <article class="icontext align-items-start">
+                                <%if(address) { %>
                                 <span class="icon icon-sm rounded-circle bg-primary-light">
                                     <i class="text-primary material-icons md-place"></i>
                                 </span>
                                 <div class="text">
+                                    
                                     <h6 class="mb-1">Deliver to</h6>
                                     <p class="mb-1">
+                                        
                                         Address: <%=address.houseAddress%>
                                         <br>
                                         Place: <%=address.place%>
                                         <br>
                                         Pincode: <%=address.pincode%>
                                         <br>
-                                        Country: <%=address.country%> 
+                                        Country: <%=address.country%>
+                                        
                                     </p>
+                                    <% } %> 
                                      <!-- <a href="#">View profile</a>  -->
                                 </div>
                             </article>

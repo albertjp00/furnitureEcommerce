@@ -299,7 +299,7 @@
                             <thead>
                                 <tr>
                                     <th>#USERID</th>
-                                    <th scope="col">User</th>
+                                    <th scope="col">OrderId</th>
                                     <!-- <th scope="col">Quantity</th> -->
                                     <th scope="col">Total</th>
                                     <th scope="col">Payment </th>
@@ -312,7 +312,7 @@
                                 <% for(let i = 0; i < order.length; i++) { %>
                                 <tr>
                                     <td>PD<%=order[i].userId.slice(11)%></td>
-                                    <td><b><%=order[0].userId%></b></td>
+                                    <td><b><%=order[i]._id%></b></td>
                                     
                                     <!-- <td><template class="__cf_email__" data-cfemail="aec3cfdcd8c7c0eecbd6cfc3dec2cb80cdc1c3">[email&#160;protected]</template></td> -->
                                     <td>$<%=order[i].totalAmount%></td>
