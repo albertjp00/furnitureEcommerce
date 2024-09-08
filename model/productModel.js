@@ -43,7 +43,6 @@ const productSchema = new mongoose.Schema({
         }
     },
     offer:{
-        
             type:Boolean,
             default:false
         

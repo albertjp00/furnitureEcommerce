@@ -156,7 +156,7 @@ const loadProduct = async (req, res) => {
 
         // Fetch products for the current page
         const productsData = await Product.find().skip(skip).limit(limit);
-        console.log(productsData);
+        // console.log(productsData);
 
         // Calculate total number of pages
         const totalProductsCount = await Product.countDocuments();
@@ -205,7 +205,7 @@ const addProduct=async(req,res)=>{
         })
     
         const productData= await product.save()
-        console.log(productData);
+        // console.log(productData);
     
         if(productData){
             res.redirect("/admin/products")
@@ -257,7 +257,7 @@ const updateProduct = async (req, res) => {
             category: { name: req.body.category },
             originalPrice: req.body.price,
             $push: { image: req.files.map(file => file.filename) } // Append new image filenames
-        }, { new: true }); 
+        }, { new: true });  
         
         
         
@@ -302,7 +302,9 @@ const unlistProduct= async (req,res)=>{
         const id=req.query.id
         // console.log(id);
         const product = await Product.findById(id)
-        const order = await Order.find()
+        
+
+        
         
         
         const productData = await Product.findByIdAndUpdate(id, { status: "Unlisted" }, { new: true });

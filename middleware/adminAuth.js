@@ -2,7 +2,6 @@ const islogin = async (req, res, next) => {
     try {
         if (req.session.userid) {
             // User is logged in, allow them to proceed
-            // console.log("session");
             console.log('islogin middleware', req.session.userid);   
         } else {
             // User is not logged in, redirect to login page

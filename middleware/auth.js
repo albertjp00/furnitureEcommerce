@@ -6,8 +6,6 @@ const islogin = async (req, res, next) => {
         
         if (token) {
             // Verify the token and extract the user ID
-            
-            
             // User is logged in, allow them to proceed
             console.log("User logged in");
         } else {

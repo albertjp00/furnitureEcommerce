@@ -609,7 +609,8 @@ const cartLoad = async(req,res)=>{
             }
         ]);
         
-        console.log("Product Details:", cartItems[0].product.price);
+        
+        console.log("Product Details:", cartItems);
 
         const cart = await Cart.findOne({ userId: userId });
 
@@ -697,7 +698,7 @@ const cartDelete = async(req,res)=>{
             { userId: userId},
             { $pull: { products: { productId :productid } } },
             { new: true }
-          );
+          ); 
         console.log("updated"+deletedCart);
 
         
@@ -807,6 +808,11 @@ const applyCoupon = async (req, res) => {
         const token = req.cookies.token;
         const decodedToken = jwt.verify(token, 'your_secret_key');
         const userId = decodedToken.userId; 
+
+        const coupons  = await Coupon.find()
+        const User = await User.find(userId)
+        console.log("coupons - "+coupons)
+        console.log("user - "+User)
         
         const user = await User.findById(userId)
         const cart = await Cart.findOne({ userId: userId });
@@ -908,7 +914,7 @@ await user.save();// Mark the coupon as applied for the user
 
 const ordered = async(req, res) => {
     try {
-        if(req.body.paymentMethod == "Cash On Delivery"){ 
+        if(req.body.paymentMethod == "Cash On Deliver y"){ 
             // console.log("b0dy",req.body.houseAddress,);
             // console.log("b0dy",req.body.place);
             // console.log("b0dy",req.body.pincode);
@@ -1215,6 +1221,7 @@ const payOnline = async(req,res)=>{
         const token = req.cookies.token;
         const decodedToken = jwt.verify(token, 'your_secret_key');
         const userId = decodedToken.userId; 
+        
         const amount = req.body.amount*100
         const RAZORPAY_ID_KEY = process.env.RAZORPAY_ID_KEY
         console.log("amount-"+amount);

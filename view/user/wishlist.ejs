@@ -1135,7 +1135,8 @@
         method: 'DELETE',
         success: function(response) {
             // Update UI dynamically to remove the deleted product row
-            $clickedElement.closest('tr').remove(); // Use the stored reference to the clicked element
+            $clickedElement.closest('tr').remove(); // Use the stored reference to the clicked element  
+
         },
         error: function(xhr, status, error) {
             // Handle error
