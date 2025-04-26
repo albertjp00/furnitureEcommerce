@@ -11,7 +11,8 @@ app.use(session({
 
 const jwt = require('jsonwebtoken')
 
-const razorpay = require("razorpay")
+const Razorpay = require("razorpay")
+
 // require('dotenv').config()
 const User=require('../model/userModel');
 const Product=require('../model/productModel')
@@ -27,6 +28,8 @@ const Address = require('../model/addressModel')
 // const jwt = require('jsonwebtoken')
 const mongoose = require("mongoose")
 const { ObjectId, CURSOR_FLAGS } = require('mongodb');
+
+require('dotenv').config();
 
 const secretKey = process.env.JWT_SECRET || 'your_default_secret_key';
 
@@ -50,10 +53,16 @@ require("dotenv").config()
 const RAZORPAY_ID_KEY= process.env.RAZORPAY_ID_KEY;
 const RAZORPAY_SECRET_KEY = process.env.RAZORPAY_SECRET_KEY
 
-const razorpayInstance = new razorpay({
+
+
+
+const razorpayInstance = new Razorpay({
     key_id: RAZORPAY_ID_KEY, // Pass your Razorpay key ID
     key_secret: RAZORPAY_SECRET_KEY // Pass your Razorpay key secret
 });
+
+console.log("keyyyyyyyyyy",razorpayInstance.key_id);
+
 
 // load home
 
@@ -142,13 +151,13 @@ const verifyLogin = async (req, res) => {
         const password = req.body.password;
 
         // Find the user by email
-        const user = await User.findOne({ email: email });
+        const user = await User.findOne({ email: email });  
 
         if (user) {
             if (user.status === 'Blocked') {
                 res.render('login', { message: 'User Blocked' });
             } else if (user.password === password) {
-                // Generate JWT token
+                // generating JWT token
                 const token = jwt.sign({ userId: user._id }, 'your_secret_key', { expiresIn: '1h' });
  
                 res.cookie("token", token, {
@@ -241,11 +250,11 @@ const sendingOTP = async(req,res)=>{
               from: {
                 name: 'Me',
                 address:process.env.SMTP_MAIL
-              }, // sender address
+              }, 
               to: "albertjpaul@gmail.com", // list of receivers
-              subject: "Hello ✔", // Subject line
-              text: `Your OTP is ${otpcode}`, // plain text body
-              html: `Your OTP is ${otpcode}`, // html body
+              subject: "Hello ✔", 
+              text: `Your OTP is ${otpcode}`, 
+              html: `Your OTP is ${otpcode}`, 
               
             };
         
@@ -791,6 +800,10 @@ const notUsedCoupons = coupons.filter(coupon => !user.coupons.some(userCoupon =>
         //  console.log("cartitems",cartItems);
          
         const address = await Address.find({userId:userId})
+        // if (address.length === 0 || address.some(a => a.houseAddress === 'nill')) {
+        //     return res.send('<script>alert("Please update your address before proceeding to checkout."); window.location="/user/checkout";</script>');
+        // }
+        
         console.log("addresssss",address);
         
         res.render('checkout',{cart : cartItems,user : userdata , address:address , cartItems:cartItems2,coupons:notUsedCoupons})
@@ -914,7 +927,7 @@ await user.save();// Mark the coupon as applied for the user
 
 const ordered = async(req, res) => {
     try {
-        if(req.body.paymentMethod == "Cash On Deliver y"){ 
+        if(req.body.paymentMethod == "Cash On Delivery"){ 
             // console.log("b0dy",req.body.houseAddress,);
             // console.log("b0dy",req.body.place);
             // console.log("b0dy",req.body.pincode);
@@ -931,10 +944,12 @@ const ordered = async(req, res) => {
 
 
             const address = await Address.find({ userId: userId });
+            console.log("address nll");
             
-            if (!address || address.length === 0) {
-                return res.send('<script>alert("Please add an address before placing the order."); window.location.href = "/user/checkout";</script>');
+            if (address.length === 0 || address.some(a => a.houseAddress === 'nill')) {
+                return res.send('<script>alert("Please update your address before proceeding to checkout."); window.location="/user/checkout";</script>');
             }
+            
 
 
         const total = req.query.total;

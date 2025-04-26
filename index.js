@@ -1,3 +1,7 @@
+const express=require("express")
+const app = express()
+
+
 const mongoose= require("mongoose")
 
 
@@ -17,8 +21,6 @@ const userRoute=require('./routes/userRoute')
 const adminRoute=require('./routes/adminRoute')
 
 
-const express=require("express")
-const app = express()
 
 const cookieParser = require('cookie-parser');
 app.use(cookieParser());
