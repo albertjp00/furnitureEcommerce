@@ -52,6 +52,8 @@ user_route.use(bodyParser.urlencoded({extended:true}))
 
 
 
+user_route.get('/',userController.loginLoad)
+
 user_route.get('/',authen.islogout,userController.loginLoad)
 user_route.get('/login',authen.islogout,userController.loginLoad)
 

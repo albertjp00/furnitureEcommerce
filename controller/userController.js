@@ -66,6 +66,8 @@ console.log("keyyyyyyyyyy",razorpayInstance.key_id);
 
 // load home
 
+
+
 const loadHome = async (req, res) => {
     try {
         console.log(req.cookies);
