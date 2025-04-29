@@ -3,7 +3,6 @@ const session = require('express-session');
 const app = express();
 
 
-const validator = require('validator')
 
 app.use(session({
   secret: 'your-secret-key', 
@@ -402,6 +401,7 @@ const newUser = async (req, res) => {
 
         if (userData) {
             // Proceed to OTP verification
+            req.session.email = userData.email
             res.render("otpsend");
         }
     } catch (error) {
