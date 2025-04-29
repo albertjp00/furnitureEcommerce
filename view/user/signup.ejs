@@ -544,6 +544,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="my-account-form-area">
+                            
                             <form action="/user/signup" method="post" onsubmit="return validateForm()">
                                 <h2>Sign Up</h2>
                                 <div class="single-input">
@@ -570,12 +571,17 @@
                                     <label for="orderid">Enter Mobile Number <span class="required"></span></label>
                                     <input type="text" placeholder="Enter Number here" name="mobile" id="mobile" required>
                                 </div>
-                                <% if( typeof message !== 'undefined') 
+                                <!-- <% if( typeof message !== 'undefined') 
                                 { 
                                     %>
                                     <h3><%= message %></h3>
                                     <% 
-                                }%>
+                                }%> -->
+                                <% if (typeof message !== 'undefined' && message) { %>
+                                    <div class="error-message">
+                                        <p><%= message %></p>
+                                    </div>
+                                <% } %>
                                 <button class="shop-btn submit-btn"  type="submit">Sign Up</button>
                                 <!-- <p class="lost-pass"><a href="#">Lost your password?</a></p> -->
                             </form>
@@ -1102,10 +1108,13 @@
             }
         }
         function validateForm() {
+            var name = document.getElementById('name').value.trim()
     var email = document.getElementById('email').value;
     var password1 = document.getElementById('password1').value;
     var password2 = document.getElementById('password2').value;
     var mobile = document.getElementById('mobile').value;
+
+    
 
     // Check if passwords match
     if (password1 !== password2) {

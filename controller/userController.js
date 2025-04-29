@@ -3,6 +3,8 @@ const session = require('express-session');
 const app = express();
 
 
+const validator = require('validator')
+
 app.use(session({
   secret: 'your-secret-key', 
   resave: false,
@@ -82,10 +84,12 @@ const loadHome = async (req, res) => {
 
 
         const page = parseInt(req.query.page) || 1; 
-        const limit = 8;
+        const limit = 10;
         const skip = (page - 1) * limit;
         
         const productData = await Product.find().skip(skip).limit(limit);
+        console.log(productData);
+        
         const totalProducts = await Product.countDocuments();
 
         
@@ -206,6 +210,8 @@ const logout = async (req, res) => {
 
 const forgotPass = async(req,res)=>{
     try{
+
+        
         
         res.render('sendOTP')
 
@@ -219,6 +225,9 @@ const forgotPass = async(req,res)=>{
 
 const sendingOTP = async(req,res)=>{
     try{
+
+        const email = req.body.email
+        
         const user = await User.findOne({email:req.body.email})
         if(!user)
         {
@@ -250,11 +259,11 @@ const sendingOTP = async(req,res)=>{
             // send mail with defined transport object
             const mailOptions = {
               from: {
-                name: 'Me',
+                name: 'Furnitureyou',
                 address:process.env.SMTP_MAIL
               }, 
-              to: "albertjpaul@gmail.com", // list of receivers
-              subject: "Hello ✔", 
+              to: email, 
+              subject: "Your OTP ✔", 
               text: `Your OTP is ${otpcode}`, 
               html: `Your OTP is ${otpcode}`, 
               
@@ -355,38 +364,40 @@ const signUpLoad=async(req,res)=>{
 
 const newUser = async (req, res) => {
     try {
+
+        
         const existingUser = await User.findOne({ email: req.body.email, verified: '0' });
 
         if (existingUser) {
-            // If an existing unverified user with the same email is found, update their details
+            console.log("existing", existingUser);
+
             existingUser.name = req.body.name;
             existingUser.mobile = req.body.mobile;
             existingUser.password = req.body.password;
 
             const updatedUser = await existingUser.save();
             if (updatedUser) {
-                // Proceed to OTP verification
+                req.session.email = updatedUser.email;
                 res.render("otpsend");
                 return;
             }
         }
-        // Check if a user with the same email and verified status exists
+
         const existingVerifiedUser = await User.findOne({ email: req.body.email, verified: '1' });
-        
+
         if (existingVerifiedUser) {
-            // If an existing verified user with the same email is found, send an error message
-            res.render('signup', { message: 'Email is already Exists.' });
+            res.render('signup', { message: 'Email is already in use by an existing verified user.' });
             return;
         }
 
-        // If no existing unverified user is found, create a new user
+        
         const user = new User({
             name: req.body.name,
             email: req.body.email,
             mobile: req.body.mobile,
             password: req.body.password,
         });
- 
+
         const userData = await user.save();
 
         if (userData) {
@@ -400,11 +411,15 @@ const newUser = async (req, res) => {
 };
 
 
+
 // to load otp page 
 
 const otpLoad=async(req,res)=>{
     try{
+        const email = req.session.email
+        console.log("email",email);
         res.render("otpsend")
+        
 
     }catch(error){
         res.render('error');
@@ -415,6 +430,10 @@ const otpLoad=async(req,res)=>{
 
 const getOtp    = async (req,res)=>{
     try {
+
+        const email = req.session.email
+        console.log("emailll",email);
+        
         
         const otpcode = Math.floor(1000 + Math.random() * 9000).toString()
         req.session.otp = otpcode
@@ -438,11 +457,11 @@ const getOtp    = async (req,res)=>{
             // send mail with defined transport object
             const mailOptions = {
               from: {
-                name: 'Me',
+                name: 'Furnitureyou',
                 address:process.env.SMTP_MAIL
               }, // sender address
-              to: "albertjpaul@gmail.com", // list of receivers
-              subject: "Hello ✔", // Subject line
+              to: email, // list of receivers
+              subject: "OTP✔", // Subject line
               text: `Your OTP is ${otpcode}`, // plain text body
               html: `Your OTP is ${otpcode}`, // html body
               

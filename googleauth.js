@@ -3,7 +3,7 @@ const express = require("express");
 const session = require("express-session");
 const auth = require('../authapi2');
 
-const user_route = express(); // Assuming you've declared user_route as express.Router() somewhere in your code
+const user_route = express();
 
 user_route.use(session({ secret: "cats" }));
 user_route.use(passport.initialize());
