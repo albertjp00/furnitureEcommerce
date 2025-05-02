@@ -1049,6 +1049,15 @@ const ordered = async(req, res) => {
         const token = req.cookies.token;
         const decodedToken = jwt.verify(token, 'your_secret_key');
         const userId = decodedToken.userId;  
+
+        const address = await Address.find({ userId: userId });
+            console.log("address nll");
+            
+            if (address.length === 0 || address.some(a => a.houseAddress === 'nill')) {
+                return res.send('<script>alert("Please update your address before proceeding to checkout."); window.location="/user/checkout";</script>');
+            }
+
+
         const cartItems = await Cart.aggregate([
             {
                 $match: { userId: userId } 
