@@ -88,7 +88,7 @@ user_route.post('/otpverify',userController.OTPcheck)
 
 
 
-user_route.get('/viewPro',authen.islogin,userController.viewProduct)
+user_route.get('/viewPro',userController.viewProduct)
 
 user_route.get('/addToCart',authen.islogin,userController.cartAdd)
 
