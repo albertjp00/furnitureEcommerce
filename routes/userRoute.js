@@ -59,7 +59,8 @@ user_route.get('/login',authen.islogout,userController.loginLoad)
 
 user_route.get('/signup',userController.signUpLoad)
 
-user_route.get('/home',authen.islogin,userController.loadHome)
+user_route.get('/home',userController.loadHome)
+// ,authen.islogin
 
 user_route.post('/login',userController.verifyLogin)
 

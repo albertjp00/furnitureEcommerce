@@ -73,65 +73,58 @@ const loadHome = async (req, res) => {
     try {
         console.log(req.cookies);
         const token = req.cookies.token;
-        
-        if (!token) {
-            return res.status(401).send(' Unauthorized: No JWT token provided');
+
+        let userId = null;
+        if (token) {
+            try {
+                const decodedToken = jwt.verify(token, 'your_secret_key');
+                userId = decodedToken.userId;
+            } catch (err) {
+                console.log("Invalid token:", err.message);
+            }
         }
 
-        const decodedToken = jwt.verify(token, 'your_secret_key');
-        const userId = decodedToken.userId;
-
-
-        const page = parseInt(req.query.page) || 1; 
+        const page = parseInt(req.query.page) || 1;
         const limit = 10;
         const skip = (page - 1) * limit;
-        
+
         const productData = await Product.find().skip(skip).limit(limit);
-        console.log(productData);
-        
         const totalProducts = await Product.countDocuments();
 
-        
-        let cartData;
-        try {
-            const token = req.cookies.token;
-        const decodedToken = jwt.verify(token, 'your_secret_key');
-        const userId = decodedToken.userId;
-            const cartItems = await Cart.findOne({ userId: userId });
-            cartData = cartItems ? await Cart.find({ userId: userId }, { products: 1 }) : null;
-            console.log("fgshsgfhs"+cartItems);
-        } catch (cartError) {
-            console.log("Error fetching cart items:", cartError.message);
-            cartData = null;
-        }
-        const cartItems = await Cart.findOne({ userId: userId });
-       
-        let wishItems;
-        try {
-            wishItems = await Wishlist.findOne({ userId: userId });
-        } catch (wishError) {
-            console.log("Error fetching wish list items:", wishError.message);
-            wishItems = null;
-        }
-        
-        const category = await Category.find();
+        let cartItems = null;
+        let wishItems = null;
 
+        if (userId) {
+            try {
+                cartItems = await Cart.findOne({ userId: userId });
+            } catch (cartError) {
+                console.log("Error fetching cart items:", cartError.message);
+            }
+
+            try {
+                wishItems = await Wishlist.findOne({ userId: userId });
+            } catch (wishError) {
+                console.log("Error fetching wish list items:", wishError.message);
+            }
+        }
+
+        const category = await Category.find();
         const totalPages = Math.ceil(totalProducts / limit);
-        
-        
-        res.render('home', { 
+
+        res.render('home', {
             product: productData,
             cart: cartItems,
             wish: wishItems,
             category: category || {},
-            currentPage: page, 
-            totalPages: totalPages 
+            currentPage: page,
+            totalPages: totalPages
         });
     } catch (error) {
         console.log(error.message);
         res.render('error');
     }
 }
+
 
 
 
