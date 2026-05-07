@@ -219,6 +219,8 @@ const sendingOTP = async(req,res)=>{
     try{
 
         const email = req.body.email
+        console.log('sending mail',email);
+        
         
         const user = await User.findOne({email:req.body.email})
         if(!user)
@@ -232,8 +234,7 @@ const sendingOTP = async(req,res)=>{
         req.session.otp = otpcode
         console.log(otpcode+" code")
         
-        // console.log(email);
-        // console.log(process.env.SMTP_PASSWORD);
+        
 
         const transporter = nodemailer.createTransport({
             service:"gmail",
@@ -1394,7 +1395,6 @@ const loadOrders = async (req, res) => {
         
         
 
-        // Find all orders for the given userId
         const orders = await Order.find({ userId: userId });
         if (!orders || orders.length === 0) {
             return res.status(404).send("No orders found for this user");
@@ -1403,7 +1403,6 @@ const loadOrders = async (req, res) => {
         const order2 = orders
         
 
-        // Fetch product details for each product in each order
         const allProductDetails = [];
         for (const order of orders) {
             const productDetails = [];
@@ -1424,14 +1423,13 @@ const loadOrders = async (req, res) => {
         }
 
         // console.log("All Product Details:");
-        allProductDetails.forEach((products, index) => {
-            console.log(`Order ${index + 1}:`, products);
-        });
+        // allProductDetails.forEach((products, index) => {
+        //     console.log(`Order ${index + 1}:`, products);
+        // });
 
         
         
 
-        // Delete items from cart (if needed)
         const cartDelete = await Cart.findOne({ userId: userId });
         if (cartDelete) {
             await Cart.findByIdAndDelete(cartDelete._id);
@@ -1483,7 +1481,6 @@ const loadDetails = async (req, res) => {
             return res.status(404).send("Product not found");
         }
         
-        console.log("dfgsdfg",orderProduct);
         
         res.render('ordersdetails', { product, order, user ,orderProduct});
     } catch (error) {
@@ -1494,85 +1491,81 @@ const loadDetails = async (req, res) => {
 
 
 // to cancel orders 
-
-
 const cancelOrder = async (req, res) => {
     try {
         const token = req.cookies.token;
         const decodedToken = jwt.verify(token, 'your_secret_key');
         const userId = decodedToken.userId;
         const productId = req.query.id;
-        console.log("user-" + userId, "productId: " + productId);
 
-        const data = req.body.returnReason
+        const data = req.body.returnReason;
 
-        const user = await User.findById(userId);
+        console.log('return reason',data);
+        
 
         const order = await Order.findOne({
             userId: userId,
             'products.productId': productId,
-            
         });
+
+        console.log('prodduct',order)
 
         if (!order) {
             return res.status(404).send("Order not found");
         }
 
-        // Find the product in the order products array and mark it as cancelled
+        let previousStatus;
 
-        for(const product of order.products) {
-            if(product.productId == productId) {
-                product.status = "Cancelled",
-                product.cancelReason = data
+        for (const product of order.products) {
+            if (product.productId == productId) {
+                
+                previousStatus = product.status;
 
-                break; // Once found, no need to continue searching
+                product.status = "Cancelled";
+                product.cancelReason = data;
+
+                break;
             }
         }
+
+        console.log(order , previousStatus)
+
 
         await order.save();
 
-        const product = await Product.findById(productId)
-        
-        
-        let orderProduct=[] 
-        for( const prod of order.products)
-        {
-            if(prod.productId == productId)
-            {
-                orderProduct.push(prod)
+        const productData = await Product.findById(productId);
 
+        if (previousStatus === 'Order Placed') {
+
+            let wallet = await Wallet.findOne({ userId });
+
+            if (!wallet) {
+                wallet = new Wallet({
+                    userId,
+                    refunds: [],
+                    totalAmount: 0
+                });
             }
-        }
-        if(orderProduct[0].status == 'Delivered')
-        {
 
-        let wallet = await Wallet.findOne({userId:userId})
-
-        if (!wallet) {
-            wallet = new Wallet({
-                userId: userId,
+            wallet.refunds.push({
+                productId,
+                amount: productData.price
             });
+
+            wallet.totalAmount += parseFloat(productData.price);
+
+            console.log('wallett ',wallet)
+
+            await wallet.save();
         }
-
-        wallet.refunds.push({
-            productId: productId,
-            amount: product.price
-        });
-
-        // Updating total amount in wallet
-        wallet.totalAmount += parseFloat(product.price);
-
-        await wallet.save();
-        }
-
-        console.log("Details of the cancelled order:", order);
 
         res.redirect('/user/orders');
+
     } catch (error) {
         console.error("Error cancelling order:", error);
         res.status(500).send("Internal Server Error");
     }
-}
+};
 
 
 // to return the ordered product 
@@ -2421,13 +2414,13 @@ const wishDelete = async(req, res) => {
 
 // WALLET -----------------------------------------------------------------------------------------------------------
 
-
 const toWallet = async (req, res) => {
     try {
         const token = req.cookies.token;
         const decodedToken = jwt.verify(token, 'your_secret_key');
         const userId = decodedToken.userId;
         const wallet = await Wallet.findOne({ userId: userId });
+
 
         if(!wallet)
             {
@@ -2436,6 +2429,7 @@ const toWallet = async (req, res) => {
                 const products=[]
                 res.render('wallet',{wallet:wallet, refund: refunds, product : products })
             }
+            else{
         const refunds = wallet.refunds;
         
         // Array to store product promises
@@ -2450,8 +2444,9 @@ const toWallet = async (req, res) => {
         const products = await Promise.all(productPromises);
 
         res.render('wallet', {wallet:wallet, refund: refunds, product : products });
+    }
     } catch (error) {
-        console.log(error.message);
+        console.log(error);
         
     }
 }
