@@ -87,8 +87,8 @@
                         name="category"
                      >
                         <% categories.forEach(category => { %>
-                        <option value="<%=category.name%>" name="category">
-                          <%=category.name%>
+                        <option value="<%= category.name %>">
+                          <%= category.name %>
                         </option>
                         
                         <% }); %>
@@ -97,6 +97,12 @@
             <input type="file" id="image-upload" accept="image/*" multiple>
             <br>
             <div id="cropper-container"></div>
+
+            <% if (typeof message !== 'undefined') { %>
+              <div style="color: red; font-weight: bold;">
+                <%= message %>
+              </div>
+            <% } %>
             
             <!-- Buttons for controlling cropping -->
             <!-- <button type="button" id="crop-button">Crop Image</button>

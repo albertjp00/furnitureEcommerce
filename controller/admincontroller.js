@@ -180,7 +180,7 @@ const productAddPage = async (req, res) => {
   try {
     const categories = await Category.find();
 
-    res.render("productCreate2", { categories: categories });
+    res.render("productCreate2", { categories });
   } catch (error) {
     console.error("Error rendering productAddPage:", error);
     res.status(500).send("Internal Server Error");
@@ -191,7 +191,7 @@ const productAddPage = async (req, res) => {
 
 const addProduct = async (req, res) => {
   try {
-    console.log(req.body);
+    console.log('add product',req.body);
     const product = new Product({
       name: req.body.name,
       price: req.body.price,
@@ -211,8 +211,12 @@ const addProduct = async (req, res) => {
     }
   } catch (error) {
     if (error.code === 11000 && error.keyPattern && error.keyPattern.name) {
+
+      const categories = await Category.find()
+
       res.render("productCreate2", {
         message: "Error: Product already exists.",
+        categories
       });
     } else {
       console.log(error.message);
@@ -248,7 +252,17 @@ const updateProduct = async (req, res) => {
     const id = req.query.id;
     console.log(req.files);
 
-    // Update other product details
+    const existingProduct = await Product.findOne({
+      name: req.body.name,
+      _id: { $ne: id } // exclude current product
+    });
+
+    if (existingProduct) {
+      return res.send(
+      '<script>alert("Product with this name already exists"); window.history.back();</script>'
+    )}
+    
+
     const productData = await Product.findByIdAndUpdate(
       id,
       {
@@ -269,19 +283,15 @@ const updateProduct = async (req, res) => {
     }
     product.save();
 
-    // Remove images selected for deletion
     if (req.body.imagesToRemove && req.body.imagesToRemove.length > 0) {
-      // Convert strings to numbers
       const imageIndices = req.body.imagesToRemove.map((index) =>
         parseInt(index),
       );
 
-      // Remove images from productData
       productData.image = productData.image.filter(
         (image, index) => !imageIndices.includes(index),
       );
 
-      // Perform database update
       await productData.save();
     }
 

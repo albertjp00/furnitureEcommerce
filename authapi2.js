@@ -10,7 +10,7 @@ GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET
 passport.use(new GoogleStrategy({
     clientID:     GOOGLE_CLIENT_ID,
     clientSecret: GOOGLE_CLIENT_SECRET,
-    callbackURL: "http://furnitureyou.store/user/google/callback",
+    callbackURL: "https://furnitureyou.online/user/google/callback",
     
     passReqToCallback   : true
   },
