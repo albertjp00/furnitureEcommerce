@@ -411,30 +411,34 @@
     <nav aria-label="Page navigation example">
         <ul class="pagination justify-content-start">
 
-            <!-- 🔹 Prev Button -->
-            <li class="page-item <%= currentPage === 1 ? 'disabled' : '' %>">
-                <a class="page-link"
-                   href="/admin/loadOffer?page=<%= currentPage - 1 %>">
-                    <i class="material-icons md-chevron_left"></i>
-                </a>
-            </li>
+    <!-- ✅ Prev Button (ONLY if not first page) -->
+    <% if (currentPage > 1) { %>
+        <li class="page-item">
+            <a class="page-link"
+               href="/admin/loadOffer?page=<%= currentPage - 1 %>">
+                <i class="material-icons md-chevron_left"></i>
+            </a>
+        </li>
+    <% } %>
 
-            <!-- 🔹 Current Page Info -->
-            <li class="page-item active">
-                <a class="page-link">
-                    <%= currentPage %> / <%= totalPages %>
-                </a>
-            </li>
+    <!-- ✅ Current Page Info -->
+    <li class="page-item active">
+        <a class="page-link">
+            <%= currentPage %> / <%= totalPages %>
+        </a>
+    </li>
 
-            <!-- 🔹 Next Button -->
-            <li class="page-item <%= currentPage === totalPages ? 'disabled' : '' %>">
-                <a class="page-link"
-                   href="/admin/loadOffer?page=<%= currentPage + 1 %>">
-                    <i class="material-icons md-chevron_right"></i>
-                </a>
-            </li>
+    <!-- ✅ Next Button (ONLY if not last page) -->
+    <% if (currentPage < totalPages) { %>
+        <li class="page-item">
+            <a class="page-link"
+               href="/admin/loadOffer?page=<%= currentPage + 1 %>">
+                <i class="material-icons md-chevron_right"></i>
+            </a>
+        </li>
+    <% } %>
 
-        </ul>
+</ul>
     </nav>
 </div>
         </section> <!-- content-main end// -->

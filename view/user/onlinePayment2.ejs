@@ -526,10 +526,13 @@
                                             <div class="your-order-info-wrap">
                                                 <div class="your-order-info">
                                                     <ul>
-                                                        <li>Product <span>Total</span></li>
-                                                        <!-- Product items -->
-                                                        
-                                                        <li><%= product.name%> X <%=orderProduct.quantity %><span>$<%= orderProduct.price * orderProduct.quantity%> </span></li>
+                                                        <% orderProducts.forEach(item => { %>
+                                                            <li>
+                                                                <%= item.productDetails.name %> 
+                                                                X <%= item.quantity %>
+                                                                <span>$<%= item.price * item.quantity %></span>
+                                                            </li>
+                                                        <% }) %> </span></li>
                                                         
                                                     </ul>
                                                 </div>

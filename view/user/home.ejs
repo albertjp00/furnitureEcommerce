@@ -298,8 +298,8 @@
             </div>
             <div class="searchform-fly">
                 <p class="searchform-fly-text">Start typing and press Enter to search !</p>
-                <form class="search-form" action="/user/search" method="post">
-                    <input type="text" placeholder="Search" name="search">
+                <form class="search-form" action="/user" method="GET">
+                    <input type="text" placeholder="Search" name="search" value="<%= search || '' %>">
                     <button class="search-button" type="submit">
                         <i class="dlicon ui-1_zoom"></i>
                     </button>
@@ -522,29 +522,88 @@
                     <div class="col-lg-12">
                         <div class="shop-top-bar shop-top-bar-flex mb-40 mb-xs-20">
                             <div class="shop-topbar-left">
-                                <p>Showing 1–16 of 64 results</p>
+                                <!-- <p>Showing 1–16 of 64 results</p>
                                 <div class="page-show">
                                     <span>Show</span>
                                     <ul>
                                         <li><a class="active" href="#">12</a></li>
-                                        <li><a href="#">15</a></li>
+                                        <li><a href="#">15</a></li> 
                                         <li><a href="#">30</a></li>
                                     </ul>
-                                </div>
+                                </div> -->
                             </div>
                             <div class="shop-topbar-right shop-tab-flex">
                                 <div class="short-by">
                                     <a href="#">Sort By</a>
                                     <ul class="sort-by-dropdown">
-                                        <li class="active"><a href="/user">Default sorting</a></li>
-                                        <!-- <li><a href="#">Sort by popularity</a></li> -->
-                                        <li><a href="/user/inStock">In-Stock only</a></li>
-                                        <li><a href="/user/ZtoA">Zz-Aa</a></li>
-                                        <li><a href="/user/AtoZ">Aa-Zz</a></li>
-                                        <li><a href="/user/latest">Sort by newness</a></li>
-                                        <li><a href="/user/lowToHigh">Sort by price: low to high</a></li>
-                                        <li><a href="/user/highToLow">Sort by price: high to low</a></li>
-                                    </ul>
+
+    <li class="<%= !selectedSort && stock !== 'in' ? 'active' : '' %>">
+        <a href="/user?<%= new URLSearchParams({
+            search,
+            category: selectedCategory,
+            sort: '',
+            stock
+        }).toString() %>">
+            Default sorting
+        </a>
+    </li>
+
+    <li class="<%= stock === 'in' ? 'active' : '' %>">
+        <a href="/user?<%= new URLSearchParams({
+            search,
+            category: selectedCategory,
+            sort: '',
+            stock: 'in'
+        }).toString() %>">
+            In-Stock only
+        </a>
+    </li>
+
+    <li class="<%= selectedSort === 'ZtoA' ? 'active' : '' %>">
+        <a href="/user?<%= new URLSearchParams({
+            search,
+            category: selectedCategory,
+            sort: 'ZtoA',
+            stock
+        }).toString() %>">
+            Zz-Aa
+        </a>
+    </li>
+
+    <li class="<%= selectedSort === 'AtoZ' ? 'active' : '' %>">
+        <a href="/user?<%= new URLSearchParams({
+            search,
+            category: selectedCategory,
+            sort: 'AtoZ',
+            stock
+        }).toString() %>">
+            Aa-Zz
+        </a>
+    </li>
+
+    <li class="<%= selectedSort === 'priceLow' ? 'active' : '' %>">
+        <a href="/user?<%= new URLSearchParams({
+            search,
+            category: selectedCategory,
+            sort: 'priceLow',
+            stock
+        }).toString() %>">
+            Price: low to high
+        </a>
+    </li>
+
+    <li class="<%= selectedSort === 'priceHigh' ? 'active' : '' %>">
+        <a href="/user?<%= new URLSearchParams({
+            search,
+            category: selectedCategory,
+            sort: 'priceHigh',
+            stock
+        }).toString() %>">
+            Price: high to low
+        </a>
+    </li>
+
+</ul>
                                 </div>
                                 <div class="filter-active">
                                     <a href="#">filter</a>
@@ -568,8 +627,17 @@
                                             <h5>Category</h5>
                                         </div>
                                         <ul>
-                                            <%for(let i = 0; i < category.length ; i++) { %>
-                                            <li><a href="/user/category?name=<%=category[i].name%>"><%=category[i].name%></a></li>
+                                            <% for(let i = 0; i < category.length; i++) { %>
+                                                <li class="<%= selectedCategory === category[i].name ? 'active' : '' %>">
+                                                    <a href="/user?<%= new URLSearchParams({
+                                                        search,
+                                                        category: category[i].name,
+                                                        sort: selectedSort,
+                                                        stock
+                                                    }).toString() %>">
+                                                        <%= category[i].name %>
+                                                    </a>
+                                                </li>
                                             <% } %>
                                             <!-- <li><a href="#">£50.00 - £100.00</a></li>
                                             <li><a href="#">£100.00 - £150.00</a></li>
@@ -634,6 +702,7 @@
                                             <h1>No Products Available</h1>
 
                                         <% } %>
+                                        
                                     
                                         <% if(product.length > 0) { %>
                                             <% for(let i = 0; i < product.length; i++ ) { %>
@@ -1295,15 +1364,17 @@
                                     <!-- Shop List Start -->
                                 </div>
                             </div>
-                              <div class="page-pagination-area">
-                                <ul class="page-pagination justify-content-center mt-0">
-                                    <% for (let i = 1; i <= totalPages; i++) { %>
-                                        <li <% if (i === currentPage) { %>class="active"<% } %>>
-                                            <a href="?page=<%= i %>"><%= i %></a>
-                                        </li>
-                                    <% } %>
-                                </ul>
-                            </div>
+                              <% if (product && product.length > 0) { %>
+    <div class="page-pagination-area">
+        <ul class="page-pagination justify-content-center mt-0">
+            <% for (let i = 1; i <= totalPages; i++) { %>
+                <li <%= i === currentPage ? 'class="active"' : '' %>>
+                    <a href="?page=<%= i %>"><%= i %></a>
+                </li>
+            <% } %>
+        </ul>
+    </div>
+<% } %>
                             
                         </div>
                     </div>

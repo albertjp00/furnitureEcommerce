@@ -62,7 +62,6 @@ const razorpayInstance = new Razorpay({
     key_secret: RAZORPAY_SECRET_KEY // Pass your Razorpay key secret
 });
 
-console.log("keyyyyyyyyyy",razorpayInstance.key_id);
 
 
 // load home
@@ -71,7 +70,6 @@ console.log("keyyyyyyyyyy",razorpayInstance.key_id);
 
 const loadHome = async (req, res) => {
     try {
-        console.log(req.cookies);
         const token = req.cookies.token;
 
         let userId = null;
@@ -84,46 +82,74 @@ const loadHome = async (req, res) => {
             }
         }
 
+        const search = req.query.search || "";
+        console.log("queryyy",req.query )
+        const categoryFilter = req.query.category || "";
+        const sort = req.query.sort || "";
+        const stock = req.query.stock || "";
+
         const page = parseInt(req.query.page) || 1;
         const limit = 10;
         const skip = (page - 1) * limit;
 
-        const productData = await Product.find().skip(skip).limit(limit);
-        const totalProducts = await Product.countDocuments();
+        let query = {};
+
+        if (search) {
+            query.name = { $regex: new RegExp(search, "i") };
+        }
+
+        if (categoryFilter) {
+            query["category.name"] = categoryFilter;
+        }
+
+        if (stock === "in") {
+            query.stock = { $gt: 0 };
+        }
+
+        let sortOption = {};
+        if (sort === "priceLow") sortOption.price = 1;
+        if (sort === "priceHigh") sortOption.price = -1;
+        if (sort === "latest") sortOption.date = -1;
+        if (sort === "AtoZ") sortOption.name = 1;
+        if (sort === "ZtoA") sortOption.name = -1;
+
+        const productData = await Product.find(query)
+            .sort(sortOption)
+            .skip(skip)
+            .limit(limit);
+
+        const totalProducts = await Product.countDocuments(query);
+        const totalPages = Math.ceil(totalProducts / limit);
 
         let cartItems = null;
         let wishItems = null;
 
         if (userId) {
-            try {
-                cartItems = await Cart.findOne({ userId: userId });
-            } catch (cartError) {
-                console.log("Error fetching cart items:", cartError.message);
-            }
-
-            try {
-                wishItems = await Wishlist.findOne({ userId: userId });
-            } catch (wishError) {
-                console.log("Error fetching wish list items:", wishError.message);
-            }
+            cartItems = await Cart.findOne({ userId });
+            wishItems = await Wishlist.findOne({ userId });
         }
 
         const category = await Category.find();
-        const totalPages = Math.ceil(totalProducts / limit);
 
         res.render('home', {
             product: productData,
             cart: cartItems,
             wish: wishItems,
-            category: category || {},
+            category,
             currentPage: page,
-            totalPages: totalPages
+            totalPages,
+
+            search,
+            selectedCategory: categoryFilter,
+            selectedSort: sort,
+            stock
         });
+
     } catch (error) {
         console.log(error.message);
         res.render('error');
     }
-}
+};
 
 
 
@@ -523,6 +549,8 @@ const viewProduct =  async(req,res)=>{
         const similar = data.category
        
         const similarProduct=await Product.find({category:similar})
+
+        console.log(data)
         
 
         res.render('single-product',{product:data,product2:similarProduct})
@@ -638,7 +666,8 @@ const cartLoad = async(req,res)=>{
 
         const cart = await Cart.findOne({ userId: userId });
 
-        let newTotalAmount = 0;
+        if(cart){
+            let newTotalAmount = 0;
         for (const item of cartItems) {
             newTotalAmount += item.product.price * item.quantity;
         }
@@ -646,6 +675,7 @@ const cartLoad = async(req,res)=>{
         // Update the cart with the new total amount
         cart.totalAmount = newTotalAmount;
         await cart.save();
+        }
         
 
         res.render('cart', { product: cartItems });
@@ -682,7 +712,6 @@ const cartUpdateQuantity = async (req, res) => {
 
             { new: true })
 
-            // Recalculate total amount based on updated quantities
         let totalAmount = 0;
         for (const item of updatedCart.products) {
             const product = await Product.findOne({ _id: item.productId });
@@ -693,9 +722,7 @@ const cartUpdateQuantity = async (req, res) => {
         updatedCart.totalAmount = totalAmount;
         await updatedCart.save();
         
-        
-        
-    
+
         res.redirect('/user/loadCart')
         
 
@@ -833,14 +860,15 @@ const notUsedCoupons = coupons.filter(coupon => !user.coupons.some(userCoupon =>
 
 const applyCoupon = async (req, res) => {
     try {
+        console.log('apply coupon')
         const token = req.cookies.token;
         const decodedToken = jwt.verify(token, 'your_secret_key');
         const userId = decodedToken.userId; 
 
-        const coupons  = await Coupon.find()
-        const User = await User.find(userId)
-        console.log("coupons - "+coupons)
-        console.log("user - "+User)
+        // const coupons  = await Coupon.find()
+        // const user1 = await User.find(userId)
+        // console.log("coupons - "+coupons)
+        // console.log("user - "+user1)
         
         const user = await User.findById(userId)
         const cart = await Cart.findOne({ userId: userId });
@@ -1357,27 +1385,54 @@ const payOnlineFailed = async (req, res) => {
 
 const orderAgain = async (req, res) => {
     try {
-        console.log("in here");
+        console.log("Retry full order");
+
         const orderId = req.query.orderId;
-        const productId = req.query.productId
         const order = await Order.findById(orderId);
 
         if (!order) {
             return res.status(404).send("Order not found");
         }
 
-        const product = await Product.findById(productId)
-        const details = order.products.find(product => product.productId.toString() === productId);
-        console.log("products : "+details);
-        // console.log(fdsg); 
+        // 🚨 Important: Only allow retry if NOT cancelled
+        if (order.status === "Cancelled") {
+            return res.status(400).send("Cannot retry a cancelled order");
+        }
 
-        res.render("onlinePayment2",{order:order, product:product, orderProduct:details});
+        // ✅ Get all product IDs
+        const productIds = order.products.map(p => p.productId);
+
+        // ✅ Fetch all product details
+        const products = await Product.find({
+            _id: { $in: productIds }
+        });
+
+        // ✅ Merge product details with order items
+        const orderProducts = order.products.map(item => {
+            const product = products.find(
+                p => p._id.toString() === item.productId.toString()
+            );
+
+            return {
+                ...item._doc,
+                productDetails: product
+            };
+        });
+
+        console.log("orderProducts:", orderProducts);
+
+        // ✅ Render with full order
+        res.render("onlinePayment2", {
+            order: order,
+            products: products,
+            orderProducts: orderProducts
+        });
 
     } catch (error) {
         console.log(error.message);
-        res.render('error');  
+        res.render('error');
     }
-}
+};
 
 
 
@@ -2052,249 +2107,251 @@ const editAddress = async (req, res) => {
 
 // price low to high
 
-const priceLTH = async(req,res)=>{
-    try{
-        const token = req.cookies.token;
-        const decodedToken = jwt.verify(token, 'your_secret_key');
-        const userId = decodedToken.userId;
+// const priceLTH = async(req,res)=>{
+//     try{
+//         const token = req.cookies.token;
+//         const decodedToken = jwt.verify(token, 'your_secret_key');
+//         const userId = decodedToken.userId;
         
-        // const productData = await Product.find().sort({price:1})
-        const wishItems = await Wishlist.findOne({userId:userId})
-        const cartItems = await Cart.findOne({userId:userId})
-        const category = await Category.find()
-        // console.log("userdataaaaaaa "+productData);
+//         // const productData = await Product.find().sort({price:1})
+//         const wishItems = await Wishlist.findOne({userId:userId})
+//         const cartItems = await Cart.findOne({userId:userId})
+//         const category = await Category.find()
+//         // console.log("userdataaaaaaa "+productData);
 
-        const page = parseInt(req.query.page) || 1; 
-        const limit = 8; 
-        const skip = (page - 1) * limit;
-        const productData = await Product.find().sort({price: 1}).skip(skip).limit(limit); 
-        const totalProducts = await Product.countDocuments(); 
-        const totalPages = Math.ceil(totalProducts / limit); 
+//         const page = parseInt(req.query.page) || 1; 
+//         const limit = 8; 
+//         const skip = (page - 1) * limit;
+//         const productData = await Product.find().sort({price: 1}).skip(skip).limit(limit); 
+//         const totalProducts = await Product.countDocuments(); 
+//         const totalPages = Math.ceil(totalProducts / limit); 
          
 
-        res.render('home',{product : productData,wish : wishItems,cart : cartItems,category:category,currentPage: page,
-            totalPages: totalPages})
-    }catch(error)
-    {
-        console.log(error.message);
-        res.render('error');
-    }
-}
+//         res.render('home',{product : productData,wish : wishItems,cart : cartItems,category:category,currentPage: page,
+//             totalPages: totalPages})
+//     }catch(error)
+//     {
+//         console.log(error.message);
+//         res.render('error');
+//     }
+// }
 
-const priceHTL = async(req,res)=>{
-    try{
-        const token = req.cookies.token;
-        const decodedToken = jwt.verify(token, 'your_secret_key');
-        const userId = decodedToken.userId;
+// const priceHTL = async(req,res)=>{
+//     try{
+//         const token = req.cookies.token;
+//         const decodedToken = jwt.verify(token, 'your_secret_key');
+//         const userId = decodedToken.userId;
         
-        // const productData = await Product.find().sort({price:-1})
-        const wishItems = await Wishlist.findOne({userId:userId})
-        const cartItems = await Cart.findOne({userId:userId})
-        const category = await Category.find()
-        // console.log("userdataaaaaaa "+productData);
+//         // const productData = await Product.find().sort({price:-1})
+//         const wishItems = await Wishlist.findOne({userId:userId})
+//         const cartItems = await Cart.findOne({userId:userId})
+//         const category = await Category.find()
+//         // console.log("userdataaaaaaa "+productData);
 
-        const page = parseInt(req.query.page) || 1; 
-        const limit = 8; 
-        const skip = (page - 1) * limit;
-        const productData = await Product.find().sort({price: -1}).skip(skip).limit(limit); 
-        const totalProducts = await Product.countDocuments(); 
-        const totalPages = Math.ceil(totalProducts / limit);
-
-         
-
-        res.render('home',{product : productData,wish : wishItems,cart : cartItems,category:category,currentPage: page,
-            totalPages: totalPages})
-    }catch(error)
-    {
-        console.log(error.message);
-        res.render('error');
-    }
-}
-
-const latest = async(req,res)=>{
-    try{
-        const token = req.cookies.token;
-        const decodedToken = jwt.verify(token, 'your_secret_key');
-        const userId = decodedToken.userId;
-        
-        // const productData = await Product.find().sort({date:-1})
-        const wishItems = await Wishlist.findOne({userId:userId})
-        const cartItems = await Cart.findOne({userId:userId})
-        const category = await Category.find()
-        // console.log("userdataaaaaaa "+productData);
-
-        const page = parseInt(req.query.page) || 1; 
-        const limit = 8; 
-        const skip = (page - 1) * limit;
-        const productData = await Product.find().sort({date: -1}).skip(skip).limit(limit); 
-        const totalProducts = await Product.countDocuments(); 
-        const totalPages = Math.ceil(totalProducts / limit);
+//         const page = parseInt(req.query.page) || 1; 
+//         const limit = 8; 
+//         const skip = (page - 1) * limit;
+//         const productData = await Product.find().sort({price: -1}).skip(skip).limit(limit); 
+//         const totalProducts = await Product.countDocuments(); 
+//         const totalPages = Math.ceil(totalProducts / limit);
 
          
 
-        res.render('home',{product : productData,wish : wishItems,cart : cartItems,category:category,currentPage: page,
-            totalPages: totalPages})
-    }catch(error)
-    {
-        console.log(error.message);
-        res.render('error');
-    }
-}
+//         res.render('home',{product : productData,wish : wishItems,cart : cartItems,category:category,currentPage: page,
+//             totalPages: totalPages})
+//     }catch(error)
+//     {
+//         console.log(error.message);
+//         res.render('error');
+//     }
+// }
 
-
-const AtoZ = async(req,res)=>{
-    try{
-        const token = req.cookies.token;
-        const decodedToken = jwt.verify(token, 'your_secret_key');
-        const userId = decodedToken.userId;
+// const latest = async(req,res)=>{
+//     try{
+//         const token = req.cookies.token;
+//         const decodedToken = jwt.verify(token, 'your_secret_key');
+//         const userId = decodedToken.userId;
         
-        // const productData = await Product.find().sort({name:1})
-        const wishItems = await Wishlist.findOne({userId:userId})
-        const cartItems = await Cart.findOne({userId:userId})
-        const category = await Category.find()
-        // console.log("userdataaaaaaa "+productData);
+//         // const productData = await Product.find().sort({date:-1})
+//         const wishItems = await Wishlist.findOne({userId:userId})
+//         const cartItems = await Cart.findOne({userId:userId})
+//         const category = await Category.find()
+//         // console.log("userdataaaaaaa "+productData);
 
-        const page = parseInt(req.query.page) || 1; 
-        const limit = 8; 
-        const skip = (page - 1) * limit;
-        const productData = await Product.find().sort({name: 1}).skip(skip).limit(limit); 
-        const totalProducts = await Product.countDocuments(); 
-        const totalPages = Math.ceil(totalProducts / limit);
+//         const page = parseInt(req.query.page) || 1; 
+//         const limit = 8; 
+//         const skip = (page - 1) * limit;
+//         const productData = await Product.find().sort({date: -1}).skip(skip).limit(limit); 
+//         const totalProducts = await Product.countDocuments(); 
+//         const totalPages = Math.ceil(totalProducts / limit);
 
          
 
-        res.render('home',{product : productData,wish : wishItems,cart : cartItems,category:category,currentPage: page,
-            totalPages: totalPages})
-    }catch(error)
-    {
-        console.log(error.message);
-    }
-}
+//         res.render('home',{product : productData,wish : wishItems,cart : cartItems,category:category,currentPage: page,
+//             totalPages: totalPages})
+//     }catch(error)
+//     {
+//         console.log(error.message);
+//         res.render('error');
+//     }
+// }
 
-const ZtoA = async(req,res)=>{
-    try{
-        const token = req.cookies.token;
-        const decodedToken = jwt.verify(token, 'your_secret_key');
-        const userId = decodedToken.userId;
+
+// const AtoZ = async(req,res)=>{
+//     try{
+//         const token = req.cookies.token;
+//         const decodedToken = jwt.verify(token, 'your_secret_key');
+//         const userId = decodedToken.userId;
         
-        // const productData = await Product.find().sort({name:-1})
-        const wishItems = await Wishlist.findOne({userId:userId})
-        const cartItems = await Cart.findOne({userId:userId})
-        const category = await Category.find()
-        // console.log("userdataaaaaaa "+productData);
+//         // const productData = await Product.find().sort({name:1})
+//         const wishItems = await Wishlist.findOne({userId:userId})
+//         const cartItems = await Cart.findOne({userId:userId})
+//         const category = await Category.find()
+//         // console.log("userdataaaaaaa "+productData);
 
-        const page = parseInt(req.query.page) || 1; 
-        const limit = 8; 
-        const skip = (page - 1) * limit;
-        const productData = await Product.find().sort({name: -1}).skip(skip).limit(limit); 
-        const totalProducts = await Product.countDocuments(); 
-        const totalPages = Math.ceil(totalProducts / limit);
+//         const page = parseInt(req.query.page) || 1; 
+//         const limit = 8; 
+//         const skip = (page - 1) * limit;
+//         const productData = await Product.find().sort({name: 1}).skip(skip).limit(limit); 
+//         const totalProducts = await Product.countDocuments(); 
+//         const totalPages = Math.ceil(totalProducts / limit);
 
          
 
-        res.render('home',{product : productData,wish : wishItems,cart : cartItems,category:category,currentPage: page,
-            totalPages: totalPages})
-    }catch(error)
-    {
-        console.log(error.message);
-    }
-}
+//         res.render('home',{product : productData,wish : wishItems,cart : cartItems,category:category,currentPage: page,
+//             totalPages: totalPages})
+//     }catch(error)
+//     {
+//         console.log(error.message);
+//     }
+// }
 
-const inStock = async(req,res)=>{
-    try{
-        const token = req.cookies.token;
-        const decodedToken = jwt.verify(token, 'your_secret_key');
-        const userId = decodedToken.userId;
+// const ZtoA = async(req,res)=>{
+//     try{
+//         const token = req.cookies.token;
+//         const decodedToken = jwt.verify(token, 'your_secret_key');
+//         const userId = decodedToken.userId;
         
-        // const productData = await Product.find({stock:{$gt:0}})
-        const wishItems = await Wishlist.findOne({userId:userId})
-        const cartItems = await Cart.findOne({userId:userId})
-        const category = await Category.find()
-        // console.log("userdataaaaaaa "+productData);
+//         // const productData = await Product.find().sort({name:-1})
+//         const wishItems = await Wishlist.findOne({userId:userId})
+//         const cartItems = await Cart.findOne({userId:userId})
+//         const category = await Category.find()
+//         // console.log("userdataaaaaaa "+productData);
 
-        const page = parseInt(req.query.page) || 1; 
-        const limit = 8; 
-        const skip = (page - 1) * limit;
-        const productData = await Product.find({stock:{$gt:0}}).skip(skip).limit(limit); 
-        const totalProducts = await Product.countDocuments(); 
-        const totalPages = Math.ceil(totalProducts / limit);
+//         const page = parseInt(req.query.page) || 1; 
+//         const limit = 8; 
+//         const skip = (page - 1) * limit;
+//         const productData = await Product.find().sort({name: -1}).skip(skip).limit(limit); 
+//         const totalProducts = await Product.countDocuments(); 
+//         const totalPages = Math.ceil(totalProducts / limit);
 
          
 
-        res.render('home',{product : productData,wish : wishItems,cart : cartItems,category:category,currentPage: page,
-            totalPages: totalPages})
-    }catch(error)
-    {
-        console.log(error.message);
-    }
-}
+//         res.render('home',{product : productData,wish : wishItems,cart : cartItems,category:category,currentPage: page,
+//             totalPages: totalPages})
+//     }catch(error)
+//     {
+//         console.log(error.message);
+//     }
+// }
 
-const categoryFilter = async(req,res)=>{
-    try{
-        const categoryname = req.query.name
+// const inStock = async(req,res)=>{
+//     try{
+//         const token = req.cookies.token;
+//         const decodedToken = jwt.verify(token, 'your_secret_key');
+//         const userId = decodedToken.userId;
         
-        const token = req.cookies.token;
-        const decodedToken = jwt.verify(token, 'your_secret_key');
-        const userId = decodedToken.userId;
-        
-        // const productData = await Product.find({category:categoryname})
-        const wishItems = await Wishlist.findOne({userId:userId})
-        const cartItems = await Cart.findOne({userId:userId})
-        const category = await Category.find()
-        // console.log("userdataaaaaaa "+productData);
+//         // const productData = await Product.find({stock:{$gt:0}})
+//         const wishItems = await Wishlist.findOne({userId:userId})
+//         const cartItems = await Cart.findOne({userId:userId})
+//         const category = await Category.find()
+//         // console.log("userdataaaaaaa "+productData);
 
-        const page = parseInt(req.query.page) || 1; 
-        const limit = 8; 
-        const skip = (page - 1) * limit;
-        const productData = await Product.find({"category.name":categoryname}).sort({price: 1}).skip(skip).limit(limit); 
-        const totalProducts = await Product.countDocuments(); 
-        const totalPages = Math.ceil(totalProducts / limit);
+//         const page = parseInt(req.query.page) || 1; 
+//         const limit = 8; 
+//         const skip = (page - 1) * limit;
+//         const productData = await Product.find({stock:{$gt:0}}).skip(skip).limit(limit); 
+//         const totalProducts = await Product.countDocuments(); 
+//         const totalPages = Math.ceil(totalProducts / limit);
 
          
 
-        res.render('home',{product : productData,wish : wishItems,cart : cartItems,category:category,currentPage: page,
-            totalPages: totalPages})
-    }catch(error)
-    {
-        console.log(error.message);
-    }
-}
+//         res.render('home',{product : productData,wish : wishItems,cart : cartItems,category:category,currentPage: page,
+//             totalPages: totalPages})
+//     }catch(error)
+//     {
+//         console.log(error.message);
+//     }
+// }
+
+//     const categoryFilter = async(req,res)=>{
+//         try{
+//             const categoryname = req.query.name
+            
+//             const token = req.cookies.token;
+//             const decodedToken = jwt.verify(token, 'your_secret_key');
+//             const userId = decodedToken.userId;
+            
+//             // const productData = await Product.find({category:categoryname})
+//             const wishItems = await Wishlist.findOne({userId:userId})
+//             const cartItems = await Cart.findOne({userId:userId})
+//             const category = await Category.find()
+//             // console.log("userdataaaaaaa "+productData);
+
+//             const page = parseInt(req.query.page) || 1; 
+//             const limit = 8; 
+//             const skip = (page - 1) * limit;
+//             const productData = await Product.find({"category.name":categoryname}).sort({price: 1}).skip(skip).limit(limit); 
+//             const totalProducts = await Product.countDocuments({
+//                 "category.name": categoryname
+//             });
+//             const totalPages = Math.ceil(totalProducts / limit);
+
+            
+
+//             res.render('home',{product : productData,wish : wishItems,cart : cartItems,category:category,currentPage: page,
+//                 totalPages: totalPages})
+//         }catch(error)
+//         {
+//             console.log(error.message);
+//         }
+//     }
 
 
-const search = async (req, res) => {
-    try {
-        const input = req.body.search;
-        const token = req.cookies.token;
-        const decodedToken = jwt.verify(token, 'your_secret_key');
-        const userId = decodedToken.userId;
+// const search = async (req, res) => {
+//     try {
+//         const input = req.body.search;
+//         const token = req.cookies.token;
+//         const decodedToken = jwt.verify(token, 'your_secret_key');
+//         const userId = decodedToken.userId;
         
-        const page = parseInt(req.query.page) || 1; 
-        const productsPerPage = 8; 
-        const skip = (page - 1) * productsPerPage;
-        const products = await Product.find({ name: { $regex: new RegExp(`^${input}`, "i") } })
-            .sort({ name: 1 })
-            .skip(skip)
-            .limit(productsPerPage);
-        const totalProducts = await Product.countDocuments({ name: { $regex: new RegExp(`^${input}`, "i") } });
-        const totalPages = Math.ceil(totalProducts / productsPerPage);
+//         const page = parseInt(req.query.page) || 1; 
+//         const productsPerPage = 8; 
+//         const skip = (page - 1) * productsPerPage;
+//         const products = await Product.find({ name: { $regex: new RegExp(`^${input}`, "i") } })
+//             .sort({ name: 1 })
+//             .skip(skip)
+//             .limit(productsPerPage);
+//         const totalProducts = await Product.countDocuments({ name: { $regex: new RegExp(`^${input}`, "i") } });
+//         const totalPages = Math.ceil(totalProducts / productsPerPage);
 
-        const wishItems = await Wishlist.findOne({ userId: userId });
-        const cartItems = await Cart.findOne({ userId: userId });
-        const category = await Category.find();
+//         const wishItems = await Wishlist.findOne({ userId: userId });
+//         const cartItems = await Cart.findOne({ userId: userId });
+//         const category = await Category.find();
 
-        res.render('home', {
-            product: products,
-            wish: wishItems,
-            cart: cartItems,
-            category: category,
-            currentPage: page,
-            totalPages: totalPages
-        });
-    } catch (error) {
-        console.log(error.message);
-        res.render('error');
-    }
-}
+//         res.render('home', {
+//             product: products,
+//             wish: wishItems,
+//             cart: cartItems,
+//             category: category,
+//             currentPage: page,
+//             totalPages: totalPages
+//         });
+//     } catch (error) {
+//         console.log(error.message);
+//         res.render('error');
+//     }
+// }
 
 
 //to load wishlist ------------------------------------------------------------------------------------------------------------------------
@@ -2305,7 +2362,6 @@ const loadWish = async(req,res)=>{
         const decodedToken = jwt.verify(token, 'your_secret_key');
         const userId = decodedToken.userId;
 
-        console.log("uuuuuuuuuuu",userId)
         
         const Items = await Wishlist.aggregate([
             {
@@ -2443,6 +2499,9 @@ const toWallet = async (req, res) => {
         // Wait for all product promises to resolve
         const products = await Promise.all(productPromises);
 
+        console.log("wallet ", products);
+        
+
         res.render('wallet', {wallet:wallet, refund: refunds, product : products });
     }
     } catch (error) {
@@ -2497,14 +2556,14 @@ module.exports={
     addAddressCheckout,
 
 
-    priceLTH,
-    priceHTL,
-    latest,
-    AtoZ,
-    ZtoA,
-    inStock,
-    categoryFilter,
-    search,
+    // priceLTH,
+    // priceHTL,
+    // latest,
+    // AtoZ,
+    // ZtoA,
+    // inStock,
+    // categoryFilter,
+    // search,
 
     //Orders 
     ordered,

@@ -529,7 +529,7 @@
                                                         <li>Product <span>Total</span></li>
                                                         <!-- Product items -->
                                                         <% for(let i=0;i < cart.length ; i++) { %>
-                                                        <li><%= cart[i].product.name%> X <%=cart[i].quantity %><span>$<%= cart[i].product.price * cart[i].quantity%> </span></li>
+                                                        <li><%= cart[i].product.name%> X <%=cart[i].quantity %><span>₹<%= cart[i].product.price * cart[i].quantity%> </span></li>
                                                         <% } %>
                                                     </ul>
                                                 </div>
@@ -538,7 +538,7 @@
                                         
                                                 <div class="your-order-info order total">
                                                     <ul>
-                                                        <li>Total     <span>$<input type="text" name="amount" value="<%=totalAmount%>" readonly></span> </li>
+                                                        <li>Total     <span>₹<input type="text" name="amount" value="<%=totalAmount%>" readonly></span> </li>
                                                     </ul>
                                                 </div>
                                             

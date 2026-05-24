@@ -346,33 +346,35 @@
 
             <div class="pagination-area mt-15 mb-50">
     <nav aria-label="Page navigation example">
-        <ul class="pagination justify-content-start">
+    <ul class="pagination justify-content-start">
 
-            <!-- 🔹 Previous Button -->
-            <li class="page-item <%= currentPage === 1 ? 'disabled' : '' %>">
-                <a class="page-link" 
-                   href="/admin/products?page=<%= currentPage - 1 %>">
-                   <
+        <!-- 🔹 Previous (ONLY show if not first page) -->
+        <% if (currentPage > 1) { %>
+            <li class="page-item">
+                <a class="page-link" href="/admin/products?page=<%= currentPage - 1 %>">
+                    <
                 </a>
             </li>
+        <% } %>
 
-            <!-- 🔹 Current Page Info (optional) -->
-            <li class="page-item active">
-                <a class="page-link">
-                    <%= currentPage %> / <%= totalPages %>
+        <!-- 🔹 Page Info -->
+        <li class="page-item active">
+            <a class="page-link">
+                <%= currentPage %> / <%= totalPages %>
+            </a>
+        </li>
+
+        <!-- 🔹 Next (ONLY show if not last page) -->
+        <% if (currentPage < totalPages) { %>
+            <li class="page-item">
+                <a class="page-link" href="/admin/products?page=<%= currentPage + 1 %>">
+                    >
                 </a>
             </li>
+        <% } %>
 
-            <!-- 🔹 Next Button -->
-            <li class="page-item <%= currentPage === totalPages ? 'disabled' : '' %>">
-                <a class="page-link" 
-                   href="/admin/products?page=<%= currentPage + 1 %>">
-                   >
-                </a>
-            </li>
-
-        </ul>
-    </nav>
+    </ul>
+</nav>
 </div>
 
         

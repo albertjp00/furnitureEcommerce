@@ -357,8 +357,8 @@ const unlisted = async (req, res) => {
 
 const loadCategory = async (req, res) => {
   try {
-    const page = parseInt(req.query.page) || 1; // Get page number from query parameters, default to 1
-    const limit = 8;
+    const page = parseInt(req.query.page) || 1; 
+    const limit = 5;
 
     const skip = (page - 1) * limit;
 
@@ -531,8 +531,8 @@ const loadUnlistedCategories = async (req, res) => {
 
 const loadUser = async (req, res) => {
   try {
-    const page = parseInt(req.query.page) || 1; // Get page number from query parameters, default to 1
-    const limit = 8; // Number of products per page
+    const page = parseInt(req.query.page) || 1;
+    const limit = 5;
 
     const skip = (page - 1) * limit;
 
@@ -1083,7 +1083,7 @@ const loadOffers = async (req, res) => {
   try {
     // const id=req.query.id
     const page = parseInt(req.query.page) || 1; // Get page number from query parameters, default to 1
-    const limit = 8; // Number of products per page
+    const limit = 5; // Number of products per page
 
     const skip = (page - 1) * limit;
 

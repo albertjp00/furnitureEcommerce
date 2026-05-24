@@ -216,7 +216,7 @@
                                 </div>
                                 <div class="content">
                                     <h6><a href="single-product.html">Boys light blue jacket</a></h6>
-                                    <div class="quntity">1 × $35.99</div>
+                                    <div class="quntity">1 × ₹35.99</div>
                                     <button class="remove-btn">×</button>
                                 </div>
                             </li>
@@ -505,13 +505,13 @@
                                                         <li>Product <span>Total</span></li>
                                                         <!-- Product items -->
                                                         <% for(let i=0;i < cart.length ; i++) { %>
-                                                        <li><%= cart[i].product.name%> X <%=cart[i].quantity %><span>$<%= cart[i].product.price * cart[i].quantity%> </span></li>
+                                                        <li><%= cart[i].product.name%> X <%=cart[i].quantity %><span>₹<%= cart[i].product.price * cart[i].quantity%> </span></li>
                                                         <% } %>
                                                     </ul>
                                                 </div>
                                                 <div class="your-order-info order-subtotal">
                                                     <ul>
-                                                        <li>Subtotal <span>$<%= cartItems.totalAmount%></span></li>
+                                                        <li>Subtotal <span>₹<%= cartItems.totalAmount%></span></li>
                                                     </ul>
                                                 </div>
                                                 <br>
@@ -540,14 +540,13 @@
                                                             </div>
                                                         <% } %>
                                                     <% } %>
+
+
+                                                    <br />
+                                                    <a href="/user/profile"><p style="color: red;">Add New Address</p></a>
                                                 </div>
                                                 
                                                 
-                                                
-                                                
-                                                      
-                                                    
-    
                                                     <!-- More payment methods -->
                                                 </div>
 
@@ -556,13 +555,13 @@
                                                         <div class="breadcrumb">
                                                             
                                                             <ul class="page-breadcrumb">
-                                                                <li><a href="/user/removeCoupon" id="removeCouponBtn">Remove Coupon</a></li>
+                                                                <li><a href="/user/removeCoupon" id="removeCouponBtn" style="color : red">Remove Coupon</a></li>
                                                                 
                                                             </ul>
                                                         </div>
                                                         <%}%>
                                                     <ul>
-                                                        <li>Total <span>$<%= cartItems.totalAmount%> </span></li>
+                                                        <li>Total <span>₹<%= cartItems.totalAmount%> </span></li>
                                                     </ul>
                                                 </div>
                                             </div>

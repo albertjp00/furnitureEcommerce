@@ -132,21 +132,21 @@ user_route.post('/changePassword',userController.passwordChange)
 
 
 
-user_route.get('/lowToHigh',authen.islogin,userController.priceLTH)
+// user_route.get('/lowToHigh',authen.islogin,userController.priceLTH)
 
-user_route.get('/highTolow',authen.islogin,userController.priceHTL)
+// user_route.get('/highTolow',authen.islogin,userController.priceHTL)
 
-user_route.get('/latest',authen.islogin,userController.latest)
+// user_route.get('/latest',authen.islogin,userController.latest)
 
-user_route.get('/AtoZ',authen.islogin,userController.AtoZ)
+// user_route.get('/AtoZ',authen.islogin,userController.AtoZ)
 
-user_route.get('/ZtoA',authen.islogin,userController.ZtoA)
+// user_route.get('/ZtoA',authen.islogin,userController.ZtoA)
 
-user_route.get('/inStock',authen.islogin,userController.inStock)
+// user_route.get('/inStock',authen.islogin,userController.inStock)
 
-user_route.get('/category',authen.islogin,userController.categoryFilter)
+// user_route.get('/category',authen.islogin,userController.categoryFilter)
 
-user_route.post('/search',userController.search)
+// user_route.post('/search',userController.search)
 
 
 

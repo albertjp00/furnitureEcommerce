@@ -319,12 +319,12 @@
 
                                     <td><span class="badge rounded-pill alert-warning"><%=order[i].paymentmethod%></span></td>
                                     <td><span class="badge rounded-pill alert-warning"><%=order[i].coupon%></span></td>
-                                    <td class="order_date">
-                                        <% const dateString = new
-                                        Date(order[i].date).toLocaleDateString('en-US', {
-                                        day: '2-digit', month: 'short', year: 'numeric' }); %>
+                                    <td class="order_date" data-date="<%= new Date(order[i].date).toISOString() %>">
+                                        <% const dateString = new Date(order[i].date).toLocaleDateString('en-US', {
+                                            day: '2-digit', month: 'short', year: 'numeric'
+                                        }); %>
                                         <%= dateString %>
-                                      </td>
+                                    </td>
                                     <!-- <td>03.12.2020</td> -->
                                     <td class="text-end">
                                         <!-- <a href="#" class="btn btn-md rounded font-sm">Detail</a> -->
@@ -412,99 +412,43 @@
   let minDate, maxDate;
 
   // Custom filtering function which will search data in column four between two values
-  DataTable.ext.search.push(function (settings, data, dataIndex) {
-    let min = minDate.val();
-    let max = maxDate.val();
-    let date = new Date(data[6]);
 
-    if (
-      (min === null && max === null) ||
-      (min === null && date <= max) ||
-      (min <= date && max === null) ||
-      (min <= date && date <= max)  ||
-      (moment(min).isSameOrBefore(date) && moment(max).isSameOrAfter(date))
-    ) {
-      return true;
-    }
-    return false;
-  });
 
   // Create date inputs
   minDate = new DateTime("#min", {
-    format: "MMMM Do YYYY",
-  });
-  maxDate = new DateTime("#max", {
-    format: "MMMM Do YYYY",
-  });
+  format: "YYYY-MM-DD"
+});
 
-  let table = new DataTable("#myTable", {
-    layout: {
-      topStart: {
-        buttons: [
-          "copy",
-          "csv",
-          {
-            extend: "excel",
-            text: "Download Excel",
-            customize: function (xlsx) {
-              console.log(xlsx);
-              // Handle Excel customization
-              if (xlsx && xlsx[0] && xlsx[0].body && xlsx[0].body.length > 0) {
-                var body = xlsx[0].body;
+maxDate = new DateTime("#max", {
+  format: "YYYY-MM-DD"
+});
 
-                // Remove last column from each row
-                body.forEach(function (row) {
-                  row.splice(-1, 1);
-                });
+let table = new DataTable("#myTable", {
+  layout: {
+    topStart: {
+      buttons: ["copy", "csv", "excel", "print", "pdf"]
+    }
+  }
+});
 
-                // Calculate total of the third column for filtered rows
-                var filteredRows = table.rows({ search: "applied" }).data();
-                var total = filteredRows
-                  .pluck(3, "data")
-                  .reduce(function (acc, val) {
-                    return acc + parseFloat(val);
-                  }, 0);
+// ✅ FILTER AFTER TABLE INIT
+DataTable.ext.search.push(function (settings, data, dataIndex) {
 
-                // Add total amount to the last row
-                body.push(["Total amount (INR):", "", "", total]);
-              }
-            },
-          },
-          "print",
-          {
-            extend: "pdf",
-            text: "Download PDF",
-            customize: function (doc) {
-              // Remove last column from the table
-              doc.content[1].table.body.forEach(function (col) {
-                col.pop(); // Remove content of last column
-              });
+let min = minDate.val() ? moment(minDate.val(), "YYYY-MM-DD").toDate() : null;
+let max = maxDate.val() ? moment(maxDate.val(), "YYYY-MM-DD").toDate() : null;
 
-              // Calculate total of the third column for filtered rows
-              var filteredRows = table.rows({ search: "applied" }).data();
-              var total = filteredRows
-                .pluck(3, "data")
-                .reduce(function (acc, val) {
-                  return acc + parseFloat(val);
-                }, 0);
+  let rowNode = table.row(dataIndex).node();
+  let dateStr = rowNode.querySelector('.order_date').dataset.date;
 
-              var totalText = {
-                text: "Total amount (INR):        <%= total%>", 
-                alignment: "right",
-              };
+  let date = new Date(dateStr);
 
-              var marginBeforeTotal = {
-                text: "",
-                margin: [0, 10], // Margin before the total section
-              };
-              // Add the text elements to the PDF document
-              doc.content.push(marginBeforeTotal, totalText);
-            },
-          },
-        ],
-      },
-    },
-  });
+  if (!min && !max) return true;
+  if (!min && date <= max) return true;
+  if (min && !max && date >= min) return true;
+  if (min && max && date >= min && date <= max) return true;
+
+  return false;
+});
 
   // Refilter the table
   document.querySelectorAll("#min, #max").forEach((el) => {
@@ -522,35 +466,23 @@
     });
   });
 
-  document.querySelector("#week").addEventListener("click", (e) => {
-    var startOfWeek = moment().startOf("week");
-    var endOfWeek = moment().endOf("week");
-    var startOfWeekFormatted = startOfWeek.format("MMMM Do YYYY");
-    var endOfWeekFormatted = endOfWeek.format("MMMM Do YYYY");
-    minDate.val(startOfWeekFormatted); // this is the mistake i did in previous code
-    maxDate.val(endOfWeekFormatted);
-    table.draw();
-  });
+document.querySelector("#week").addEventListener("click", () => {
+  minDate.val(moment().startOf("week").format("YYYY-MM-DD"));
+  maxDate.val(moment().endOf("week").format("YYYY-MM-DD"));
+  table.draw();
+});
 
-  document.querySelector("#month").addEventListener("click", (e) => {
-    var startOfMonth = moment().startOf("month");
-    var endOfMonth = moment().endOf("month");
-    var startOfMonthFormatted = startOfMonth.format("MMMM Do YYYY");
-    var endOfMonthFormatted = endOfMonth.format("MMMM Do YYYY");
-    minDate.val(startOfMonthFormatted);
-    maxDate.val(endOfMonthFormatted);
-    table.draw();
-  });
+document.querySelector("#month").addEventListener("click", () => {
+  minDate.val(moment().startOf("month").format("YYYY-MM-DD"));
+  maxDate.val(moment().endOf("month").format("YYYY-MM-DD"));
+  table.draw();
+});
 
-  document.querySelector("#year").addEventListener("click", (e) => {
-    var startOfYear = moment().startOf("year");
-    var endOfYear = moment().endOf("year");
-    var startOfYearFormatted = startOfYear.format("MMMM Do YYYY");
-    var endOfYearFormatted = endOfYear.format("MMMM Do YYYY");
-    minDate.val(startOfYearFormatted);
-    maxDate.val(endOfYearFormatted);
-    table.draw();
-  });
+document.querySelector("#year").addEventListener("click", () => {
+  minDate.val(moment().startOf("year").format("YYYY-MM-DD"));
+  maxDate.val(moment().endOf("year").format("YYYY-MM-DD"));
+  table.draw();
+});
 
 
 

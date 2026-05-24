@@ -31,6 +31,7 @@
       width: 500px;
       overflow: hidden;
       cursor: zoom-in;
+      
     }
     figure.zoom img:hover {
       opacity: 0;
@@ -545,7 +546,7 @@
                                                 <!-- <img src="https://i.pinimg.com/originals/2b/de/de/2bdede0647e3cdf75b44ea33723201d9.jpg" /> -->
                                               
                                                 <img src="./productImages/<%= product.image[0] %>" alt="">
-                                            </figure>
+                                            <!-- </figure> -->
                                         </a>
                                     </div>
                                     <a class="easyzoom-pop-up img-popup" href="./productImages/<%= product.image[0] %>"><i class="dlicon ui-1_zoom-in"></i></a>
@@ -606,7 +607,7 @@
                                     </div>
                                 <% } %>
                             </div>
-                            <p class="product-price product-details-price"><span class="main-price discounted"></span> <span class="discounted-price">$<%= product.price%></span></p>
+                            <p class="product-price product-details-price"><span class="main-price discounted"></span> <span class="discounted-price">₹<%= product.price%></span></p>
                             <!-- <p class="product-price product-details-price"><span class="main-price discounted"><del>£723.00</del></span> <span class="discounted-price">£672.00</span></p> -->
 
                             <p class="fz-16">Donec nunc nunc, gravida vitae diam vel, varius interdum erat. Quisque a nunc vel diam auctor commodo. Curabitur blandit ultrices exurabitur ut magna dignissim, dignissi, Nullam vitae venenatis elit. Proin dui lacus, viverra at imperdiet non, facilisis eget orci. Vivamus ac elit tellus. Vestibulum nulla dui, consequat vitae diam eu, pretium finibus libero. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Aliquam vitae neque tellus.</p>
@@ -893,7 +894,7 @@
                                     </div>
                                     <div class="product-content text-left">
                                         <h3 class="title"><a href="single-product.html"><%= product2[i].name %></a></h3>
-                                        <p class="product-price"><span class="main-price discounted">$<%= product2[i].price%></span> <span class="discounted-price"></span></p>
+                                        <p class="product-price"><span class="main-price discounted">₹<%= product2[i].price%></span> <span class="discounted-price"></span></p>
                                         <div class="product-rating">
                                             <span class="rating">
                                         <i class="fa fa-star"></i>

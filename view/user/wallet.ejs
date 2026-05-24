@@ -511,7 +511,7 @@
                                                         
                                                     <th>Method</th>
                                                     <th>Description</th>
-                                                    <th>&nbsp;</th>
+                                                    <th>Date</th>
                                                     <th>Amount</th>
                                                 </tr>
                                             </thead>
@@ -520,38 +520,47 @@
                                                 
                                                     
                                                     
-                                                <%if(refund.length>0) { %>
-                                                <% for(let i = 0; i < refund.length; i++) { %>  
-                                                    
-                                                    <tr>
-                                                        
-                                                        <td class="product-name text-left wide-column">
-                                                            <h3>
-                                                                <p>Refund</p>
-                                                            </h3>
-                                                        </td>
-                                                        <td class="product-price">
-                                                            <span class="product-price-wrapper">
-                                                                <span >Refund for Product </span>
-                                                            </span>
-                                                        </td>
-                                                        <td class="product-quantity">
-                                                            
-                                                            
-                                                        
-                                                            
-                                                            
-                                                            
-                                                        </td>
-                                                        <td class="product-total-price">
-                                                            <span class="product-price-wrapper">
-                                                                <input type="text" class="money" id="" value="<%=refund[i].amount%>">
-                                                            </span>
-                                                        </td>
-                                                    </tr>
-                                                    
-                                                    <% } %>
-                                                <% } %>
+                                                <% if (refund.length > 0) { %>
+    <% for (let i = 0; i < refund.length; i++) { %>  
+        
+        <tr>
+            <td class="product-name text-left wide-column">
+                <h3>
+                    <p>Refund</p>
+                </h3>
+            </td>
+
+            <td class="product-price">
+                <span class="product-price-wrapper">
+                    <span>
+                        Refund for <%= product[i]?.name %>
+                        <img src="./productImages/<%= product[i]?.image[0] %>" 
+                        style="width: 60px; height: 60px; object-fit: cover;">
+                    </span>
+                </span>
+            </td>
+
+            
+
+            <td class="product-quantity">
+                <!-- optional -->
+                 <span><%=new Date(product[i].date).toLocaleString('en-GB')%></span>
+            </td>
+
+            <td class="product-total-price">
+                <span class="product-price-wrapper">
+                    <input 
+                        type="text" 
+                        class="money" 
+                        value="<%= refund[i].amount %>" 
+                        readonly
+                    >
+                </span>
+            </td>
+        </tr>
+        
+    <% } %>
+<% } %>
                                                  
                                                 
                                                 
