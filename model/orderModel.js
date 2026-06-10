@@ -27,6 +27,10 @@ const mongoose = require('mongoose')
                 cancelReason:{
                     type:String,
                     
+                },
+                date : {
+                    type : Date,
+                    
                 }
                 
                 

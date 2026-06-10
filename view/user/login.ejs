@@ -532,6 +532,8 @@
                         <div class="my-account-form-area">
                             <form action="/user/login" method="post">
                                 <h2>Login</h2>
+
+                                <input type="hidden" name="redirect" value="<%= redirect %>">
                                 <div class="single-input">
                                     <label for="orderid">Email address <span class="required">*</span></label>
                                     <input type="text" placeholder="Found in your order confirmation email." name="email" id="orderid" required>

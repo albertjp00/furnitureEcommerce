@@ -58,6 +58,22 @@
     cursor: zoom-in;
     }
 
+
+
+ 
+#toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #333;
+    color: #fff;
+    padding: 12px 20px;
+    border-radius: 5px;
+    display: none;
+    z-index: 999;
+}
+
+
       </style>
 </head>
 
@@ -72,16 +88,15 @@
                     <div class="row align-items-center">
                         <div class="col-xl-3 col-lg-6 col-md-6 col-4">
                             <div class="logo">
-                                
                                 <a href="/user/home"><img src="assets/images/logo.png" alt=""></a>
                             </div>
                         </div>
                         <!--Menu start-->
                         <div class="col-xl-6  d-none d-xl-block">
-                            <div class="menu-center d-flex justify-content-center">
+                            <!-- <div class="menu-center d-flex justify-content-center">
                                 <nav class="main-menu ">
                                     <ul>
-                                        <!-- <li><a href="index.html">Home</a>
+                                        <li><a href="index.html">Home</a>
                                             <ul class="mega-menu three-column">
                                                 <li><a href="#" class="item-link">Demo Group 01</a>
                                                     <ul>
@@ -110,8 +125,8 @@
                                                     </ul>
                                                 </li>
                                             </ul>
-                                        </li> -->
-                                        <!-- <li><a href="#">Pages</a>
+                                        </li>
+                                        <li><a href="#">Pages</a>
                                             <ul class="sub-menu">
                                                 <li><a href="coming-soon.html">Comming Soon 01</a></li>
                                                 <li><a href="coming-soon-two.html">Comming Soon 02</a></li>
@@ -185,10 +200,10 @@
                                                     </ul>
                                                 </li>
                                             </ul>
-                                        </li> -->
+                                        </li>
                                     </ul>
                                 </nav>
-                            </div>
+                            </div> -->
                         </div>
                         <!--Menu end-->
                         <div class="col-xl-3 col-lg-6 col-md-6 col-8 d-flex justify-content-end">
@@ -196,19 +211,19 @@
                                 <a class="search-trigger" href="#">
                                     <i class="dlicon ui-1_zoom"></i>
                                 </a>
-                            </div>
+                            </div> -->
                             <div class="header-icon cart ">
-                                <a href="wishlist.html">
-                                    <span class="cart-count">3</span>
+                                <a href="/user/wishList">
+                                    <!-- <span class="cart-count">3</span> -->
                                     <i class="dlicon ui-3_heart"></i>
                                 </a>
-                            </div> -->
-                            <!-- <div class="header-icon cart ">
-                                <a class="cart-trigger" href="#">
-                                    <span class="cart-count">3</span>
+                            </div>
+                            <div class="header-icon cart ">
+                                <a class="" href="/user/loadCart">
+                                    <!-- <span class="cart-count">3</span> -->
                                     <i class="dlicon shopping_cart-modern"></i>
                                 </a>
-                            </div> -->
+                            </div>
                             <div class="header-icon hamburger-menu ">
                                 <a class="hamburger-trigger d-none d-xl-block" href="#">
                                     <i class="dlicon ui-3_menu"></i>
@@ -340,43 +355,17 @@
                 <div class="humberger-top">
                     <div class="hum-mainmenu">
                         <ul>
-                            <li><a href="#">About Us</a></li>
-                            <li><a href="#">Help Center</a></li>
-                            <li><a href="#">Licenses</a></li>
-                            <li><a href="#">Market API</a></li>
-                            <li><a href="#">Site Map</a></li>
+                            <li><a href="/user/profile">Profile</a></li>
+                            <li><a href="/user/logout">logout</a></li>
+                            <li><a href="/user/orders">MyOrders</a></li>
+                            <li><a href="/user/loadWallet">Wallet</a></li>
                         </ul>
                     </div>
                 </div>
 
-                <div class="humberger-banner">
-                    <a href="#"><img src="assets/images/banner/img-hamburger-banner.jpg" alt=""></a>
-                </div>
+               
 
-                <div class="humberger-bottom">
-                    <div class="humberger-bottom__inner">
-                        <div class="content">
-                            <ul class="hm-address">
-                                <li><a href="#"><span>(+612) 2531 5600 </span></a></li>
-                                <li><a href="#"><span>info@la-studioweb.com </span></a></li>
-                                <li><a href="#"><span>PO Box 1622 Colins Street West <br> Victoria 8077 Australia</span></a></li>
-                            </ul>
-                            <a class="gmap" href="#">Google map</a>
-                            <div class="hamburger-social bg-owncolor">
-                                <a class="facebook" href="#"><i class="fa fa-facebook"></i></a>
-                                <a class="twitter" href="#"><i class="fa fa-twitter"></i></a>
-                                <a class="google" href="#"><i class="fa fa-google-plus"></i></a>
-                                <a class="youtube" href="#"><i class="fa fa-youtube"></i></a>
-                            </div>
-                        </div>
-                        <div class="thumb">
-                            <img src="assets/images/payment_info.png" alt="RAZ">
-                        </div>
-                        <div class="hm-copyright">
-                            <p>© 2019 Raz All rights reserved</p>
-                        </div>
-                    </div>
-                </div>
+                
             </div>
             <!-- Start Main Menu -->
 
@@ -647,7 +636,7 @@
                                 <% if(product.stock > 0) { %>
                                     
                                         <div class="pro-details-cart btn-hover">
-                                            <a href="/user/addToCart?id=<%= product._id %>&qty=<%= product.quantity %>">Add   To Cart</a>
+                                            <a href="/user/addToCart?id=<%= product._id %>&qty=<%= product.quantity %>">Add To Cart</a>
                                         </div>
                                     
                                 <% } else { %>
@@ -658,11 +647,18 @@
                                 
 
                                 <div class="pro-details-wishlist">
-                                    <a href="/user/addToWish?id=<%=product._id%>"><i class="fa fa-heart-o"></i></a>
+                                    <a href="#" class="wishlist-btn" data-id="<%= product._id %>">
+                                        <i class="fa fa-heart-o"></i>
+                                    </a>
                                 </div>
                                 <!-- <div class="pro-details-compare">
                                     <a href="compare.html"><i class="fa fa-files-o"></i></a>
                                 </div> -->
+
+
+                                
+
+
                             </div>
                             <div class="pro-details-sku">
                                 <span>SKU: D-12525</span>
@@ -1167,6 +1163,7 @@
 
     <script src="assets/js/main.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCGM-62ap9R-huo50hJDn05j3x-mU9151Y"></script>
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <Script>
         if ($('#htmap2').length) {
             // When the window has finished loading create our google map below
@@ -1468,10 +1465,57 @@
     });
 
 
+
+
+
+document.querySelectorAll(".wishlist-btn").forEach(btn => {
+    btn.addEventListener("click", async (e) => {
+        e.preventDefault();
+
+        const productId = btn.getAttribute("data-id");
+
+        try {
+            const res = await fetch(`/user/addToWish?id=${productId}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+
+            const data = await res.json();
+
+            // showToast(data.message || "Added to wishlist");
+            if(!data.success){
+                showToast(data.message)
+            }
+
+        } catch (err) {
+            showToast("Something went wrong ❌");
+        }
+    });
+});
+
+
+    
+
+
+
+function showToast(message) {
+    const toast = document.getElementById("toast");
+    toast.innerText = message;
+    toast.style.display = "block";
+
+    setTimeout(() => {
+        toast.style.display = "none";
+    }, 3000);
+}
+
+
+
     </Script>
 
 
-
+<div id="toast"></div>
 </body>
 
 

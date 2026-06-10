@@ -37,8 +37,8 @@
                             </div>
                         </div>
                         <!--Menu start-->
-                        <!-- <div class="col-xl-6  d-none d-xl-block">
-                            <div class="menu-center d-flex justify-content-center">
+                        <div class="col-xl-6  d-none d-xl-block">
+                            <!-- <div class="menu-center d-flex justify-content-center">
                                 <nav class="main-menu ">
                                     <ul>
                                         <li><a href="index.html">Home</a>
@@ -148,24 +148,24 @@
                                         </li>
                                     </ul>
                                 </nav>
-                            </div>
-                        </div> -->
+                            </div> -->
+                        </div>
                         <!--Menu end-->
                         <div class="col-xl-3 col-lg-6 col-md-6 col-8 d-flex justify-content-end">
-                            <!-- <div class="header-icon search ">
+                            <div class="header-icon search ">
                                 <a class="search-trigger" href="#">
                                     <i class="dlicon ui-1_zoom"></i>
                                 </a>
                             </div>
                             <div class="header-icon cart ">
                                 <a href="wishlist.html">
-                                    <span class="cart-count">3</span>
+                                    <!-- <span class="cart-count">3</span> -->
                                     <i class="dlicon ui-3_heart"></i>
                                 </a>
                             </div>
                             <div class="header-icon cart ">
                                 <a class="cart-trigger" href="#">
-                                    <span class="cart-count">3</span>
+                                    <!-- <span class="cart-count">3</span> -->
                                     <i class="dlicon shopping_cart-modern"></i>
                                 </a>
                             </div>
@@ -177,7 +177,7 @@
                                 <a class="hamburger-trigger d-block d-xl-none" href="#">
                                     <i class="dlicon ui-3_menu"></i>
                                 </a>
-                            </div> -->
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -300,20 +300,19 @@
                 <div class="humberger-top">
                     <div class="hum-mainmenu">
                         <ul>
-                            <li><a href="#">About Us</a></li>
-                            <li><a href="#">Help Center</a></li>
-                            <li><a href="#">Licenses</a></li>
-                            <li><a href="#">Market API</a></li>
-                            <li><a href="#">Site Map</a></li>
+                            <li><a href="/user/profile">Profile</a></li>
+                            <li><a href="/user/logout">logout</a></li>
+                            <li><a href="/user/orders">MyOrders</a></li>
+                            <li><a href="/user/loadWallet">Wallet</a></li>
                         </ul>
                     </div>
                 </div>
 
-                <div class="humberger-banner">
+                <!-- <div class="humberger-banner">
                     <a href="#"><img src="assets/images/banner/img-hamburger-banner.jpg" alt=""></a>
-                </div>
+                </div> -->
 
-                <div class="humberger-bottom">
+                <!-- <div class="humberger-bottom">
                     <div class="humberger-bottom__inner">
                         <div class="content">
                             <ul class="hm-address">
@@ -336,7 +335,7 @@
                             <p>© 2019 Raz All rights reserved</p>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
             <!-- Start Main Menu -->
 
@@ -512,7 +511,11 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+
+                                    
+
                                     <% for(let i =0 ;i < product.length ; i++ ) { %>
+                                        
                                     <tr>
                                         <!-- <td class="product-remove text-left"><a href="/user/deleteWish?id=<%=product[i].product._id%>" class="remove"></a></td> -->
                                         <td class="product-remove text-left"><a href="#" class="remove" data-product-id="<%=product[i].product._id%>">Remove</a></td>

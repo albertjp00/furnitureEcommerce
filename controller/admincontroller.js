@@ -663,6 +663,7 @@ const loadOrderDetails = async (req, res) => {
     const data = await User.find();
 
     const order = await Order.findById(req.query.id);
+    console.log('load details')
     let products = [];
     for (const p of order.products) {
       const product = await Product.findById(p.productId);
@@ -835,7 +836,6 @@ const deliverOrder = async (req, res) => {
       return res.status(404).send("Order not found");
     }
 
-    // Find the index of the product in the order
     const productIndex = order.products.findIndex(
       (product) => product._id.toString() === productId,
     );
@@ -844,22 +844,23 @@ const deliverOrder = async (req, res) => {
       return res.status(404).send("Product not found in the order");
     }
 
-    // Update the status of the product to "Delivered"
     order.products[productIndex].status = "Delivered";
+    order.products[productIndex].date = Date.now();
 
-    // Save the updated order
     await order.save();
     console.log(
       "Details of the delivered product:",
       order.products[productIndex],
     );
 
-    res.redirect("/admin/loadDetails");
+    res.redirect(`/admin/loadDetails?id=${orderId}`);
   } catch (error) {
     console.error("Error delivering order:", error);
     res.status(500).send("Internal Server Error");
   }
 };
+
+
 
 const approveReturn = async (req, res) => {
   try {

@@ -35,6 +35,26 @@ app.use((req, res, next) => {
 app.set('view engine','ejs')
 
 
+
+
+// const session = require('express-session');
+// const flash = require('connect-flash');
+// const flashMiddleware = require('./middleware/flash');
+
+// app.use(session({
+//   secret: 'secret',
+//   resave: false,
+//   saveUninitialized: true
+// }));
+
+// app.use(flash());
+
+// app.use(flashMiddleware);
+
+
+
+
+
 const bodyParser=require('body-parser')
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:true}))

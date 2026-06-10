@@ -815,7 +815,6 @@
         </div> -->
         <!-- end modal -->
 
-        <a href="https://themesbrand.com/toner/html/backend/index.html" class="btn btn-warning position-fixed bottom-0 start-0 m-5 z-3 btn-hover d-none d-lg-block"><i class="bi bi-database align-middle me-1"></i> Backend</a>
 
         <!--start back-to-top-->
         <button onclick="topFunction()" class="btn btn-info btn-icon" style="bottom: 50px;" id="back-to-top">
@@ -968,6 +967,7 @@
                                 <input type="hidden" id="addressid-input" class="form-control" value="">
                                 <div>
                                     <div class="mb-3">
+                                        
                                         <label for="addaddress-textarea" class="form-label">House Address</label>
                                         <textarea class="form-control" name="houseAddress" id="addaddress-textarea" placeholder="Enter address" rows="2" required><%= address.houseAddress %></textarea>
                                         <br>
@@ -991,7 +991,7 @@
                                     </div>
                                 </div>
                                 <div class="d-flex justify-content-end gap-2 mt-4">
-                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                                    <!-- <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button> -->
                                     <button type="submit" id="submitBtn" class="btn btn-primary">Add</button>
                                 </div>
                             </form>
@@ -1470,46 +1470,116 @@
             </div>
         </section>
 
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="liveToast" class="toast align-items-center border-0" role="alert" data-bs-delay="3000">
+        <div class="d-flex">
+            <div class="toast-body" id="toastMessage"></div>
+            <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast"></button>
+        </div>
+    </div>
+</div>
+
         <!-- JAVASCRIPT -->
         <script src="./assets/styles/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
         <script src="./assets/styles/libs/simplebar/simplebar.min.js"></script>
         <script src="./assets/styles/js/plugins.js"></script>
+        <script src="bootstrap.bundle.min.js"></script>
 
         <!-- <script src="./assets/styles/js/frontend/address.init.js"></script> -->
 
         <!-- landing-index js -->
         <script src="./assets/styles/js/frontend/menu.init.js"></script>
-        <script>
-            document.getElementById('editAddressForm').addEventListener('submit', function(event) {
-                const houseAddressInput = document.getElementById('addaddress-textarea');
-                const countryInput = document.getElementById('state');
-                const pincodeInput = document.getElementById('pincode'); // Assuming you have an input field with id 'pincode'
-                const placeInput = document.getElementById('place');
-        
-                const houseAddress = houseAddressInput.value.trim();
-                const country = countryInput.value.trim();
-                const pincode = pincodeInput.value.trim();
-                const place = placeInput.value.trim()
-        
-                // Update input fields with trimmed values
-                houseAddressInput.value = houseAddress;
-                countryInput.value = country;
-                pincodeInput.value = pincode;
-                placeInput.value = place;
 
-        
-                if (houseAddress === '' || country === '' || pincode === '' || place == '') {
-                    alert('Please fill in all fields.');
-                    event.preventDefault(); // Prevent form submission
-                } else if (houseAddress.match(/^\s*$/)) {
-                    alert('Please enter a valid address.');
-                    event.preventDefault(); // Prevent form submission
-                } else if (!pincode.match(/^\d{6}$/)) { // Ensure pincode has exactly 6 digits
-                    alert('Please enter a valid 6-digit pincode.');
-                    event.preventDefault(); // Prevent form submission
-                }
-            });
-        </script>
+        <script>
+document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById('editAddressForm');
+
+    if (!form) return;
+
+    form.addEventListener('submit', function(event) {
+
+        const houseAddressInput = document.getElementById('addaddress-textarea');
+        const countryInput = document.getElementById('state');
+        const pincodeInput = document.getElementById('pincode');
+        const placeInput = document.getElementById('place');
+
+        const houseAddress = houseAddressInput.value.trim();
+        const country = countryInput.value.trim();
+        const pincode = pincodeInput.value.trim();
+        const place = placeInput.value.trim();
+
+        houseAddressInput.value = houseAddress;
+        countryInput.value = country;
+        pincodeInput.value = pincode;
+        placeInput.value = place;
+
+        const toastEl = document.getElementById("liveToast");
+        const toastMsg = document.getElementById("toastMessage");
+        const toast = new bootstrap.Toast(toastEl);
+
+        toastEl.classList.remove("text-bg-danger", "text-bg-success");
+
+        if (!houseAddress || !country || !pincode || !place) {
+            toastMsg.innerText = "Please fill in all fields.";
+            toastEl.classList.add("text-bg-danger");
+            toast.show();
+            event.preventDefault();
+            return;
+        }
+
+        if (!/^\d{6}$/.test(pincode)) {
+            toastMsg.innerText = "Invalid pincode.";
+            toastEl.classList.add("text-bg-danger");
+            toast.show();
+            event.preventDefault();
+            return;
+        }
+    });
+});
+
+
+
+
+
+
+
+</script>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const params = new URLSearchParams(window.location.search);
+    const error = params.get("error");
+    const success = params.get("success");
+
+    const toastEl = document.getElementById("liveToast");
+    const toastMsg = document.getElementById("toastMessage");
+
+    if (!toastEl) return;
+
+    if (error || success) {
+        const toast = new bootstrap.Toast(toastEl);
+
+        toastEl.classList.remove("text-bg-danger", "text-bg-success");
+
+        if (error === "AddressExists") {
+            toastMsg.innerText = "Address already exists!";
+            toastEl.classList.add("text-bg-danger");
+        }
+
+        if (success === "AddressUpdated") {
+            toastMsg.innerText = "Address updated successfully!";
+            toastEl.classList.add("text-bg-success");
+        }
+
+        toast.show();
+
+        // OPTIONAL: remove query params after showing toast
+        window.history.replaceState({}, document.title, window.location.pathname + "?id=" + params.get("id"));
+    }
+});
+</script>
         
         
         

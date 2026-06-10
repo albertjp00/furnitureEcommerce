@@ -1,0 +1,12 @@
+<script>
+  const error = "<%= error?.[0] || '' %>";
+  const success = "<%= success?.[0] || '' %>";
+
+  if (error) {
+    Toastify({ text: error, duration: 3000 }).showToast();
+  }
+
+  if (success) {
+    Toastify({ text: success, duration: 3000 }).showToast();
+  }
+</script>

@@ -86,7 +86,34 @@
 }
 
 
+.error-box {
+    display: none;
+    background: #ffe6e6;
+    color: #d8000c;
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+
     </style>
+
+    <div id="toast"></div>
+
+<style>
+#toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #ff4d4d;
+    color: #fff;
+    padding: 12px 20px;
+    border-radius: 5px;
+    display: none;
+    z-index: 999;
+}
+</style>
 </head>
 
 
@@ -106,30 +133,138 @@
                         </div>
                         <!--Menu start-->
                         <div class="col-xl-6  d-none d-xl-block">
-                            <div class="menu-center d-flex justify-content-center">
-                                
-                            </div>
+                            <!-- <div class="menu-center d-flex justify-content-center">
+                                <nav class="main-menu ">
+                                    <ul>
+                                        <li><a href="index.html">Home</a>
+                                            <ul class="mega-menu three-column">
+                                                <li><a href="#" class="item-link">Demo Group 01</a>
+                                                    <ul>
+                                                        <li><a href="index.html">Home 01</a></li>
+                                                        <li><a href="index-2.html">Home 02</a></li>
+                                                        <li><a href="index-3.html">Home 03</a></li>
+                                                        <li><a href="index-4.html">Home 04</a></li>
+                                                        <li><a href="index-5.html">Home 05</a></li>
+                                                    </ul>
+                                                </li>
+                                                <li><a href="#" class="item-link">Demo Group 02</a>
+                                                    <ul>
+                                                        <li><a href="index-6.html">Home 06</a></li>
+                                                        <li><a href="index-7.html">Home 07</a></li>
+                                                        <li><a href="index-8.html">Home 08</a></li>
+                                                        <li><a href="index-9.html">Home 09</a></li>
+                                                        <li><a href="index-10.html">Home 10</a></li>
+                                                    </ul>
+                                                </li>
+                                                <li><a href="#" class="item-link">Demo Group 03</a>
+                                                    <ul>
+                                                        <li><a href="index-11.html">Home 11</a></li>
+                                                        <li><a href="index-12.html">Home 12</a></li>
+                                                        <li><a href="index-13.html">Home 13</a></li>
+                                                        <li><a href="index-14.html">Home 14</a></li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="#">Pages</a>
+                                            <ul class="sub-menu">
+                                                <li><a href="coming-soon.html">Comming Soon 01</a></li>
+                                                <li><a href="coming-soon-two.html">Comming Soon 02</a></li>
+                                                <li><a href="about.html">About Us</a></li>
+                                                <li><a href="404.html">404 Page</a></li>
+                                                <li><a href="contact.html">Contact Us</a></li>
+                                                <li><a href="faq.html">FAQ Page</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="#">Portfolio</a>
+                                            <ul class="sub-menu">
+                                                <li><a href="portfolio-classic.html">Portfolio Classic</a></li>
+                                                <li><a href="portfolio-fullwidth.html">Portfolio Fullwidth</a></li>
+                                                <li><a href="portfolio-single.html">Portfolio Single</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="#">Shop</a>
+                                            <ul class="mega-menu four-column">
+                                                <li><a href="#" class="item-link">Shop Layout</a>
+                                                    <ul>
+                                                        <li><a href="shop-fullwidth.html">Shop Fullwidth</a></li>
+                                                        <li><a href="shop-left-sidebar.html">Shop Left Sidebar</a></li>
+                                                        <li><a href="shop-right-sidebar.html">Shop Right Sidebar</a></li>
+                                                        <li><a href="shop-masonry.html">Shop Mansory</a></li>
+                                                        <li><a href="shop-collections.html">Shop Collections</a></li>
+                                                        <li><a href="shop-instagram.html">Shop Instagram</a></li>
+                                                        <li><a href="shop-metro.html">Shop Metro</a></li>
+                                                    </ul>
+                                                </li>
+                                                <li><a href="#" class="item-link">Product Page</a>
+                                                    <ul>
+                                                        <li><a href="single-product.html">Simple Product 01</a></li>
+                                                        <li><a href="single-product-2.html">Simple Product 02</a></li>
+                                                        <li><a href="single-product-3.html">Simple Product 03</a></li>
+                                                        <li><a href="single-product-4.html">Simple Product 04</a></li>
+                                                        <li><a href="single-product-5.html">Simple Product 05</a></li>
+                                                        <li><a href="single-product-configurable.html">Product Configurable</a></li>
+                                                        <li><a href="single-product-affiliate.html">Product Affiliate</a></li>
+                                                        <li><a href="single-product-group.html">Product Grouped</a></li>
+                                                    </ul>
+                                                </li>
+                                                <li><a href="#" class="item-link">Other Page</a>
+                                                    <ul>
+                                                        <li><a href="cart.html">Shopping Cart</a></li>
+                                                        <li><a href="wishlist.html">Wishlist</a></li>
+                                                        <li><a href="compare.html">Compare</a></li>
+                                                        <li><a href="checkout.html">Checkout</a></li>
+                                                        <li><a href="my-account.html">My account</a></li>
+                                                        <li><a href="order-tracking.html">Order Tracking</a></li>
+                                                    </ul>
+                                                </li>
+                                                <li class="mega-menu-banner">
+                                                    <a href="shop-fullwidth.html" class="item-link">
+                                                        <img src="assets/images/banner/banner-megamenu.jpg" alt="">
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="#">Blog</a>
+                                            <ul class="sub-menu">
+                                                <li><a href="blog.html">Blog Left Sidebar</a></li>
+                                                <li><a href="blog-nosidebar.html">Blog No Sidebar</a></li>
+                                                <li><a href="blog-two-column.html">Blog 02 Columns</a></li>
+                                                <li><a href="blog-mansory.html">Blog Mansory</a></li>
+                                                <li><a href="blog-list.html">Blog Classic Layout</a></li>
+                                                <li class="has-dropdown"><a href="#">Single Post</a>
+                                                    <ul class="sub-menu">
+                                                        <li><a href="blog-details.html">Single Post 01</a></li>
+                                                        <li><a href="blog-details-2.html">Single Post 02</a></li>
+                                                        <li><a href="blog-details-3.html">Single Post 03</a></li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div> -->
                         </div>
                         <!--Menu end-->
                         <div class="col-xl-3 col-lg-6 col-md-6 col-8 d-flex justify-content-end">
-                            <!-- <div class="header-icon search ">
+                            <div class="header-icon search ">
                                 <a class="search-trigger" href="#">
                                     <i class="dlicon ui-1_zoom"></i>
                                 </a>
-                            </div> -->
-                            <!-- <div class="header-icon cart ">
+                            </div>
+                            <div class="header-icon cart ">
                                 <a href="wishlist.html">
-                                    <span class="cart-count">3</span>
+                                    <!-- <span class="cart-count">3</span> -->
                                     <i class="dlicon ui-3_heart"></i>
                                 </a>
-                            </div> -->
-                            <!-- <div class="header-icon cart ">
-                                <a class="cart-trigger" href="/user/loadCart">
-                                    <span class="cart-count">3</span>
+                            </div>
+                            <div class="header-icon cart ">
+                                <a class="cart-trigger" href="#">
+                                    <!-- <span class="cart-count">3</span> -->
                                     <i class="dlicon shopping_cart-modern"></i>
                                 </a>
-                            </div> -->
-                            <!-- <div class="header-icon hamburger-menu ">
+                            </div>
+                            <div class="header-icon hamburger-menu ">
                                 <a class="hamburger-trigger d-none d-xl-block" href="#">
                                     <i class="dlicon ui-3_menu"></i>
                                 </a>
@@ -137,7 +272,7 @@
                                 <a class="hamburger-trigger d-block d-xl-none" href="#">
                                     <i class="dlicon ui-3_menu"></i>
                                 </a>
-                            </div> -->
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -216,7 +351,7 @@
                                 </div>
                                 <div class="content">
                                     <h6><a href="single-product.html">Boys light blue jacket</a></h6>
-                                    <div class="quntity">1 × ₹35.99</div>
+                                    <div class="quntity">1 × $35.99</div>
                                     <button class="remove-btn">×</button>
                                 </div>
                             </li>
@@ -250,7 +385,7 @@
         <!-- End Search FlyOver Area -->
 
         <!-- Start Hamburger -->
-        <!-- <div class="hamburger-area">
+        <div class="hamburger-area">
             <div class="btn-close-search">
                 <button>
                     <i class="dlicon ui-1_simple-remove"></i>
@@ -260,16 +395,15 @@
                 <div class="humberger-top">
                     <div class="hum-mainmenu">
                         <ul>
-                            <li><a href="#">About Us</a></li>
-                            <li><a href="#">Help Center</a></li>
-                            <li><a href="#">Licenses</a></li>
-                            <li><a href="#">Market API</a></li>
-                            <li><a href="#">Site Map</a></li>
+                            <li><a href="/user/profile">Profile</a></li>
+                            <li><a href="/user/logout">logout</a></li>
+                            <li><a href="/user/orders">MyOrders</a></li>
+                            <li><a href="/user/loadWallet">Wallet</a></li>
                         </ul>
                     </div>
                 </div>
 
-                <div class="humberger-banner">
+                <!-- <div class="humberger-banner">
                     <a href="#"><img src="assets/images/banner/img-hamburger-banner.jpg" alt=""></a>
                 </div>
 
@@ -296,9 +430,9 @@
                             <p>© 2019 Raz All rights reserved</p>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
-             Start Main Menu
+             <!-- Start Main Menu -->
 
 
 
@@ -409,7 +543,7 @@
             </ul>
 
             
-        </div> -->
+        </div>
         <!-- End Hamburger -->
 
 
@@ -494,11 +628,11 @@
 
                         <!-- here -->
                         
-                            <div class="col-xl-5 col-lg-6">
+                            <div class="col-xl-12 col-lg-6">
                                 <div class="your-order-area">
                                     <h3>Your order</h3>
                                     <div class="your-order-wrap gray-bg-4">
-                                        <form action="/user/orderPlaced?total=<%= cartItems.totalAmount%>" method="post">
+                                        <form id="orderForm" action="/user/orderPlaced?total=<%= cartItems.totalAmount%>" method="post">
                                             <div class="your-order-info-wrap">
                                                 <div class="your-order-info">
                                                     <ul>
@@ -515,13 +649,7 @@
                                                     </ul>
                                                 </div>
                                                 <br>
-                                                <%if(address.length == 0) { %>
-                                                    
-                                                    <a href="/user/profile"><p style="color: red;">Add Address</p></a>
-                                                    
-                                                      
-                                                      
-                                                    <%}%>
+                                                
                                                 
                                                 <div class="address-section">
                                                     <!-- Address options -->
@@ -541,9 +669,17 @@
                                                         <% } %>
                                                     <% } %>
 
+                                                    <%if(address.length == 0) { %>
+                                                    
+                                                    <a href="/user/profile"><p style="color: red;">Add Address</p></a>
+                                                    
+                                                    <% } else {%>
+
 
                                                     <br />
                                                     <a href="/user/profile"><p style="color: red;">Add New Address</p></a>
+                                                    <% } %>
+
                                                 </div>
                                                 
                                                 
@@ -566,49 +702,34 @@
                                                 </div>
                                             </div>
                                             <div class="payment-method">
-                                                <!-- Payment methods -->
-                                                <% if(cartItems.totalAmount <= 1000) { %>
-                                                <div class="pay-top sin-payment">
-                                                    <input id="payment-method-3" class="input-radio" type="radio" value="Cash On Delivery" checked="checked" name="paymentMethod">
-                                                    <label for="payment-method-3">Cash on delivery </label>
-                                                    <div class="payment-box payment_method_bacs">
-                                                        
-                                                    </div>
-                                                </div>
-                                                <% } %>
-                                                <!-- <div class="pay-top sin-payment">
-                                                    <input id="payment_method_1" class="input-radio" type="radio" value="Direct Bank Transfer"  name="paymentMethod">
-                                                    <label for="payment_method_1"> Direct Bank Transfer </label>
-                                                    <div class="payment-box payment_method_bacs">
-                                                    </div>
-                                                </div>
-                                                <div class="pay-top sin-payment">
-                                                    <input id="payment-method-2" class="input-radio" type="radio" value="Chec payments" name="paymentMethod">
-                                                    <label for="payment-method-2">Check payments</label>
-                                                    <div class="payment-box payment_method_bacs">
-                                                    </div>
-                                                </div> -->
-                                                <% if(cartItems.totalAmount > 1000){ %>
-                                                <div class="pay-top sin-payment sin-payment-3">
-                                                    <input id="payment-method-4" class="input-radio" type="radio" value="PayPal" checked = "checked" name="paymentMethod">
-                                                    <label for="payment-method-4">PayPal <img alt="" src="assets/images/payment_info.png"><a href="#">What is PayPal?</a></label>
-                                                    <div class="payment-box payment_method_bacs">
-                                                    </div>
-                                                </div>
-                                                <% } else { %>
-                                                    <div class="pay-top sin-payment sin-payment-3">
-                                                        <input id="payment-method-4" class="input-radio" type="radio" value="PayPal" name="paymentMethod">
-                                                        <label for="payment-method-4">PayPal <img alt="" src="assets/images/payment_info.png"><a href="#">What is PayPal?</a></label>
-                                                        <div class="payment-box payment_method_bacs">
-                                                        </div>
-                                                    </div>
-                                                    <% } %>  
 
-                                                <!-- More payment methods -->
+                                                <!-- COD -->
+                                                <div class="pay-top sin-payment">
+                                                    <input type="radio"
+                                                        name="paymentMethod"
+                                                        value="Cash On Delivery"
+                                                        id="cod"
+                                                        
+                                                        >
+                                                    <label for="cod">Cash on delivery</label>
+                                                </div>
+
+                                                <!-- PayPal -->
+                                                <div class="pay-top sin-payment">
+                                                    <input type="radio"
+                                                        name="paymentMethod"
+                                                        value="PayPal"
+                                                        id="paypal"
+                                                        checked="checked">
+                                                    <label for="paypal">PayPal</label>
+                                                </div>
+
                                             </div>
                                             <div class="Place-order mt-25">
                                                 <button type="submit">Place Order</button>
                                             </div>
+
+                                           
                                         </form>
                                     </div>
                                 </div>
@@ -1106,7 +1227,7 @@
 						"image": "https://dummyimage.com/600x400/000/fff",
 						"order_id": ""+res.order_id+"",
 						"handler": function (response){
-							alert("Payment Succeeded");
+							// alert("Payment Succeeded");
 							// window.open("/","_self")
 						},
 						"prefill": {
@@ -1305,10 +1426,90 @@ document.addEventListener('keydown', function(event) {
     });
 
 
-
-
     </Script>
 
+
+
+<script>
+
+
+window.addEventListener("DOMContentLoaded", () => {
+    const cod = document.getElementById("cod");
+    const paypal = document.getElementById("paypal");
+
+    const total = cartItems.totalAmount;
+
+    if (total <= 1000) {
+        cod.checked = true;
+    } else {
+        paypal.checked = true;
+    }
+});
+
+
+
+document.getElementById("orderForm").addEventListener("submit", async function(e) {
+    // e.preventDefault();
+
+    const form = e.target;
+
+const paymentEl = form.querySelector('input[name="paymentMethod"]:checked');
+
+// if (!paymentEl) {
+//     showToast("Please select a payment method");
+//     return;
+// }
+
+const data = {
+    id: form.querySelector('input[name="id"]:checked')?.value,
+    paymentMethod: paymentEl.value,
+    houseAddress: form.querySelector('input[name="houseAddress"]')?.value,
+    place: form.querySelector('input[name="place"]')?.value,
+    pincode: form.querySelector('input[name="pincode"]')?.value,
+    country: form.querySelector('input[name="country"]')?.value
+};
+
+    try {
+        const res = await fetch(form.action, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        });
+
+        const result = await res.json();
+
+        if (!result.success) {
+            showToast(result.message);
+        } else {
+            window.location.href = result.redirect;
+        }
+
+    } catch (err) {
+        showToast("Something went wrong ❌");
+    }
+});
+
+
+
+function showToast(message) {
+    let toast = document.getElementById("toast");
+
+    if (!toast) {
+        toast = document.createElement("div");
+        toast.id = "toast";
+        document.body.appendChild(toast);
+    }
+
+    toast.innerText = message;
+    toast.style.display = "block";
+
+    setTimeout(() => {
+        toast.style.display = "none";
+    }, 3000);
+}
+</script>
 
 
 </body>
