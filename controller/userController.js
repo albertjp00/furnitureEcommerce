@@ -505,9 +505,13 @@ const viewProduct = async (req, res) => {
 
     const similarProduct = await Product.find({ category: similar });
 
-    console.log(data);
+    let productInCart = false
+    const cartHas = await Cart.findOne({'products.productId' : id }) 
+    if(cartHas){
+      productInCart = true
+    }   
 
-    res.render("single-product", { product: data, product2: similarProduct });
+    res.render("single-product", { product: data, product2: similarProduct , productInCart : productInCart  });
   } catch (error) {
     console.log(error.message);
     res.render("error");
@@ -1241,6 +1245,7 @@ const payOnlineOrdered = async (req, res) => {
     if (!order) {
       return res.status(404).send("Order not found");
     }
+    order.status = 'Order Placed'
 
     for (const product of order.products) {
       product.status = "Order Placed";
@@ -1267,7 +1272,7 @@ const payOnlineFailed = async (req, res) => {
       return res.status(404).send("Order not found");
     }
     order.status = "failed";
-    for (const product of order.products) {
+    for (let product of order.products) {
       product.status = "Failed";
     }
 
@@ -1293,20 +1298,16 @@ const orderAgain = async (req, res) => {
       return res.status(404).send("Order not found");
     }
 
-    // 🚨 Important: Only allow retry if NOT cancelled
     if (order.status === "Cancelled") {
       return res.status(400).send("Cannot retry a cancelled order");
     }
 
-    // ✅ Get all product IDs
     const productIds = order.products.map((p) => p.productId);
 
-    // ✅ Fetch all product details
     const products = await Product.find({
       _id: { $in: productIds },
     });
 
-    // ✅ Merge product details with order items
     const orderProducts = order.products.map((item) => {
       const product = products.find(
         (p) => p._id.toString() === item.productId.toString(),
@@ -1318,9 +1319,7 @@ const orderAgain = async (req, res) => {
       };
     });
 
-    console.log("orderProducts:", orderProducts);
 
-    // ✅ Render with full order
     res.render("onlinePayment2", {
       order: order,
       products: products,
@@ -1384,6 +1383,52 @@ const loadOrders = async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 };
+
+
+
+const getOrderProducts = async (req, res) => {
+  try {
+    const orderId = req.query.orderId;
+
+    // find order
+    const order = await Order.findById(orderId);
+
+    if (!order) {
+      return res.status(404).send("Order not found");
+    }
+
+    const productDetails = [];
+
+    // loop through order products
+    for (const item of order.products) {
+      const product = await Product.findById(item.productId);
+
+      if (product) {
+        productDetails.push({
+          product,
+          quantity: item.quantity,
+          price: item.price,
+          status: item.status,
+        });
+      }
+    }
+
+    console.log("order",order);
+    console.log('details',productDetails)
+    
+
+    res.render("orderProducts", {
+      order,
+      productDetails,
+    });
+
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send("Internal Server Error");
+  }
+};
+
+
 
 // load order details page
 
@@ -2380,6 +2425,7 @@ module.exports = {
   //Orders
   ordered,
   loadOrders,
+  getOrderProducts,
   loadDetails,
   onlinePage,
   payOnline,

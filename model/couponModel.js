@@ -18,6 +18,10 @@ const couponSchema = new mongoose.Schema({
         type:String,
         required:true,
         unique : true
+    },
+    expiry: {
+        type: Date,
+        default: () => new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
     }
     
 });

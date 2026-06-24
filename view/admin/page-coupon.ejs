@@ -253,6 +253,7 @@
                                             <th>Name</th>
                                             <th>Amount</th>
                                             <th>Code</th>
+                                            <th>Expires In</th>
                                             <!-- <th>Order</th> -->
                                             <th class="text-end">Action</th>
                                         </tr>
@@ -274,6 +275,7 @@
                                                     <td><b><%= coupon[i].name%></b></td>
                                                     <td><%= coupon[i].amount%></td>
                                                     <td><%= coupon[i].code%></td>
+                                                    <td><%=coupon[i].daysLeft%> days</td>
                                                     
                                                     <td class="text-end">
                                                         <div class="dropdown">
@@ -285,6 +287,7 @@
                                                             </div>
                                                         </div> 
                                                     </td>
+                                                    
                                                 </tr>
                                                 
                                             <% } %>

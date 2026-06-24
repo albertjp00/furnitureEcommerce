@@ -106,7 +106,7 @@ user_route.post('/addAddressCheckout',authen.islogin,userController.addAddressCh
 
 
 
-
+// db.database.find({name : "name"})
 
 
 user_route.get('/profile',authen.islogin,userController.loadProfile)
@@ -154,6 +154,8 @@ user_route.post('/changePassword',userController.passwordChange)
 user_route.post('/orderPlaced',userController.ordered)
 
 user_route.get('/orders',authen.islogin,userController.loadOrders)
+
+user_route.get('/orderProducts',authen.islogin,userController.getOrderProducts)
 
 user_route.get('/details',authen.islogin,userController.loadDetails)
 
@@ -359,3 +361,10 @@ user_route.get('/logout', (req, res) => {
 
 
 module.exports=user_route
+
+
+
+
+
+
+

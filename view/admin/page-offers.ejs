@@ -464,6 +464,42 @@
     <script src="assets/js/vendors/jquery.fullscreen.min.js"></script>
     <!-- Main Script -->
     <script src="assets/js/main.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+
+  const error = params.get('error');
+  const success = params.get('success');
+
+  if (error) {
+    Toastify({
+      text: error,
+      duration: 3000,
+      gravity: "top",
+      position: "right",
+      backgroundColor: "red",
+    }).showToast();
+  }
+
+  if (success) {
+    Toastify({
+      text: success,
+      duration: 3000,
+      gravity: "top",
+      position: "right",
+      backgroundColor: "green",
+    }).showToast();
+  }
+
+  // ✅ Clean URL after showing toast
+  if (error || success) {
+    window.history.replaceState({}, document.title, window.location.pathname);
+  }
+</script>
+
+
     <script>
          //  space validation in formm
          function validateForm() {

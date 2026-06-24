@@ -639,8 +639,8 @@
                                                     </a>
                                                 </li>
                                             <% } %>
-                                            <!-- <li><a href="#">£50.00 - £100.00</a></li>
-                                            <li><a href="#">£100.00 - £150.00</a></li>
+                                            <li><a href="/user/home">default</a></li>
+                                            <!-- <li><a href="#">£100.00 - £150.00</a></li>
                                             <li><a href="#">£150.00 - £200.00</a></li>
                                             <li><a href="#">£200.00+</a></li> -->
                                         </ul>
@@ -713,9 +713,11 @@
                                             <div class="single-grid-product mb-70 mb-md-50 mb-sm-30 mb-xs-30">
                                                 <div class="product-image">
                                                     <div class="product-label">
-                                                        <%if(product[i].offer){%>
-                                                         <span class="sale">-<%=product[i].offerPercentage%>%</span>
-                                                         <%}%>
+                                                        <% if (product[i].offerType === "product") { %>
+                                                        <span class="sale"><%= product[i].offerPercentage %>%</span>
+                                                        <% } else if (product[i].offerType === "category") { %>
+                                                        <span class="sale"><%= product[i].offerPercentage %>%</span>
+                                                        <% } %>
                                                         <!--<span class="new">New</span> -->
                                                         <% if(product[i].stock == 0)  { %> 
                                                             <span class="out-stock">Out of stock</span>

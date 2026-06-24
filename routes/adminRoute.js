@@ -87,6 +87,8 @@ admin_route.get('/editProduct',adminController.productEdit)
 
 admin_route.post('/editProduct',multer.any(),adminController.updateProduct)
 
+admin_route.post('/removeOffer',multer.any(),adminController.removeProductOffer)
+
 admin_route.get('/unlistProduct',adminController.unlistProduct)
 
 admin_route.get('/listProduct',auth.islogin,adminController.toList)

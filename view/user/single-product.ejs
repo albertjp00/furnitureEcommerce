@@ -621,7 +621,12 @@
                             <p class="product-price product-details-price"><span class="main-price discounted"></span> <span class="discounted-price">₹<%= product.price%></span></p>
                             <!-- <p class="product-price product-details-price"><span class="main-price discounted"><del>£723.00</del></span> <span class="discounted-price">£672.00</span></p> -->
 
-                            <p class="fz-16">Donec nunc nunc, gravida vitae diam vel, varius interdum erat. Quisque a nunc vel diam auctor commodo. Curabitur blandit ultrices exurabitur ut magna dignissim, dignissi, Nullam vitae venenatis elit. Proin dui lacus, viverra at imperdiet non, facilisis eget orci. Vivamus ac elit tellus. Vestibulum nulla dui, consequat vitae diam eu, pretium finibus libero. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Aliquam vitae neque tellus.</p>
+                            <p class="fz-16">
+  <%= product.description && product.description.trim() !== "" 
+      ? product.description 
+      : "This product is designed with high-quality materials to ensure durability and long-lasting performance. It offers a perfect combination of style and functionality, making it suitable for everyday use. With its user-friendly design and reliable features, it provides great value and convenience. Ideal for customers looking for quality, comfort, and affordability in one package." 
+  %>
+</p>
                             <div class="pro-details-quality">
                                 <!-- <div class="quantity quantity--2">
                                     <input type="text" class="quantity-input" name="qty" id="qty-1" value="1">
@@ -633,6 +638,15 @@
 
 
                                 <!-- ///////////////////////////////////////////////////////////////////////////////////////////// -->
+
+                                <% if(productInCart)  {%>
+
+                                    <div class="pro-details-cart btn-hover">
+                                        <a href="/user/loadCart">Go to Cart</a>
+                                    </div>
+
+                                <% }  else {%>
+                                
                                 <% if(product.stock > 0) { %>
                                     
                                         <div class="pro-details-cart btn-hover">
@@ -643,6 +657,8 @@
                                     <div class="pro-details-cart btn-hover">
                                         <a href="#">Out of Stock</a>
                                     </div>
+                                <% } %>
+
                                 <% } %>
                                 
 

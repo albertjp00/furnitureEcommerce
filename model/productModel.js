@@ -42,10 +42,18 @@ const productSchema = new mongoose.Schema({
             default:"listed"
         }
     },
+    description : {
+        type : String,
+    },
     offer:{
-            type:Boolean,
-            default:false
+            type:String,
+            default:'nil'
         
+    },
+    offerType: {
+        type: String,
+        enum: ["none", "category", "product"],
+        default: "none"
     },
     offerPercentage:{
         type:String,
@@ -59,6 +67,11 @@ const productSchema = new mongoose.Schema({
         type:Number,
         default:0
     },
+    createdAt : {
+        type : Date,
+        default : Date.now()
+    },
+
     
 })
 

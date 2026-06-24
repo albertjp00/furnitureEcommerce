@@ -505,13 +505,12 @@
                                         <table class="table text-center">
                                             <thead>
                                                 <tr>
-                                                    <th>&nbsp;</th>
+                                                    <th>id</th>
                                                     
-                                                    <th class="text-left">Product</th>
-                                                    <th>Price</th>
-                                                    <th>Quantity</th>
+                                                    <th class="text-left">Products</th>
                                                     <th>Total</th>
-                                                    <th>Status</th>
+                                                    <th>status</th>
+                                                    <th>Date</th>
                                                     <th></th>
                                                     <th></th>
                                                 </tr>
@@ -524,54 +523,48 @@
                                             
                                                 <% if (allProductDetails && allProductDetails.length > 0) { %>
 
-    <% allProductDetails.reverse().forEach((order, orderIndex) => { %>
-        <% order.reverse().forEach((product, productIndex) => { %>
-            <tr>
-                <td class="product-thumbnail text-left">
-                    <img src="./productImages/<%= product.product.image[0] %>" alt="Product Thumbnail">
-                </td>
-                <td class="product-name text-left wide-column">
-                    <h3>
-                        <a href="product-details.html"><%= product.product.name %></a>
-                    </h3>
-                </td>
-                <td class="product-price">
-                    <span class="money">$<%= product.price %></span>
-                </td>
-                <!-- <td class="product-quantity">
-                    <input type="text" value="<%= product.quantity %>" disabled>
-                </td> -->
-                <td class="product-quantity">
-                    <span class=""><%= product.quantity %></span>
-                </td>
-                <td class="product-total-price">
-                    <span> <%= product.price * product.quantity %></span>
-                </td>
-                <td class="product-status">
-                    <span><%= product.status %></span>
-                </td>
-                
-
-
-                <td>
-                    <a href="/user/details?productId=<%=product.product._id%>&orderId=<%=product.order._id%>" class="shop-btn submit-btn">
-                        View Details
-                    </a>
-                </td>
-            </tr>
-        <% }) %>
-    <% }) %>
-
-<% } else { %>
-
-    <!-- ✅ Empty State -->
+  <% orders.reverse().forEach((order,index) => { %>
     <tr>
-        <td colspan="7" style="text-align:center; padding: 20px;">
-            No orders found 🛒
-        </td>
+      
+      <!-- Order ID -->
+      <td>
+        <%= index+1 %>
+      </td>
+
+      <!-- Total Products Count -->
+      <td>
+  <%= order.products ? order.products.length : 0 %>
+</td>
+
+      <!-- Total Amount -->
+      <td>
+        ₹<%= order.totalAmount %>
+      </td>
+
+      <!-- Order Status -->
+      <td>
+        <%= order.status %>
+      </td>
+
+      <!-- Order Date -->
+      <td>
+        <%= new Date(order.date).toLocaleDateString() %>
+      </td>
+
+      <!-- View Products Button -->
+      <td>
+        <a href="/user/orderProducts?orderId=<%= order._id %>" 
+           class="shop-btn submit-btn">
+          View Products
+        </a>
+      </td>
+
     </tr>
+  <% }) %>
 
 <% } %>
+
+
                                                 
                                                  
                                                 
