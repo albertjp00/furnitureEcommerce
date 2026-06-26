@@ -132,6 +132,19 @@ const loadDash = async (req, res) => {
       .limit(3);
     console.log(category);
 
+
+    const revenueData = await Order.aggregate([
+  {
+    $group: {
+      _id: null,
+      totalRevenue: { $sum: { $toDouble: "$totalAmount" } }
+    }
+  }
+]);
+
+const totalRevenue = revenueData[0]?.totalRevenue || 0;
+
+
     res.render("dashboard", {
       product,
       category,
@@ -142,6 +155,7 @@ const loadDash = async (req, res) => {
       monthlySalesData,
       yearlySalesData,
       yearlySales,
+      totalRevenue
     });
   } catch (error) {
     console.error(error.message);
@@ -355,8 +369,6 @@ const removeProductOffer = async (req, res) => {
 
     console.log('product - - - - - -',product);
     
-    
-
     const update = await Product.findByIdAndUpdate(productId, {
       offer: false,
       offerPercentage: 0,
@@ -670,6 +682,7 @@ const orders = async (req, res) => {
 
     if (req.query.d) {
       order = await Order.find({ status: "Delivered" });
+      console.log('delivered',order)
     }
 
     if (req.query.r) {
@@ -679,19 +692,6 @@ const orders = async (req, res) => {
     for (const totals of order) {
       total += Number(totals.totalAmount);
     }
-
-    // let discount = 0
-    // for(const details of ordersWithProductDetails)
-    // {
-    //     discount += details.originalPrice - details.price
-    // }
-
-    // const orders = await Order.find()
-    // const orderSum = orders.length
-
-    // to show reverse ordered products
-
-    console.log(total);
 
     res.render("orders", { order: order, total: total });
   } catch (error) {
@@ -705,15 +705,6 @@ const reverseOrders = async (req, res) => {
 
     const order = await Order.find();
     order.reverse();
-
-    // let discount = 0
-    // for(const details of ordersWithProductDetails)
-    // {
-    //     discount += details.originalPrice - details.price
-    // }
-
-    // const orders = await Order.find()
-    // const orderSum = orders.length
 
     let total = 0;
 

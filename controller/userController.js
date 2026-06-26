@@ -66,7 +66,7 @@ const loadHome = async (req, res) => {
     let userId = null;
     if (token) {
       try {
-        const decodedToken = jwt.verify(token, "secret_key");
+        const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
         userId = decodedToken.userId;
       } catch (err) {
         console.log("Invalid token:", err.message);
@@ -74,7 +74,6 @@ const loadHome = async (req, res) => {
     }
 
     const search = req.query.search || "";
-    console.log("queryyy", req.query);
     const categoryFilter = req.query.category || "";
     const sort = req.query.sort || "";
     const stock = req.query.stock || "";
@@ -171,7 +170,7 @@ const verifyLogin = async (req, res) => {
         res.render("login", { message: "User Blocked" });
       } else if (user.password === password) {
         // generating JWT token
-        const token = jwt.sign({ userId: user._id }, "secret_key", {
+        const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY, {
           expiresIn: "1h",
         });
 
@@ -523,7 +522,7 @@ const viewProduct = async (req, res) => {
 const cartAdd = async (req, res) => {
   try {
     const token = req.cookies.token;
-    const decodedToken = jwt.verify(token, "secret_key");
+    const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
     const userId = decodedToken.userId;
 
     const productId = req.query.id;
@@ -581,7 +580,7 @@ const cartAdd = async (req, res) => {
 const cartLoad = async (req, res) => {
   try {
     const token = req.cookies.token;
-    const decodedToken = jwt.verify(token, "secret_key");
+    const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
     const userId = decodedToken.userId;
     console.log("adsgadf", await Cart.find({ userId: userId }));
 
@@ -643,7 +642,7 @@ const cartLoad = async (req, res) => {
 const cartUpdateQuantity = async (req, res) => {
   try {
     const token = req.cookies.token;
-    const decodedToken = jwt.verify(token, "secret_key");
+    const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
     const UserId = decodedToken.userId;
 
     const { productId, quantity } = req.body;
@@ -685,7 +684,7 @@ const cartUpdateQuantity = async (req, res) => {
 const cartDelete = async (req, res) => {
   try {
     const token = req.cookies.token;
-    const decodedToken = jwt.verify(token, "secret_key");
+    const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
     const userId = decodedToken.userId;
     const productid = req.query.id;
 
@@ -726,7 +725,7 @@ const cartDelete = async (req, res) => {
 const checkout = async (req, res) => {
   try {
     const token = req.cookies.token;
-    const decodedToken = jwt.verify(token, "secret_key");
+    const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
     const userId = decodedToken.userId;
     const carts = await Cart.find();
     if (!carts) {
@@ -806,7 +805,7 @@ const applyCoupon = async (req, res) => {
   try {
     console.log("apply coupon");
     const token = req.cookies.token;
-    const decodedToken = jwt.verify(token, "secret_key");
+    const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
     const userId = decodedToken.userId;
 
     // const coupons  = await Coupon.find()
@@ -866,7 +865,7 @@ const applyCoupon = async (req, res) => {
 const removeCoupon = async (req, res) => {
   try {
     const token = req.cookies.token;
-    const decodedToken = jwt.verify(token, "secret_key");
+    const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
     const userId = decodedToken.userId;
 
     const user = await User.findById(userId);
@@ -918,7 +917,7 @@ const ordered = async (req, res) => {
 
     if (req.body.paymentMethod == "Cash On Delivery") {
       const token = req.cookies.token;
-      const decodedToken = jwt.verify(token, "secret_key");
+      const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
       const userId = decodedToken.userId;
 
       const address = await Address.find({ userId: userId });
@@ -1005,7 +1004,7 @@ const ordered = async (req, res) => {
     // if online payment
     else {
       const token = req.cookies.token;
-      const decodedToken = jwt.verify(token, "secret_key");
+      const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
       const userId = decodedToken.userId;
 
       const address = await Address.find({ userId: userId });
@@ -1112,7 +1111,7 @@ const ordered = async (req, res) => {
 const onlinePage = async (req, res) => {
   try {
     const token = req.cookies.token;
-    const decodedToken = jwt.verify(token, "secret_key");
+    const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
     const userId = decodedToken.userId;
 
     // to load details from cart
@@ -1197,7 +1196,7 @@ const onlinePage = async (req, res) => {
 const payOnline = async (req, res) => {
   try {
     const token = req.cookies.token;
-    const decodedToken = jwt.verify(token, "secret_key");
+    const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
     const userId = decodedToken.userId;
 
     const amount = req.body.amount * 100;
@@ -1336,7 +1335,7 @@ const orderAgain = async (req, res) => {
 const loadOrders = async (req, res) => {
   try {
     const token = req.cookies.token;
-    const decodedToken = jwt.verify(token, "secret_key");
+    const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
     const userId = decodedToken.userId;
 
     const carts = await Cart.findOne({ userId: userId });
@@ -1435,7 +1434,7 @@ const getOrderProducts = async (req, res) => {
 const loadDetails = async (req, res) => {
   try {
     const token = req.cookies.token;
-    const decodedToken = jwt.verify(token, "secret_key");
+    const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
     const userId = decodedToken.userId;
     const id = req.query.orderId;
     const productId = req.query.productId;
@@ -1474,7 +1473,7 @@ const loadDetails = async (req, res) => {
 const cancelOrder = async (req, res) => {
   try {
     const token = req.cookies.token;
-    const decodedToken = jwt.verify(token, "secret_key");
+    const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
     const userId = decodedToken.userId;
     const productId = req.query.id;
 
@@ -1547,7 +1546,7 @@ const cancelOrder = async (req, res) => {
 const returnOrder = async (req, res) => {
   try {
     const token = req.cookies.token;
-    const decodedToken = jwt.verify(token, "secret_key");
+    const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
     const userId = decodedToken.userId;
 
     const productId = req.query.productId;
@@ -1673,7 +1672,7 @@ const invoice = async (req, res) => {
 const loadProfile = async (req, res) => {
   try {
     const token = req.cookies.token;
-    const decodedToken = jwt.verify(token, "secret_key");
+    const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
     const userId = decodedToken.userId;
     console.log(userId);
     // const userdata = await User.findByIdAndUpdate({userId:userid},{$addToSet:{address:{home:req.body.home,country:req.body.country}}})
@@ -1694,7 +1693,7 @@ const editProfile = async (req, res) => {
   try {
     // console.log("inherer");
     const token = req.cookies.token;
-    const decodedToken = jwt.verify(token, "secret_key");
+    const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
     const userId = decodedToken.userId;
 
     // console.log("edittt "+userId);
@@ -1738,7 +1737,7 @@ const loadPasswordCheck = async (req, res) => {
 const passwordCheck = async (req, res) => {
   try {
     const token = req.cookies.token;
-    const decodedToken = jwt.verify(token, "secret_key");
+    const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
     const userId = decodedToken.userId;
     const userData = await User.findById(userId);
     console.log(userData);
@@ -1761,7 +1760,7 @@ const passwordCheck = async (req, res) => {
 const passwordChange = async (req, res) => {
   try {
     const token = req.cookies.token;
-    const decodedToken = jwt.verify(token, "secret_key");
+    const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
     const userId = decodedToken.userId;
 
     if (req.body.password1 !== req.body.password2) {
@@ -1787,7 +1786,7 @@ const passwordChange = async (req, res) => {
 const loadAddress = async (req, res) => {
   try {
     const token = req.cookies.token;
-    const decodedToken = jwt.verify(token, "secret_key");
+    const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
     const userId = decodedToken.userId;
     const address = await Address.findOne({ userId: userId });
     console.log("adressdataaaaaa" + address);
@@ -1802,7 +1801,7 @@ const loadAddress = async (req, res) => {
 const addAddress = async (req, res) => {
   try {
     const token = req.cookies.token;
-    const decodedToken = jwt.verify(token, "secret_key");
+    const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
     const userId = decodedToken.userId;
 
     const existingAddress = await Address.findOne({
@@ -1837,7 +1836,7 @@ const addAddress = async (req, res) => {
 const loadAddressCheckout = async (req, res) => {
   try {
     const token = req.cookies.token;
-    const decodedToken = jwt.verify(token, "secret_key");
+    const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
     const userId = decodedToken.userId;
     const address = await Address.find({ userId: userId });
     console.log("adressdataaaaaa" + address);
@@ -1850,7 +1849,7 @@ const loadAddressCheckout = async (req, res) => {
 const addAddressCheckout = async (req, res) => {
   try {
     const token = req.cookies.token;
-    const decodedToken = jwt.verify(token, "secret_key");
+    const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
     const userId = decodedToken.userId;
 
     const newAddress = new Address({
@@ -1896,7 +1895,7 @@ const addAddressCheckout = async (req, res) => {
 const deleteAddress = async (req, res) => {
   try {
     const token = req.cookies.token;
-    const decodedToken = jwt.verify(token, "secret_key");
+    const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
     const userId = decodedToken.userId;
     const id = req.query.id;
 
@@ -1916,7 +1915,7 @@ const deleteAddress = async (req, res) => {
 const addressEdit = async (req, res) => {
   try {
     const token = req.cookies.token;
-    const decodedToken = jwt.verify(token, "secret_key");
+    const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
     const userId = decodedToken.userId;
     const id = req.query.id;
 
@@ -1939,7 +1938,7 @@ const addressEdit = async (req, res) => {
 const editAddress = async (req, res) => {
   try {
     const token = req.cookies.token;
-    const decodedToken = jwt.verify(token, "secret_key");
+    const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
     const userId = decodedToken.userId;
     const id = req.query.id;
 
@@ -2215,7 +2214,7 @@ const editAddress = async (req, res) => {
 const loadWish = async (req, res) => {
   try {
     const token = req.cookies.token;
-    const decodedToken = jwt.verify(token, "secret_key");
+    const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
     const userId = decodedToken.userId;
 
     const Items = await Wishlist.aggregate([
@@ -2258,7 +2257,7 @@ const loadWish = async (req, res) => {
 const addToWishlist = async (req, res) => {
   try {
     const token = req.cookies.token;
-    const decodedToken = jwt.verify(token, "secret_key");
+    const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
     const userId = decodedToken.userId;
     const productId = req.query.id;
 
@@ -2302,7 +2301,7 @@ const addToWishlist = async (req, res) => {
 const wishDelete = async (req, res) => {
   try {
     const token = req.cookies.token;
-    const decodedToken = jwt.verify(token, "secret_key");
+    const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
     const userId = decodedToken.userId;
     const productId = req.query.id;
     console.log("deleteing wishhhh");
@@ -2334,7 +2333,7 @@ const wishDelete = async (req, res) => {
 const toWallet = async (req, res) => {
   try {
     const token = req.cookies.token;
-    const decodedToken = jwt.verify(token, "secret_key");
+    const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
     const userId = decodedToken.userId;
     const wallet = await Wallet.findOne({ userId: userId });
 
