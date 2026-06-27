@@ -320,9 +320,14 @@
                     <div class="hum-mainmenu">
                         <ul>
                             <li><a href="/user/profile">Profile</a></li>
-                            <li><a href="/user/logout">logout</a></li>
+                            
                             <li><a href="/user/orders">MyOrders</a></li>
                             <li><a href="/user/loadWallet">Wallet</a></li>
+                            <% if(loggedIn) { %>
+                                <li><a href="/user/logout">logout</a></li>
+                            <% } else { %>
+                                <li><a href="/user/login">login</a></li>
+                            <% } %>
                             <!-- <li><a href="#">Licenses</a></li>
                             <li><a href="#">Market API</a></li>
                             <li><a href="#">Site Map</a></li> -->

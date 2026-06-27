@@ -61,7 +61,14 @@ const razorpayInstance = new Razorpay({
 
 const loadHome = async (req, res) => {
   try {
+    let loggedIn = true
     const token = req.cookies.token;
+    // const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
+    // const userId = decodedToken.userId;
+    if(!token){
+       loggedIn = false
+    }
+    
 
     let userId = null;
     if (token) {
@@ -133,6 +140,7 @@ const loadHome = async (req, res) => {
       selectedCategory: categoryFilter,
       selectedSort: sort,
       stock,
+      loggedIn
     });
   } catch (error) {
     console.log(error.message);
@@ -928,10 +936,12 @@ const ordered = async (req, res) => {
       ) {
         console.log("address nill");
 
-        return res.json({
-          success: false,
-          message: "Please update your address before proceeding to checkout",
-        });
+        // return res.json({
+        //   success: false,
+        //   message: "Please update your address before proceeding to checkout",  
+        // });
+
+        return res.redirect("/user/checkout?error=NO_ADDRESS");
       }
 
       const total = req.query.total;
@@ -994,7 +1004,7 @@ const ordered = async (req, res) => {
       const savedOrderItem = await orderItem.save();
 
       if (orderItem.paymentmethod == "PayPal") {
-        console.log("online paymenttttttttttttttttttttt");
+        console.log("online paymentt");
       }
       console.log("saved " + savedOrderItem);
 
@@ -1015,10 +1025,12 @@ const ordered = async (req, res) => {
         address.some((a) => a.houseAddress === "nill")
       ) {
         console.log("address nilll");
-        return res.json({
-          success: false,
-          message: "Please update your address before proceeding to checkout",
-        });
+        // return res.json({
+        //   success: false,
+        //   message: "Please update your address before proceeding to checkout",
+        // });
+
+        return res.redirect("/user/checkout?error=NO_ADDRESS");
       }
 
       const cartItems = await Cart.aggregate([

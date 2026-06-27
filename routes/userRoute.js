@@ -1,17 +1,21 @@
 const express= require("express")
 const user_route= express()
 
+require("dotenv").config();
+
 const session=require("express-session")
 const config=require("../config/config")
 user_route.use(session({
-    secret:'secret-key',
+    secret:process.env.SECRET_KEY,
     resave: false,
     saveUninitialized: false
 }));
 
+
+
 const cookieParser = require('cookie-parser');
 user_route.use(cookieParser());
-const secretKey = process.env.JWT_SECRET || 'your_secret_key';
+const secretKey = process.env.JWT_SECRET || process.env.SECRET_KEY;
 
 const authen = require('../middleware/auth')
 const jwtoken = require('jsonwebtoken');
@@ -247,23 +251,24 @@ user_route.get('/protected',isLoggedIn,async (req,res)=>{
     
     try{
         
-        // console.log(req.user);
-        
-        
-        const user = new User({
-            name: req.user.given_name,
-            email: req.user.email,
-            mobile: "1234567890",
-            password: "123",
-            verified:"1"
-        });
+        let userData = await User.findOne({ email: req.user.email });
 
-        const userDa = await user.save();
-        const userData = await User.findOne({email:req.user.email})
-        console.log("userData "+typeof userData);
-        console.log("iddddd "+userData._id);
+        // ✅ ONLY CREATE IF NOT EXISTS
+        if (!userData) {
+            userData = await User.create({
+                name: req.user.given_name,
+                email: req.user.email,
+                mobile: "1234567890",
+                password: "123",
+                verified: "1"
+            });
 
-        const token = jwt.sign({ userId: userData._id }, 'your_secret_key', { expiresIn: '1h' });
+            console.log("New user created");
+        } else {
+            console.log("Existing user login");
+        }
+
+        const token = jwt.sign({ userId: userData._id },process.env.SECRET_KEY, { expiresIn: '1h' });
         res.cookie("token", token, {
             httpOnly: true,
             maxAge: 60 * 60 * 1000, // Expires in 1 year
@@ -288,7 +293,7 @@ user_route.get('/protected',isLoggedIn,async (req,res)=>{
 user_route.get('/tohome', async(req, res) => {
     try{
         const token = req.cookies.token;
-        const decodedToken = jwt.verify(token, 'your_secret_key');
+        const decodedToken = jwt.verify(token,process.env.SECRET_KEY);
         const userId = decodedToken.userId;
 
         console.log("home UserID-"+userId);
@@ -307,7 +312,7 @@ user_route.get('/tohome', async(req, res) => {
         let cartData;
         try {
             const token = req.cookies.token;
-        const decodedToken = jwt.verify(token, 'your_secret_key');
+        const decodedToken = jwt.verify(token,process.env.SECRET_KEY);
         const userId = decodedToken.userId;
 
         console.log(token);

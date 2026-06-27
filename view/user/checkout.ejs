@@ -1512,6 +1512,37 @@ function showToast(message) {
 </script>
 
 
+
+
+<script>
+    window.addEventListener("load", () => {
+    const params = new URLSearchParams(window.location.search);
+    const error = params.get("error");
+
+    if (error) {
+        let message = "";
+
+        switch (error) {
+            case "NO_ADDRESS":
+                message = "Please update your address before checkout";
+                break;
+
+            case "NO_PAYMENT":
+                message = "Please select a payment method";
+                break;
+
+            default:
+                message = "Something went wrong";
+        }
+
+        showToast(message);
+
+        // ✅ OPTIONAL: remove query from URL (clean UX)
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
+});
+</script>
+
 </body>
 
 

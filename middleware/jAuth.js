@@ -42,7 +42,7 @@ const isLogout = async (req, res, next) => {
 
         if (req.cookies.token) {
             // Token exists, verify token
-            jwt.verify(token, 'your_secret_key', (err, decoded) => {
+            jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
                 if (err) {
                     // Token verification failed, allow user to proceed
                     
